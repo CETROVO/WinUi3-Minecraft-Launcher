@@ -5,7 +5,7 @@
 > 如果你想要人写的启动器，请出门左转 [HMCL](https://github.com/HMCL-dev/HMCL)。
 
 一个基于 **WinUI 3 + C# + .NET 10** 的 Minecraft 启动器，底层使用 [CmlLib.Core](https://github.com/CmlLib/CmlLib.Core)。  
-目标是做一个界面现代化、功能完整、支持陶瓦/EasyTier 联机的新一代启动器。
+目标是做一个界面现代化、功能完整、支持 EasyTier 私有化联机模块的新一代启动器。
 
 ---
 
