@@ -1,0 +1,237 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\page1.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\page1.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\page1.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\page1.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\package.appxmanifest||{4D47164B-07B6-4A52-A855-728D6A2E2AA3}|Code",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\package.appxmanifest||{4D47164B-07B6-4A52-A855-728D6A2E2AA3}|Code"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\page3.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\page3.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\page2.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\page2.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\page3.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\page3.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|c:\\vs\\wml\\winui3-minecraft-launcher\\winui3-minecraft-launcher\\page2.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E2EDC770-6261-5CAA-5635-D6C44F200719}|WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher.csproj|solutionrelative:winui3-minecraft-launcher\\page2.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Page2.xaml",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Page2.xaml",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\Page2.xaml",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Page2.xaml",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\Page2.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-10-10T15:39:53.907Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Page1.xaml",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Page1.xaml",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\Page1.xaml",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Page1.xaml",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\Page1.xaml",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAAwGEAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-10-10T15:39:17.564Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\MainWindow.xaml",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\MainWindow.xaml",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\MainWindow.xaml",
+              "ViewState": "AgIAADcAAAAAAAAAAAAAwFcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-10-10T15:15:33.835Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\MainWindow.xaml.cs",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAPIAAAAAAAAAAAAAwBIBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-10T15:15:54.662Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Services.cs",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Services.cs",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\Services.cs",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Services.cs",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\Services.cs",
+              "ViewState": "AgIAAMIBAAAAAAAAAAAAANwBAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-10T16:13:59.608Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Models.cs",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Models.cs",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\Models.cs",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Models.cs",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\Models.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAwCIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-10T15:56:54.481Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Page1.xaml.cs",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Page1.xaml.cs",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\Page1.xaml.cs",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Page1.xaml.cs",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\Page1.xaml.cs",
+              "ViewState": "AgIAABcBAAAAAAAAAAAAADIBAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-10T15:40:20.58Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Page3.xaml",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Page3.xaml",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\Page3.xaml",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Page3.xaml",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\Page3.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-10-10T15:40:03.951Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Package.appxmanifest",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Package.appxmanifest",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\Package.appxmanifest",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Package.appxmanifest",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\Package.appxmanifest",
+              "ViewState": "AgIAACsAAAAAAAAAAAAkwDsAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001793|",
+              "WhenOpened": "2026-10-10T16:01:17.279Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\App.xaml",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\App.xaml",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\App.xaml",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\App.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-10-10T16:07:31.405Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "App.xaml.cs",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\App.xaml.cs",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\App.xaml.cs",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\App.xaml.cs",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\App.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-10T16:07:33.808Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Page3.xaml.cs",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Page3.xaml.cs",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\Page3.xaml.cs",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Page3.xaml.cs",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\Page3.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-10T15:40:40.825Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Page2.xaml.cs",
+              "DocumentMoniker": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Page2.xaml.cs",
+              "RelativeDocumentMoniker": "WinUi3-Minecraft-Launcher\\Page2.xaml.cs",
+              "ToolTip": "C:\\VS\\WML\\WinUi3-Minecraft-Launcher\\WinUi3-Minecraft-Launcher\\Page2.xaml.cs",
+              "RelativeToolTip": "WinUi3-Minecraft-Launcher\\Page2.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-10T15:40:30.749Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+<Page
+    x:Class="WinUi3_Minecraft_Launcher.Page1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinUi3_Minecraft_Launcher"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10" Spacing="15">
+                <TextBlock Text="已安装的游戏版本" FontSize="20" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"/>
+                <Button Content="添加版本" Click="AddVersion_Click" Background="#0078D4" Foreground="White" CornerRadius="4" Height="30"/>
+            </StackPanel>
+
+            <ListView x:Name="VersionListView" Grid.Row="1" Background="#20FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:GameVersion">
+                        <Grid Margin="0,5" Padding="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <FontIcon Grid.Column="0" Glyph="&#xE73E;" FontSize="16" Foreground="#0078D4" Margin="0,0,10,0" 
+                                      Visibility="{x:Bind ActiveVisibility, Mode=OneWay}"/>
+
+                            <TextBlock Grid.Column="1" Text="{x:Bind DisplayName, Mode=TwoWay}" 
+                                       FontWeight="SemiBold" FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                                <!-- 🚨 已改名为"选择" -->
+                                <Button Content="选择" Click="ActivateVersion_Click" Tag="{x:Bind}" Height="28" CornerRadius="4"/>
+                                <Button Content="重命名" Click="RenameVersion_Click" Tag="{x:Bind}" Height="28" CornerRadius="4"/>
+                                <Button Content="删除" Click="DeleteVersion_Click" Tag="{x:Bind}" Height="28" CornerRadius="4" Foreground="Red"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,15,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10" Spacing="15">
+                <TextBlock Text=".minecraft 游戏文件夹" FontSize="20" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"/>
+                <Button Content="添加文件夹" Click="AddFolder_Click" Background="#0078D4" Foreground="White" CornerRadius="4" Height="30"/>
+            </StackPanel>
+
+            <ListView x:Name="FolderListView" Grid.Row="1" Background="#20FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:MinecraftFolder">
+                        <Grid Margin="0,5" Padding="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <FontIcon Grid.Column="0" Glyph="&#xE73E;" FontSize="16" Foreground="#0078D4" Margin="0,0,10,0" 
+                                      Visibility="{x:Bind ActiveVisibility, Mode=OneWay}"/>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="{x:Bind DisplayName, Mode=TwoWay}" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                                <TextBlock Text="{x:Bind Path}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="0,2,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                                <Button Content="切换" Click="SwitchFolder_Click" Tag="{x:Bind}" Height="28" CornerRadius="4"/>
+                                <Button Content="重命名" Click="RenameFolder_Click" Tag="{x:Bind}" Height="28" CornerRadius="4"/>
+                                <Button Content="删除" Click="DeleteFolder_Click" Tag="{x:Bind}" Height="28" CornerRadius="4" Foreground="Red"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>
