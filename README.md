@@ -5,7 +5,7 @@
 > 如果你想要人写的启动器，请出门左转 [HMCL](https://github.com/HMCL-dev/HMCL)。
 
 一个基于 **WinUI 3 + C# + .NET 10** 的 Minecraft 启动器，底层使用 [CmlLib.Core](https://github.com/CmlLib/CmlLib.Core)。  
-目标是做一个界面现代化、功能完整、支持 EasyTier 私有化联机模块的新一代启动器。
+目标是做一个界面现代化、功能完整、使用 EasyTier 制作的私有化联机模块的新一代启动器。
 
 ---
 
@@ -26,15 +26,7 @@
 - [ ] 第三方认证登录（authlib-injector）
 - [ ] 下载 Minecraft 原版 / 模组加载器（Forge / Fabric / NeoForge）
 - [ ] 下载模组 / 资源包 / 光影包 / 数据包 / 整合包
-- [ ] 内置联机（陶瓦 / EasyTier）
-
----
-
-## 🖼️ 截图 / Screenshot
-
-![WML Launcher](docs/screenshot.png)
-
-> 深色模式 + 亚克力毛玻璃 + PCL CE 风格布局
+- [ ] 内置联机（EasyTier）
 
 ---
 
