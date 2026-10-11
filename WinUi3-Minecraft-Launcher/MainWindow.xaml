@@ -18,24 +18,25 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <!-- ================= 顶部栏 ================= -->
         <Grid x:Name="AppTitleBar" Grid.Row="0" Grid.ColumnSpan="2" Background="Transparent" Margin="0,0,140,0">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="16,0,0,0" Spacing="8">
                 <FontIcon Glyph="&#xE7FC;" FontSize="20" Foreground="#0078D4"/>
-                <TextBlock Text="WML 启动器" FontSize="14" FontWeight="SemiBold" 
+                <TextBlock Text="WML 启动器" FontSize="14" FontWeight="SemiBold"
                            Foreground="{ThemeResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
-                <Button Content="启动" Tag="Page1" Click="NavButton_Click" 
+                <Button Content="启动" Tag="Page1" Click="NavButton_Click"
                         Background="Transparent" BorderThickness="0" FontWeight="SemiBold" CornerRadius="6" Height="32" Padding="20,0"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
-                <Button Content="下载" Tag="Page2" Click="NavButton_Click" 
+                <Button Content="下载" Tag="Page2" Click="NavButton_Click"
                         Background="Transparent" BorderThickness="0" FontWeight="SemiBold" CornerRadius="6" Height="32" Padding="20,0"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
-                <Button Content="管理" Tag="Page3" Click="NavButton_Click" 
+                <Button Content="管理" Tag="Page3" Click="NavButton_Click"
                         Background="Transparent" BorderThickness="0" FontWeight="SemiBold" CornerRadius="6" Height="32" Padding="20,0"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
-                <Button Content="更多" Tag="Page3" Click="NavButton_Click" 
+                <Button Content="更多" Tag="Page3" Click="NavButton_Click"
                         Background="Transparent" BorderThickness="0" FontWeight="SemiBold" CornerRadius="6" Height="32" Padding="20,0"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
             </StackPanel>
@@ -50,6 +51,7 @@
             </StackPanel>
         </Grid>
 
+        <!-- ================= 左侧边栏 ================= -->
         <Grid Grid.Row="1" Grid.Column="0" Background="{ThemeResource LayerFillColorDefaultBrush}" Padding="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -62,27 +64,59 @@
                     <Border Width="80" Height="80" CornerRadius="40" Background="{ThemeResource ControlFillColorDefaultBrush}">
                         <FontIcon Glyph="&#xE77B;" FontSize="40" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                     </Border>
-                    <TextBlock x:Name="AccountNameText" Text="Steve" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center"
+
+                    <!-- 🚨 静态 TextBlock，由后台 UpdateAccountDisplay() 更新 -->
+                    <TextBlock x:Name="AccountNameText"
+                               Text="Steve"
+                               FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center"
                                Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
-                    <TextBlock x:Name="AccountTypeText" Text="离线账户" FontSize="12" HorizontalAlignment="Center"
+
+                    <TextBlock x:Name="AccountTypeText"
+                               Text="离线账户"
+                               FontSize="12" HorizontalAlignment="Center"
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                 </StackPanel>
             </Button>
 
             <StackPanel Grid.Row="2" Spacing="15">
-                <Button x:Name="LaunchButton" Content="启动游戏" HorizontalAlignment="Stretch" Height="50" 
+                <Button x:Name="LaunchButton" Content="启动游戏" HorizontalAlignment="Stretch" Height="50"
                         Background="#0078D4" Foreground="White" FontSize="18" FontWeight="Bold" CornerRadius="8"
                         Click="LaunchButton_Click"/>
-                <Button x:Name="ManageVersionButton" Content="管理版本" HorizontalAlignment="Stretch" Height="40" 
-                        Background="{ThemeResource ControlFillColorDefaultBrush}" 
-                        Foreground="{ThemeResource TextFillColorPrimaryBrush}" 
+                <Button x:Name="ManageVersionButton" Content="管理版本" HorizontalAlignment="Stretch" Height="40"
+                        Background="{ThemeResource ControlFillColorDefaultBrush}"
+                        Foreground="{ThemeResource TextFillColorPrimaryBrush}"
                         FontWeight="SemiBold" CornerRadius="8"
                         Click="ManageVersionButton_Click"/>
             </StackPanel>
         </Grid>
 
+        <!-- ================= 右侧主内容 ================= -->
         <Grid Grid.Row="1" Grid.Column="1" Background="Transparent" Padding="30">
             <Frame x:Name="ContentFrame" />
+        </Grid>
+
+        <!-- ================= 启动进度浮层 ================= -->
+        <Grid x:Name="ProgressOverlay" Grid.RowSpan="2" Grid.ColumnSpan="2"
+              Background="#80000000" Visibility="Collapsed" Canvas.ZIndex="100">
+            <Border Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                    CornerRadius="12" Padding="30" Width="460"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}">
+                <StackPanel Spacing="15">
+                    <TextBlock x:Name="ProgressTitleText" Text="正在启动游戏..."
+                               FontSize="16" FontWeight="SemiBold"
+                               Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                    <ProgressBar x:Name="LaunchProgressBar" Maximum="100" Value="0" Height="6" CornerRadius="3"/>
+                    <TextBlock x:Name="ProgressDetailText" Text="准备中..."
+                               FontSize="12" TextWrapping="Wrap"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,5,0,0">
+                        <Button x:Name="CancelLaunchButton" Content="取消启动"
+                                Click="CancelLaunch_Click"
+                                Height="32" Padding="16,0" CornerRadius="6"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
         </Grid>
     </Grid>
 </Window>

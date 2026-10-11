@@ -1,0 +1,178 @@
+<Page
+    x:Class="WinUi3_Minecraft_Launcher.Page4"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid UseLayoutRounding="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- 顶部栏 -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Click="BackButton_Click"
+                    Background="Transparent" BorderThickness="0"
+                    Padding="12,6" CornerRadius="6">
+                <TextBlock Text="← 返回" FontSize="14"
+                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center"/>
+            </Button>
+
+            <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center" Spacing="2">
+                <TextBlock x:Name="VersionTitleText" Text="加载中..."
+                           FontSize="22" FontWeight="Bold"
+                           TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                <TextBlock x:Name="VersionSubtitleText" Text=""
+                           FontSize="12"
+                           TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
+
+            <Button Grid.Column="2" Click="LaunchButton_Click"
+                    Background="#0078D4" Height="40" Padding="20,0" CornerRadius="6">
+                <TextBlock Text="启动游戏" Foreground="White" FontWeight="SemiBold"/>
+            </Button>
+        </Grid>
+
+        <!-- 主体内容 -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="16" Padding="0,0,10,0">
+
+                <!-- 基本信息 -->
+                <Border Background="#20FFFFFF" CornerRadius="10"
+                        BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                        Padding="20">
+                    <StackPanel Spacing="14">
+                        <TextBlock Text="基本信息" FontSize="15" FontWeight="SemiBold"
+                                   Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+
+                        <Grid ColumnSpacing="20" RowSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="版本 ID" FontSize="13"
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="InfoVersionIdText" Text="-" FontSize="13"
+                                       TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="游戏版本" FontSize="13"
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="InfoGameVersionText" Text="-" FontSize="13"
+                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="加载器" FontSize="13"
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="InfoLoaderText" Text="-" FontSize="13"
+                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="要求 Java" FontSize="13"
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" x:Name="InfoJavaText" Text="-" FontSize="13"
+                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="路径" FontSize="13"
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" x:Name="InfoPathText" Text="-" FontSize="13"
+                                       FontFamily="Consolas"
+                                       TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- 快捷访问 -->
+                <Border Background="#20FFFFFF" CornerRadius="10"
+                        BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                        Padding="20">
+                    <StackPanel Spacing="14">
+                        <TextBlock Text="快捷访问" FontSize="15" FontWeight="SemiBold"
+                                   Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+
+                        <Grid RowSpacing="10" ColumnSpacing="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Row="0" Grid.Column="0" Click="OpenFolder_Click" Tag="versions"
+                                    HorizontalAlignment="Stretch" Height="44" CornerRadius="6"
+                                    Content="版本文件夹"/>
+                            <Button Grid.Row="0" Grid.Column="1" Click="OpenFolder_Click" Tag="mods"
+                                    HorizontalAlignment="Stretch" Height="44" CornerRadius="6"
+                                    Content="模组"/>
+                            <Button Grid.Row="0" Grid.Column="2" Click="OpenFolder_Click" Tag="saves"
+                                    HorizontalAlignment="Stretch" Height="44" CornerRadius="6"
+                                    Content="存档"/>
+                            <Button Grid.Row="0" Grid.Column="3" Click="OpenFolder_Click" Tag="resourcepacks"
+                                    HorizontalAlignment="Stretch" Height="44" CornerRadius="6"
+                                    Content="资源包"/>
+
+                            <Button Grid.Row="1" Grid.Column="0" Click="OpenFolder_Click" Tag="shaderpacks"
+                                    HorizontalAlignment="Stretch" Height="44" CornerRadius="6"
+                                    Content="光影包"/>
+                            <Button Grid.Row="1" Grid.Column="1" Click="OpenFolder_Click" Tag="config"
+                                    HorizontalAlignment="Stretch" Height="44" CornerRadius="6"
+                                    Content="配置文件"/>
+                            <Button Grid.Row="1" Grid.Column="2" Click="OpenFolder_Click" Tag="crash-reports"
+                                    HorizontalAlignment="Stretch" Height="44" CornerRadius="6"
+                                    Content="崩溃日志"/>
+                            <Button Grid.Row="1" Grid.Column="3" Click="OpenFolder_Click" Tag="logs"
+                                    HorizontalAlignment="Stretch" Height="44" CornerRadius="6"
+                                    Content="运行日志"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- 版本操作 -->
+                <Border Background="#20FFFFFF" CornerRadius="10"
+                        BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                        Padding="20">
+                    <StackPanel Spacing="14">
+                        <TextBlock Text="版本操作" FontSize="15" FontWeight="SemiBold"
+                                   Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Button Click="RenameVersion_Click" Height="40" Padding="20,0" CornerRadius="6"
+                                    Content="重命名显示名"/>
+                            <Button Click="DeleteVersion_Click" Height="40" Padding="20,0" CornerRadius="6"
+                                    Content="删除版本" Foreground="#E81123"/>
+                        </StackPanel>
+
+                        <TextBlock Text="⚠️ 删除版本会从磁盘移除 versions/版本名/ 文件夹，此操作不可恢复。"
+                                   FontSize="12"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

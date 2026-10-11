@@ -8,12 +8,37 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-    <Grid>
+    <Page.Resources>
+        <Style x:Key="SimpleListViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="Padding" Value="4,2"/>
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <ListViewItemPresenter
+                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            PointerOverBackground="Transparent"
+                            PressedBackground="Transparent"
+                            SelectedBackground="Transparent"
+                            SelectedPointerOverBackground="Transparent"
+                            SelectedPressedBackground="Transparent"
+                            Padding="{TemplateBinding Padding}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid UseLayoutRounding="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!-- 上半部分：已安装版本 -->
         <Grid Grid.Row="0" Margin="0,0,0,15">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -21,40 +46,62 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10" Spacing="15">
-                <TextBlock Text="已安装的游戏版本" FontSize="20" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"/>
-                <Button Content="添加版本" Click="AddVersion_Click" Background="#0078D4" Foreground="White" CornerRadius="4" Height="30"/>
+                <TextBlock Text="已安装的游戏版本" FontSize="20" FontWeight="Bold"
+                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center"/>
+                <Button Click="AddVersion_Click" Background="#0078D4" CornerRadius="4" Height="30">
+                    <TextBlock Text="添加版本" Foreground="White" FontSize="13"/>
+                </Button>
             </StackPanel>
 
-            <ListView x:Name="VersionListView" Grid.Row="1" Background="#20FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:GameVersion">
-                        <Grid Margin="0,5" Padding="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1">
+                <ListView x:Name="VersionListView"
+                          Background="#20FFFFFF" CornerRadius="8"
+                          BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                          ItemContainerStyle="{StaticResource SimpleListViewItemStyle}"
+                          SelectionMode="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:GameVersion">
+                            <Grid Margin="0,2" Padding="4" ColumnSpacing="12" UseLayoutRounding="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <FontIcon Grid.Column="0" Glyph="&#xE73E;" FontSize="16" Foreground="#0078D4" Margin="0,0,10,0" 
-                                      Visibility="{x:Bind ActiveVisibility, Mode=OneWay}"/>
+                                <FontIcon Grid.Column="0" Glyph="&#xE73E;" FontSize="16" Foreground="#0078D4" Margin="0,0,10,0"
+                                          VerticalAlignment="Center"
+                                          Visibility="{x:Bind ActiveVisibility, Mode=OneWay}"/>
 
-                            <TextBlock Grid.Column="1" Text="{x:Bind DisplayName, Mode=TwoWay}" 
-                                       FontWeight="SemiBold" FontSize="15"
-                                       VerticalAlignment="Center"
-                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                                <TextBlock Grid.Column="1" Text="{x:Bind DisplayName, Mode=TwoWay}"
+                                           FontWeight="SemiBold" FontSize="15"
+                                           TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                           VerticalAlignment="Center"
+                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
 
-                            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
-                                <!-- 🚨 已改名为"选择" -->
-                                <Button Content="选择" Click="ActivateVersion_Click" Tag="{x:Bind}" Height="28" CornerRadius="4"/>
-                                <Button Content="重命名" Click="RenameVersion_Click" Tag="{x:Bind}" Height="28" CornerRadius="4"/>
-                                <Button Content="删除" Click="DeleteVersion_Click" Tag="{x:Bind}" Height="28" CornerRadius="4" Foreground="Red"/>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                    <Button Click="ActivateVersion_Click" Tag="{x:Bind}" Height="30" CornerRadius="4" Padding="14,0">
+                                        <TextBlock Text="选择" FontSize="13"/>
+                                    </Button>
+                                    <Button Click="VersionDetail_Click" Tag="{x:Bind}" Height="30" CornerRadius="4" Padding="14,0">
+                                        <TextBlock Text="详情" FontSize="13"/>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <TextBlock x:Name="VersionEmptyHint"
+                           Text="👋 请点击下方的「添加文件夹」按钮，选择你的 .minecraft 目录"
+                           FontSize="14" TextWrapping="Wrap"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           Visibility="Collapsed"/>
+            </Grid>
         </Grid>
 
+        <!-- 下半部分：.minecraft 文件夹 -->
         <Grid Grid.Row="1" Margin="0,15,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -62,37 +109,66 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10" Spacing="15">
-                <TextBlock Text=".minecraft 游戏文件夹" FontSize="20" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"/>
-                <Button Content="添加文件夹" Click="AddFolder_Click" Background="#0078D4" Foreground="White" CornerRadius="4" Height="30"/>
+                <TextBlock Text=".minecraft 游戏文件夹" FontSize="20" FontWeight="Bold"
+                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center"/>
+                <Button Click="AddFolder_Click" Background="#0078D4" CornerRadius="4" Height="30">
+                    <TextBlock Text="添加文件夹" Foreground="White" FontSize="13"/>
+                </Button>
             </StackPanel>
 
-            <ListView x:Name="FolderListView" Grid.Row="1" Background="#20FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:MinecraftFolder">
-                        <Grid Margin="0,5" Padding="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1">
+                <ListView x:Name="FolderListView"
+                          Background="#20FFFFFF" CornerRadius="8"
+                          BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                          ItemContainerStyle="{StaticResource SimpleListViewItemStyle}"
+                          SelectionMode="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:MinecraftFolder">
+                            <Grid Margin="0,2" Padding="4" ColumnSpacing="12" UseLayoutRounding="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <FontIcon Grid.Column="0" Glyph="&#xE73E;" FontSize="16" Foreground="#0078D4" Margin="0,0,10,0" 
-                                      Visibility="{x:Bind ActiveVisibility, Mode=OneWay}"/>
+                                <FontIcon Grid.Column="0" Glyph="&#xE73E;" FontSize="16" Foreground="#0078D4" Margin="0,0,10,0"
+                                          VerticalAlignment="Center"
+                                          Visibility="{x:Bind ActiveVisibility, Mode=OneWay}"/>
 
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock Text="{x:Bind DisplayName, Mode=TwoWay}" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
-                                <TextBlock Text="{x:Bind Path}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="0,2,0,0"/>
-                            </StackPanel>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" MinWidth="0">
+                                    <TextBlock Text="{x:Bind DisplayName, Mode=TwoWay}" FontWeight="SemiBold"
+                                               TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                               Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                                    <TextBlock Text="{x:Bind Path}" FontSize="12"
+                                               FontFamily="Consolas"
+                                               TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="0,2,0,0"/>
+                                </StackPanel>
 
-                            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
-                                <Button Content="切换" Click="SwitchFolder_Click" Tag="{x:Bind}" Height="28" CornerRadius="4"/>
-                                <Button Content="重命名" Click="RenameFolder_Click" Tag="{x:Bind}" Height="28" CornerRadius="4"/>
-                                <Button Content="删除" Click="DeleteFolder_Click" Tag="{x:Bind}" Height="28" CornerRadius="4" Foreground="Red"/>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                    <Button Click="SwitchFolder_Click" Tag="{x:Bind}" Height="30" CornerRadius="4" Padding="14,0">
+                                        <TextBlock Text="切换" FontSize="13"/>
+                                    </Button>
+                                    <Button Click="RenameFolder_Click" Tag="{x:Bind}" Height="30" CornerRadius="4" Padding="14,0">
+                                        <TextBlock Text="重命名" FontSize="13"/>
+                                    </Button>
+                                    <Button Click="DeleteFolder_Click" Tag="{x:Bind}" Height="30" CornerRadius="4" Padding="14,0">
+                                        <TextBlock Text="移除" FontSize="13" Foreground="#E81123"/>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <TextBlock x:Name="FolderEmptyHint"
+                           Text="📂 还没有添加任何 .minecraft 文件夹，点击上方「添加文件夹」开始"
+                           FontSize="14" TextWrapping="Wrap"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           Visibility="Collapsed"/>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

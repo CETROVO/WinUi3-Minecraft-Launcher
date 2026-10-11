@@ -9,8 +9,8 @@
     Background="Transparent">
 
     <Grid>
-        <TextBlock Text="2" FontSize="120" FontWeight="Bold" 
-                   HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   Foreground="#0078D4"/>
+        <TextBlock Text="2" FontSize="120" FontWeight="Bold"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
     </Grid>
 </Page>

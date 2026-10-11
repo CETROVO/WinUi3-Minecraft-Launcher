@@ -29,15 +29,9 @@
 		<Resource Language="x-generate"/>
 	</Resources>
 
-	<!-- ================= 核心权限区 ================= -->
 	<Capabilities>
-		<!-- 联网权限（下载MC/模组必须） -->
 		<Capability Name="internetClient" />
-
-		<!-- 突破沙箱，读写 D:\Minecraft（必须） -->
 		<rescap:Capability Name="broadFileSystemAccess" />
-
-		<!-- 完全信任权限（解决 DEP0700 报错的关键） -->
 		<rescap:Capability Name="runFullTrust" />
 	</Capabilities>
 

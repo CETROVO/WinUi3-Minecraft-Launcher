@@ -2,7 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -17,6 +16,7 @@ namespace WinUi3_Minecraft_Launcher
         public ObservableCollection<MinecraftFolder> Folders { get; set; } = new();
 
         private string? _currentMinecraftPath;
+        private bool _isLoaded = false;
 
         public Page1()
         {
@@ -27,19 +27,92 @@ namespace WinUi3_Minecraft_Launcher
             this.Loaded += Page1_Loaded;
         }
 
-        private void Page1_Loaded(object sender, RoutedEventArgs e)
+        private void ShowVersionEmptyHint(string text)
         {
-            if (Folders.Count == 0)
+            Versions.Clear();
+            VersionListView.Visibility = Visibility.Collapsed;
+            VersionEmptyHint.Text = text;
+            VersionEmptyHint.Visibility = Visibility.Visible;
+        }
+
+        private void HideVersionEmptyHint()
+        {
+            VersionListView.Visibility = Visibility.Visible;
+            VersionEmptyHint.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowFolderEmptyHint(string text)
+        {
+            Folders.Clear();
+            FolderListView.Visibility = Visibility.Collapsed;
+            FolderEmptyHint.Text = text;
+            FolderEmptyHint.Visibility = Visibility.Visible;
+        }
+
+        private void HideFolderEmptyHint()
+        {
+            FolderListView.Visibility = Visibility.Visible;
+            FolderEmptyHint.Visibility = Visibility.Collapsed;
+        }
+
+        private async void Page1_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_isLoaded) return;
+            _isLoaded = true;
+
+            var cfg = ConfigService.Load();
+
+            foreach (var entry in cfg.Folders)
             {
-                Versions.Clear();
-                Versions.Add(new GameVersion
+                if (!Directory.Exists(entry.Path)) continue;
+                Folders.Add(new MinecraftFolder
                 {
-                    Id = "hint",
-                    DisplayName = "👋 请点击右侧的「添加文件夹」按钮，选择你的 .minecraft 目录",
-                    Path = "",
+                    Path = entry.Path,
+                    DisplayName = string.IsNullOrEmpty(entry.DisplayName) ? Path.GetFileName(entry.Path) : entry.DisplayName,
                     IsActive = false
                 });
             }
+
+            if (Folders.Any())
+            {
+                HideFolderEmptyHint();
+
+                var target = Folders.FirstOrDefault(f =>
+                    string.Equals(f.Path, cfg.ActiveFolderPath, StringComparison.OrdinalIgnoreCase))
+                    ?? Folders.First();
+
+                foreach (var f in Folders) f.IsActive = false;
+                target.IsActive = true;
+                _currentMinecraftPath = target.Path;
+
+                await LoadRealVersionsAsync(cfg.ActiveVersionName);
+            }
+            else
+            {
+                ShowFolderEmptyHint("📂 还没有添加任何 .minecraft 文件夹，点击上方「添加文件夹」开始");
+                ShowVersionEmptyHint("👋 添加文件夹后，这里会显示已安装的游戏版本");
+            }
+        }
+
+        private void SaveConfig()
+        {
+            var cfg = ConfigService.Load();
+            cfg.Folders = Folders.Select(f => new FolderEntry
+            {
+                Path = f.Path,
+                DisplayName = f.DisplayName
+            }).ToList();
+
+            cfg.ActiveFolderPath = Folders.FirstOrDefault(f => f.IsActive)?.Path;
+            cfg.ActiveVersionName = LauncherState.CurrentVersionName;
+
+            cfg.JavaPath = LauncherState.JavaPath;
+            cfg.MaxRamMb = LauncherState.MaxRamMb;
+            cfg.AutoMemory = LauncherState.AutoMemory;
+            cfg.VersionIsolation = LauncherState.VersionIsolation;
+            cfg.AutoIsolation = LauncherState.AutoIsolation;
+
+            ConfigService.Save(cfg);
         }
 
         private async void AddFolder_Click(object sender, RoutedEventArgs e)
@@ -70,12 +143,14 @@ namespace WinUi3_Minecraft_Launcher
                     IsActive = false
                 };
                 Folders.Add(newFolder);
+                HideFolderEmptyHint();
 
                 foreach (var f in Folders) f.IsActive = false;
                 newFolder.IsActive = true;
                 _currentMinecraftPath = folder.Path;
 
                 await LoadRealVersionsAsync();
+                SaveConfig();
             }
             catch (Exception ex)
             {
@@ -83,7 +158,7 @@ namespace WinUi3_Minecraft_Launcher
             }
         }
 
-        private async Task LoadRealVersionsAsync()
+        private async Task LoadRealVersionsAsync(string? restoreActiveVersion = null)
         {
             Versions.Clear();
             LauncherState.CurrentMinecraftPath = _currentMinecraftPath;
@@ -91,7 +166,7 @@ namespace WinUi3_Minecraft_Launcher
 
             if (string.IsNullOrEmpty(_currentMinecraftPath))
             {
-                Versions.Add(new GameVersion { Id = "none", DisplayName = "请先选择一个 .minecraft 文件夹", Path = "", IsActive = false });
+                ShowVersionEmptyHint("请先选择一个 .minecraft 文件夹");
                 return;
             }
 
@@ -99,26 +174,14 @@ namespace WinUi3_Minecraft_Launcher
             {
                 if (!Directory.Exists(_currentMinecraftPath))
                 {
-                    Versions.Add(new GameVersion
-                    {
-                        Id = "error",
-                        DisplayName = $"⚠️ 目录不存在: {_currentMinecraftPath}",
-                        Path = _currentMinecraftPath,
-                        IsActive = false
-                    });
+                    ShowVersionEmptyHint($"⚠️ 目录不存在：{_currentMinecraftPath}");
                     return;
                 }
 
                 var versionsDir = Path.Combine(_currentMinecraftPath, "versions");
                 if (!Directory.Exists(versionsDir))
                 {
-                    Versions.Add(new GameVersion
-                    {
-                        Id = "empty",
-                        DisplayName = "📭 此目录下没有 versions 文件夹",
-                        Path = _currentMinecraftPath,
-                        IsActive = false
-                    });
+                    ShowVersionEmptyHint("📭 此目录下没有 versions 文件夹");
                     return;
                 }
 
@@ -136,54 +199,42 @@ namespace WinUi3_Minecraft_Launcher
 
                 if (!validVersions.Any())
                 {
-                    Versions.Add(new GameVersion
-                    {
-                        Id = "empty",
-                        DisplayName = "📭 没有找到任何完整的已安装版本（缺少 .json 或 .jar）",
-                        Path = _currentMinecraftPath,
-                        IsActive = false
-                    });
+                    ShowVersionEmptyHint("📭 没有找到任何完整的已安装版本");
                     return;
                 }
 
-                bool firstActive = true;
+                string? activeName = restoreActiveVersion;
+                if (string.IsNullOrEmpty(activeName) || !validVersions.Any(v => v.Name == activeName))
+                {
+                    activeName = validVersions.First().Name;
+                }
+
+                HideVersionEmptyHint();
                 foreach (var v in validVersions)
                 {
+                    bool active = (v.Name == activeName);
                     Versions.Add(new GameVersion
                     {
                         Id = v.Name,
                         DisplayName = v.Name,
                         Path = Path.Combine(versionsDir, v.Name),
-                        IsActive = firstActive
+                        IsActive = active
                     });
 
-                    if (firstActive)
+                    if (active)
                     {
                         LauncherState.CurrentVersionName = v.Name;
                         LauncherState.CurrentMinecraftPath = _currentMinecraftPath;
                     }
-                    firstActive = false;
                 }
             }
             catch (UnauthorizedAccessException)
             {
-                Versions.Add(new GameVersion
-                {
-                    Id = "denied",
-                    DisplayName = "🚫 权限被拒绝，请尝试重新选择文件夹",
-                    Path = _currentMinecraftPath,
-                    IsActive = false
-                });
+                ShowVersionEmptyHint("🚫 权限被拒绝，请尝试重新选择文件夹");
             }
             catch (Exception ex)
             {
-                Versions.Add(new GameVersion
-                {
-                    Id = "error",
-                    DisplayName = $"❌ 读取失败: {ex.Message}",
-                    Path = _currentMinecraftPath,
-                    IsActive = false
-                });
+                ShowVersionEmptyHint($"❌ 读取失败：{ex.Message}");
             }
         }
 
@@ -200,49 +251,23 @@ namespace WinUi3_Minecraft_Launcher
             try { await dialog.ShowAsync(); } catch { }
         }
 
-        // ================= 版本操作 =================
         private void ActivateVersion_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is GameVersion ver)
             {
                 foreach (var v in Versions) v.IsActive = false;
                 ver.IsActive = true;
-
                 LauncherState.CurrentVersionName = ver.Id;
                 LauncherState.CurrentMinecraftPath = _currentMinecraftPath;
+                SaveConfig();
             }
         }
 
-        private async void RenameVersion_Click(object sender, RoutedEventArgs e)
+        private void VersionDetail_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is GameVersion ver)
             {
-                if (this.XamlRoot == null) return;
-                var dialog = new ContentDialog
-                {
-                    Title = "重命名版本（仅显示名）",
-                    Content = new TextBox { Text = ver.DisplayName },
-                    PrimaryButtonText = "确定",
-                    CloseButtonText = "取消",
-                    DefaultButton = ContentDialogButton.Primary,
-                    XamlRoot = this.XamlRoot
-                };
-                try
-                {
-                    if (await dialog.ShowAsync() == ContentDialogResult.Primary)
-                        ver.DisplayName = ((TextBox)dialog.Content).Text;
-                }
-                catch { }
-            }
-        }
-
-        private void DeleteVersion_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is GameVersion ver)
-            {
-                Versions.Remove(ver);
-                if (LauncherState.CurrentVersionName == ver.Id)
-                    LauncherState.CurrentVersionName = null;
+                this.Frame?.Navigate(typeof(Page4), ver.Id);
             }
         }
 
@@ -251,7 +276,6 @@ namespace WinUi3_Minecraft_Launcher
             await Task.CompletedTask;
         }
 
-        // ================= 文件夹操作 =================
         private async void SwitchFolder_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is MinecraftFolder folder)
@@ -260,6 +284,7 @@ namespace WinUi3_Minecraft_Launcher
                 folder.IsActive = true;
                 _currentMinecraftPath = folder.Path;
                 await LoadRealVersionsAsync();
+                SaveConfig();
             }
         }
 
@@ -280,32 +305,61 @@ namespace WinUi3_Minecraft_Launcher
                 try
                 {
                     if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                    {
                         folder.DisplayName = ((TextBox)dialog.Content).Text;
+                        SaveConfig();
+                    }
                 }
                 catch { }
             }
         }
 
-        private void DeleteFolder_Click(object sender, RoutedEventArgs e)
+        private async void DeleteFolder_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.Tag is MinecraftFolder folder)
+            if (sender is not Button btn || btn.Tag is not MinecraftFolder folder) return;
+
+            if (this.XamlRoot == null) return;
+            var confirm = new ContentDialog
             {
-                Folders.Remove(folder);
-                if (folder.IsActive)
+                Title = "从列表中移除？",
+                Content = new TextBlock
                 {
-                    _currentMinecraftPath = null;
-                    LauncherState.CurrentMinecraftPath = null;
-                    LauncherState.CurrentVersionName = null;
-                    Versions.Clear();
-                    Versions.Add(new GameVersion
-                    {
-                        Id = "hint",
-                        DisplayName = "👋 请点击下方的「添加文件夹」按钮，选择你的 .minecraft 目录",
-                        Path = "",
-                        IsActive = false
-                    });
+                    Text = $"将把以下文件夹从启动器列表中移除：\n\n{folder.Path}\n\n⚠️ 不会删除你磁盘上的任何文件。",
+                    TextWrapping = TextWrapping.Wrap
+                },
+                PrimaryButtonText = "移除",
+                CloseButtonText = "取消",
+                DefaultButton = ContentDialogButton.Close,
+                XamlRoot = this.XamlRoot
+            };
+
+            ContentDialogResult result;
+            try { result = await confirm.ShowAsync(); } catch { return; }
+            if (result != ContentDialogResult.Primary) return;
+
+            Folders.Remove(folder);
+            if (!Folders.Any())
+                ShowFolderEmptyHint("📂 还没有添加任何 .minecraft 文件夹，点击上方「添加文件夹」开始");
+
+            if (folder.IsActive)
+            {
+                _currentMinecraftPath = null;
+                LauncherState.CurrentMinecraftPath = null;
+                LauncherState.CurrentVersionName = null;
+
+                if (Folders.Any())
+                {
+                    var next = Folders.First();
+                    next.IsActive = true;
+                    _currentMinecraftPath = next.Path;
+                    await LoadRealVersionsAsync();
+                }
+                else
+                {
+                    ShowVersionEmptyHint("👋 添加文件夹后，这里会显示已安装的游戏版本");
                 }
             }
+            SaveConfig();
         }
     }
 }
