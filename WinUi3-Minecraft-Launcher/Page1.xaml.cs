@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using CmlLib.Core;
+using CmlLib.Core;           // 🚨 必须有
 using Windows.Storage.Pickers;
 
 namespace WinUi3_Minecraft_Launcher

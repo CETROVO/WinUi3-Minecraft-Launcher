@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WinUi3-Minecraft-Launcher")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e4a26a83a1c8303e68671d58cbbcfbdbdd7e07c5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9cfe50c65e4c9747fa1c1dd2c9dcbbf492790804")]
 [assembly: System.Reflection.AssemblyProductAttribute("WinUi3-Minecraft-Launcher")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WinUi3-Minecraft-Launcher")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

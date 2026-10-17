@@ -28,21 +28,21 @@
     <AppXManifest Include="C:\VS\WML\WinUi3-Minecraft-Launcher\WinUi3-Minecraft-Launcher\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2026-10-11T14:47:57.130</Modified>
+      <Modified>2026-10-17T17:27:16.680</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\VS\WML\WinUi3-Minecraft-Launcher\WinUi3-Minecraft-Launcher\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\WinUi3-Minecraft-Launcher.runtimeconfig.json">
       <PackagePath>WinUi3-Minecraft-Launcher.runtimeconfig.json</PackagePath>
-      <Modified>2026-10-10T16:05:07.642</Modified>
+      <Modified>2026-10-17T16:51:27.426</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\VS\WML\WinUi3-Minecraft-Launcher\WinUi3-Minecraft-Launcher\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\apphost.exe">
       <PackagePath>WinUi3-Minecraft-Launcher.exe</PackagePath>
-      <Modified>2026-10-11T14:47:56.434</Modified>
+      <Modified>2026-10-17T17:27:16.251</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\VS\WML\WinUi3-Minecraft-Launcher\WinUi3-Minecraft-Launcher\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\WinUi3-Minecraft-Launcher.dll">
       <PackagePath>WinUi3-Minecraft-Launcher.dll</PackagePath>
-      <Modified>2026-10-11T14:47:56.412</Modified>
+      <Modified>2026-10-17T17:27:16.244</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\mayua\.nuget\packages\microsoft.netcore.app.runtime.win-x64\8.0.31\runtimes\win-x64\lib\net8.0\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -962,7 +962,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\VS\WML\WinUi3-Minecraft-Launcher\WinUi3-Minecraft-Launcher\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\WinUi3-Minecraft-Launcher.deps.json">
       <PackagePath>WinUi3-Minecraft-Launcher.deps.json</PackagePath>
-      <Modified>2026-10-11T13:03:51.479</Modified>
+      <Modified>2026-10-17T16:51:27.420</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\VS\WML\WinUi3-Minecraft-Launcher\WinUi3-Minecraft-Launcher\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
@@ -998,7 +998,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\VS\WML\WinUi3-Minecraft-Launcher\WinUi3-Minecraft-Launcher\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2026-10-11T13:03:51.598</Modified>
+      <Modified>2026-10-17T17:27:16.417</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

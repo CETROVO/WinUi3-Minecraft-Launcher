@@ -18,7 +18,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- ================= 顶部栏 ================= -->
+        <!-- 顶部栏 -->
         <Grid x:ConnectionId='2' x:Name="AppTitleBar" Grid.Row="0" Grid.ColumnSpan="2" Background="Transparent" Margin="0,0,140,0">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="16,0,0,0" Spacing="8">
                 <FontIcon Glyph="&#xE7FC;" FontSize="20" Foreground="#0078D4"/>
@@ -27,31 +27,31 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
-                <Button x:ConnectionId='16' Content="启动" Tag="Page1"                        
+                <Button x:ConnectionId='19' Content="启动" Tag="Page1"                        
                         Background="Transparent" BorderThickness="0" FontWeight="SemiBold" CornerRadius="6" Height="32" Padding="20,0"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
-                <Button x:ConnectionId='17' Content="下载" Tag="Page2"                        
+                <Button x:ConnectionId='20' Content="下载" Tag="Page2"                        
                         Background="Transparent" BorderThickness="0" FontWeight="SemiBold" CornerRadius="6" Height="32" Padding="20,0"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
-                <Button x:ConnectionId='18' Content="管理" Tag="Page3"                        
+                <Button x:ConnectionId='21' Content="管理" Tag="Page3"                        
                         Background="Transparent" BorderThickness="0" FontWeight="SemiBold" CornerRadius="6" Height="32" Padding="20,0"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
-                <Button x:ConnectionId='19' Content="更多" Tag="Page3"                        
+                <Button x:ConnectionId='22' Content="更多" Tag="Page3"                        
                         Background="Transparent" BorderThickness="0" FontWeight="SemiBold" CornerRadius="6" Height="32" Padding="20,0"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Spacing="10" Margin="0,0,16,0">
-                <Button x:ConnectionId='14'                             Background="Transparent" BorderThickness="0" Padding="8" CornerRadius="4" ToolTipService.ToolTip="账户管理">
+                <Button x:ConnectionId='17'                             Background="Transparent" BorderThickness="0" Padding="8" CornerRadius="4" ToolTipService.ToolTip="账户管理">
                     <FontIcon Glyph="&#xE77B;" FontSize="16" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                 </Button>
-                <Button x:ConnectionId='15'                              Background="Transparent" BorderThickness="0" Padding="8" CornerRadius="4" ToolTipService.ToolTip="设置">
+                <Button x:ConnectionId='18'                              Background="Transparent" BorderThickness="0" Padding="8" CornerRadius="4" ToolTipService.ToolTip="设置">
                     <FontIcon Glyph="&#xE713;" FontSize="16" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                 </Button>
             </StackPanel>
         </Grid>
 
-        <!-- ================= 左侧边栏 ================= -->
+        <!-- 左侧边栏 -->
         <Grid Grid.Row="1" Grid.Column="0" Background="{ThemeResource LayerFillColorDefaultBrush}" Padding="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -61,59 +61,60 @@
 
             <Button x:ConnectionId='9' Grid.Row="0"                             Background="Transparent" BorderThickness="0" Padding="0" HorizontalAlignment="Center">
                 <StackPanel HorizontalAlignment="Center" Spacing="10" Margin="0,20,0,0">
-                    <Border Width="80" Height="80" CornerRadius="40" Background="{ThemeResource ControlFillColorDefaultBrush}">
-                        <FontIcon Glyph="&#xE77B;" FontSize="40" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <!-- 头像区 -->
+                    <Border Width="80" Height="80" CornerRadius="40" Background="{ThemeResource ControlFillColorDefaultBrush}" BorderThickness="0">
+                        <Grid>
+                            <FontIcon x:ConnectionId='15' x:Name="DefaultAvatarIcon" Glyph="&#xE77B;" FontSize="40" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            <Image x:ConnectionId='16' x:Name="AvatarImage" Stretch="UniformToFill" Visibility="Collapsed"/>
+                        </Grid>
                     </Border>
 
-                    <!-- 🚨 静态 TextBlock，由后台 UpdateAccountDisplay() 更新 -->
-                    <TextBlock x:ConnectionId='12' x:Name="AccountNameText"
-                               Text="Steve"
-                               FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center"
-                               Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
-
-                    <TextBlock x:ConnectionId='13' x:Name="AccountTypeText"
-                               Text="离线账户"
-                               FontSize="12" HorizontalAlignment="Center"
-                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock x:ConnectionId='13' x:Name="AccountNameText" Text="Steve" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                    <TextBlock x:ConnectionId='14' x:Name="AccountTypeText" Text="离线账户" FontSize="12" HorizontalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                 </StackPanel>
             </Button>
 
+            <!-- 底部操作区 -->
             <StackPanel Grid.Row="2" Spacing="15">
-                <Button x:ConnectionId='10' x:Name="LaunchButton" Content="启动游戏" HorizontalAlignment="Stretch" Height="50"
-                        Background="#0078D4" Foreground="White" FontSize="18" FontWeight="Bold" CornerRadius="8"
+                <!-- 当前版本卡片 -->
+                <Button x:ConnectionId='10' HorizontalAlignment="Stretch" Background="Transparent" BorderThickness="0" Padding="0"                                  >
+                    <Border Background="{ThemeResource ControlFillColorDefaultBrush}" CornerRadius="8" Padding="12,10">
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Spacing="2">
+                                <TextBlock Text="当前版本" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                <TextBlock x:ConnectionId='12' x:Name="CurrentVersionText" Text="未选择版本" FontSize="14" FontWeight="SemiBold" 
+                                           TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                            </StackPanel>
+                            <FontIcon Grid.Column="1" Glyph="&#xE76C;" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </Button>
+
+                <Button x:ConnectionId='11' x:Name="LaunchButton" Content="启动游戏" HorizontalAlignment="Stretch" Height="50" 
+                        Background="#0078D4" Foreground="White" FontSize="18" FontWeight="Bold" CornerRadius="8" 
                                                   />
-                <Button x:ConnectionId='11' x:Name="ManageVersionButton" Content="管理版本" HorizontalAlignment="Stretch" Height="40"
-                        Background="{ThemeResource ControlFillColorDefaultBrush}"
-                        Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                        FontWeight="SemiBold" CornerRadius="8"
-                                                         />
             </StackPanel>
         </Grid>
 
-        <!-- ================= 右侧主内容 ================= -->
+        <!-- 右侧主内容 -->
         <Grid Grid.Row="1" Grid.Column="1" Background="Transparent" Padding="30">
             <Frame x:ConnectionId='8' x:Name="ContentFrame" />
         </Grid>
 
-        <!-- ================= 启动进度浮层 ================= -->
-        <Grid x:ConnectionId='3' x:Name="ProgressOverlay" Grid.RowSpan="2" Grid.ColumnSpan="2"
-              Background="#80000000" Visibility="Collapsed" Canvas.ZIndex="100">
-            <Border Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                    CornerRadius="12" Padding="30" Width="460"
-                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                    BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}">
+        <!-- 启动进度浮层 -->
+        <Grid x:ConnectionId='3' x:Name="ProgressOverlay" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="#80000000" Visibility="Collapsed" Canvas.ZIndex="100">
+            <Border Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}" CornerRadius="12" Padding="30" Width="460" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}">
                 <StackPanel Spacing="15">
-                    <TextBlock x:ConnectionId='4' x:Name="ProgressTitleText" Text="正在启动游戏..."
-                               FontSize="16" FontWeight="SemiBold"
-                               Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                    <TextBlock x:ConnectionId='4' x:Name="ProgressTitleText" Text="正在启动游戏..." FontSize="16" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
                     <ProgressBar x:ConnectionId='5' x:Name="LaunchProgressBar" Maximum="100" Value="0" Height="6" CornerRadius="3"/>
-                    <TextBlock x:ConnectionId='6' x:Name="ProgressDetailText" Text="准备中..."
-                               FontSize="12" TextWrapping="Wrap"
-                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock x:ConnectionId='6' x:Name="ProgressDetailText" Text="准备中..." FontSize="12" TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,5,0,0">
-                        <Button x:ConnectionId='7' x:Name="CancelLaunchButton" Content="取消启动"
-                                                          
-                                Height="32" Padding="16,0" CornerRadius="6"/>
+                        <Button x:ConnectionId='7' x:Name="CancelLaunchButton" Content="取消启动"                            Height="32" Padding="16,0" CornerRadius="6"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

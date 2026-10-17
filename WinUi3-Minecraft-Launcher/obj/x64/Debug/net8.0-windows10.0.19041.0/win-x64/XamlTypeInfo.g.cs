@@ -226,65 +226,89 @@ namespace WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo
         
         private void InitTypeTables()
         {
-            _typeNameTable = new string[28];
+            _typeNameTable = new string[40];
             _typeNameTable[0] = "Microsoft.UI.Xaml.Controls.XamlControlsResources";
             _typeNameTable[1] = "Microsoft.UI.Xaml.ResourceDictionary";
             _typeNameTable[2] = "Object";
             _typeNameTable[3] = "Boolean";
-            _typeNameTable[4] = "Microsoft.UI.Xaml.Controls.ProgressBar";
-            _typeNameTable[5] = "Microsoft.UI.Xaml.Controls.Primitives.RangeBase";
-            _typeNameTable[6] = "Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings";
-            _typeNameTable[7] = "Microsoft.UI.Xaml.DependencyObject";
-            _typeNameTable[8] = "WinUi3_Minecraft_Launcher.MainWindow";
-            _typeNameTable[9] = "Microsoft.UI.Xaml.Window";
-            _typeNameTable[10] = "Microsoft.UI.Xaml.Controls.ListViewItem";
-            _typeNameTable[11] = "WinUi3_Minecraft_Launcher.Page1";
-            _typeNameTable[12] = "Microsoft.UI.Xaml.Controls.Page";
-            _typeNameTable[13] = "Microsoft.UI.Xaml.Controls.UserControl";
-            _typeNameTable[14] = "System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.GameVersion>";
-            _typeNameTable[15] = "System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.GameVersion>";
-            _typeNameTable[16] = "WinUi3_Minecraft_Launcher.GameVersion";
-            _typeNameTable[17] = "String";
-            _typeNameTable[18] = "Microsoft.UI.Xaml.Visibility";
-            _typeNameTable[19] = "System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.MinecraftFolder>";
-            _typeNameTable[20] = "System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.MinecraftFolder>";
-            _typeNameTable[21] = "WinUi3_Minecraft_Launcher.MinecraftFolder";
-            _typeNameTable[22] = "WinUi3_Minecraft_Launcher.Page2";
-            _typeNameTable[23] = "WinUi3_Minecraft_Launcher.Page3";
-            _typeNameTable[24] = "WinUi3_Minecraft_Launcher.Page4";
-            _typeNameTable[25] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
-            _typeNameTable[26] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
-            _typeNameTable[27] = "Int32";
+            _typeNameTable[4] = "WinUi3_Minecraft_Launcher.BoolToVisibilityConverter";
+            _typeNameTable[5] = "Microsoft.UI.Xaml.Controls.ProgressBar";
+            _typeNameTable[6] = "Microsoft.UI.Xaml.Controls.Primitives.RangeBase";
+            _typeNameTable[7] = "Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings";
+            _typeNameTable[8] = "Microsoft.UI.Xaml.DependencyObject";
+            _typeNameTable[9] = "WinUi3_Minecraft_Launcher.MainWindow";
+            _typeNameTable[10] = "Microsoft.UI.Xaml.Window";
+            _typeNameTable[11] = "Microsoft.UI.Xaml.Controls.ListViewItem";
+            _typeNameTable[12] = "WinUi3_Minecraft_Launcher.Page1";
+            _typeNameTable[13] = "Microsoft.UI.Xaml.Controls.Page";
+            _typeNameTable[14] = "Microsoft.UI.Xaml.Controls.UserControl";
+            _typeNameTable[15] = "System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.GameVersion>";
+            _typeNameTable[16] = "System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.GameVersion>";
+            _typeNameTable[17] = "WinUi3_Minecraft_Launcher.GameVersion";
+            _typeNameTable[18] = "String";
+            _typeNameTable[19] = "Microsoft.UI.Xaml.Visibility";
+            _typeNameTable[20] = "System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.MinecraftFolder>";
+            _typeNameTable[21] = "System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.MinecraftFolder>";
+            _typeNameTable[22] = "WinUi3_Minecraft_Launcher.MinecraftFolder";
+            _typeNameTable[23] = "Microsoft.UI.Xaml.Controls.ProgressRing";
+            _typeNameTable[24] = "Microsoft.UI.Xaml.Controls.Control";
+            _typeNameTable[25] = "Double";
+            _typeNameTable[26] = "Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings";
+            _typeNameTable[27] = "WinUi3_Minecraft_Launcher.Page2";
+            _typeNameTable[28] = "WinUi3_Minecraft_Launcher.Page3";
+            _typeNameTable[29] = "WinUi3_Minecraft_Launcher.Page4";
+            _typeNameTable[30] = "WinUi3_Minecraft_Launcher.Page5";
+            _typeNameTable[31] = "System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.LoaderItem>";
+            _typeNameTable[32] = "System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.LoaderItem>";
+            _typeNameTable[33] = "WinUi3_Minecraft_Launcher.LoaderItem";
+            _typeNameTable[34] = "System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.LoaderVersion>";
+            _typeNameTable[35] = "System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.LoaderVersion>";
+            _typeNameTable[36] = "WinUi3_Minecraft_Launcher.LoaderVersion";
+            _typeNameTable[37] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
+            _typeNameTable[38] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
+            _typeNameTable[39] = "Int32";
 
-            _typeTable = new global::System.Type[28];
+            _typeTable = new global::System.Type[40];
             _typeTable[0] = typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources);
             _typeTable[1] = typeof(global::Microsoft.UI.Xaml.ResourceDictionary);
             _typeTable[2] = typeof(global::System.Object);
             _typeTable[3] = typeof(global::System.Boolean);
-            _typeTable[4] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressBar);
-            _typeTable[5] = typeof(global::Microsoft.UI.Xaml.Controls.Primitives.RangeBase);
-            _typeTable[6] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings);
-            _typeTable[7] = typeof(global::Microsoft.UI.Xaml.DependencyObject);
-            _typeTable[8] = typeof(global::WinUi3_Minecraft_Launcher.MainWindow);
-            _typeTable[9] = typeof(global::Microsoft.UI.Xaml.Window);
-            _typeTable[10] = typeof(global::Microsoft.UI.Xaml.Controls.ListViewItem);
-            _typeTable[11] = typeof(global::WinUi3_Minecraft_Launcher.Page1);
-            _typeTable[12] = typeof(global::Microsoft.UI.Xaml.Controls.Page);
-            _typeTable[13] = typeof(global::Microsoft.UI.Xaml.Controls.UserControl);
-            _typeTable[14] = typeof(global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.GameVersion>);
-            _typeTable[15] = typeof(global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.GameVersion>);
-            _typeTable[16] = typeof(global::WinUi3_Minecraft_Launcher.GameVersion);
-            _typeTable[17] = typeof(global::System.String);
-            _typeTable[18] = typeof(global::Microsoft.UI.Xaml.Visibility);
-            _typeTable[19] = typeof(global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>);
-            _typeTable[20] = typeof(global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>);
-            _typeTable[21] = typeof(global::WinUi3_Minecraft_Launcher.MinecraftFolder);
-            _typeTable[22] = typeof(global::WinUi3_Minecraft_Launcher.Page2);
-            _typeTable[23] = typeof(global::WinUi3_Minecraft_Launcher.Page3);
-            _typeTable[24] = typeof(global::WinUi3_Minecraft_Launcher.Page4);
-            _typeTable[25] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
-            _typeTable[26] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
-            _typeTable[27] = typeof(global::System.Int32);
+            _typeTable[4] = typeof(global::WinUi3_Minecraft_Launcher.BoolToVisibilityConverter);
+            _typeTable[5] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressBar);
+            _typeTable[6] = typeof(global::Microsoft.UI.Xaml.Controls.Primitives.RangeBase);
+            _typeTable[7] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings);
+            _typeTable[8] = typeof(global::Microsoft.UI.Xaml.DependencyObject);
+            _typeTable[9] = typeof(global::WinUi3_Minecraft_Launcher.MainWindow);
+            _typeTable[10] = typeof(global::Microsoft.UI.Xaml.Window);
+            _typeTable[11] = typeof(global::Microsoft.UI.Xaml.Controls.ListViewItem);
+            _typeTable[12] = typeof(global::WinUi3_Minecraft_Launcher.Page1);
+            _typeTable[13] = typeof(global::Microsoft.UI.Xaml.Controls.Page);
+            _typeTable[14] = typeof(global::Microsoft.UI.Xaml.Controls.UserControl);
+            _typeTable[15] = typeof(global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.GameVersion>);
+            _typeTable[16] = typeof(global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.GameVersion>);
+            _typeTable[17] = typeof(global::WinUi3_Minecraft_Launcher.GameVersion);
+            _typeTable[18] = typeof(global::System.String);
+            _typeTable[19] = typeof(global::Microsoft.UI.Xaml.Visibility);
+            _typeTable[20] = typeof(global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>);
+            _typeTable[21] = typeof(global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>);
+            _typeTable[22] = typeof(global::WinUi3_Minecraft_Launcher.MinecraftFolder);
+            _typeTable[23] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRing);
+            _typeTable[24] = typeof(global::Microsoft.UI.Xaml.Controls.Control);
+            _typeTable[25] = typeof(global::System.Double);
+            _typeTable[26] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings);
+            _typeTable[27] = typeof(global::WinUi3_Minecraft_Launcher.Page2);
+            _typeTable[28] = typeof(global::WinUi3_Minecraft_Launcher.Page3);
+            _typeTable[29] = typeof(global::WinUi3_Minecraft_Launcher.Page4);
+            _typeTable[30] = typeof(global::WinUi3_Minecraft_Launcher.Page5);
+            _typeTable[31] = typeof(global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.LoaderItem>);
+            _typeTable[32] = typeof(global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.LoaderItem>);
+            _typeTable[33] = typeof(global::WinUi3_Minecraft_Launcher.LoaderItem);
+            _typeTable[34] = typeof(global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.LoaderVersion>);
+            _typeTable[35] = typeof(global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.LoaderVersion>);
+            _typeTable[36] = typeof(global::WinUi3_Minecraft_Launcher.LoaderVersion);
+            _typeTable[37] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
+            _typeTable[38] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
+            _typeTable[39] = typeof(global::System.Int32);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -320,35 +344,54 @@ namespace WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo
         }
 
         private object Activate_0_XamlControlsResources() { return new global::Microsoft.UI.Xaml.Controls.XamlControlsResources(); }
-        private object Activate_4_ProgressBar() { return new global::Microsoft.UI.Xaml.Controls.ProgressBar(); }
-        private object Activate_8_MainWindow() { return new global::WinUi3_Minecraft_Launcher.MainWindow(); }
-        private object Activate_11_Page1() { return new global::WinUi3_Minecraft_Launcher.Page1(); }
-        private object Activate_14_ObservableCollection() { return new global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.GameVersion>(); }
-        private object Activate_15_Collection() { return new global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.GameVersion>(); }
-        private object Activate_16_GameVersion() { return new global::WinUi3_Minecraft_Launcher.GameVersion(); }
-        private object Activate_19_ObservableCollection() { return new global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>(); }
-        private object Activate_20_Collection() { return new global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>(); }
-        private object Activate_21_MinecraftFolder() { return new global::WinUi3_Minecraft_Launcher.MinecraftFolder(); }
-        private object Activate_22_Page2() { return new global::WinUi3_Minecraft_Launcher.Page2(); }
-        private object Activate_23_Page3() { return new global::WinUi3_Minecraft_Launcher.Page3(); }
-        private object Activate_24_Page4() { return new global::WinUi3_Minecraft_Launcher.Page4(); }
-        private object Activate_25_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
+        private object Activate_4_BoolToVisibilityConverter() { return new global::WinUi3_Minecraft_Launcher.BoolToVisibilityConverter(); }
+        private object Activate_5_ProgressBar() { return new global::Microsoft.UI.Xaml.Controls.ProgressBar(); }
+        private object Activate_9_MainWindow() { return new global::WinUi3_Minecraft_Launcher.MainWindow(); }
+        private object Activate_12_Page1() { return new global::WinUi3_Minecraft_Launcher.Page1(); }
+        private object Activate_15_ObservableCollection() { return new global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.GameVersion>(); }
+        private object Activate_16_Collection() { return new global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.GameVersion>(); }
+        private object Activate_17_GameVersion() { return new global::WinUi3_Minecraft_Launcher.GameVersion(); }
+        private object Activate_20_ObservableCollection() { return new global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>(); }
+        private object Activate_21_Collection() { return new global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>(); }
+        private object Activate_22_MinecraftFolder() { return new global::WinUi3_Minecraft_Launcher.MinecraftFolder(); }
+        private object Activate_23_ProgressRing() { return new global::Microsoft.UI.Xaml.Controls.ProgressRing(); }
+        private object Activate_27_Page2() { return new global::WinUi3_Minecraft_Launcher.Page2(); }
+        private object Activate_28_Page3() { return new global::WinUi3_Minecraft_Launcher.Page3(); }
+        private object Activate_29_Page4() { return new global::WinUi3_Minecraft_Launcher.Page4(); }
+        private object Activate_30_Page5() { return new global::WinUi3_Minecraft_Launcher.Page5(); }
+        private object Activate_31_ObservableCollection() { return new global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.LoaderItem>(); }
+        private object Activate_32_Collection() { return new global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.LoaderItem>(); }
+        private object Activate_33_LoaderItem() { return new global::WinUi3_Minecraft_Launcher.LoaderItem(); }
+        private object Activate_34_ObservableCollection() { return new global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.LoaderVersion>(); }
+        private object Activate_35_Collection() { return new global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.LoaderVersion>(); }
+        private object Activate_36_LoaderVersion() { return new global::WinUi3_Minecraft_Launcher.LoaderVersion(); }
+        private object Activate_37_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
         private void StaticInitializer_0_XamlControlsResources() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources).TypeHandle);
-        private void StaticInitializer_4_ProgressBar() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressBar).TypeHandle);
-        private void StaticInitializer_6_ProgressBarTemplateSettings() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings).TypeHandle);
-        private void StaticInitializer_8_MainWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.MainWindow).TypeHandle);
-        private void StaticInitializer_11_Page1() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.Page1).TypeHandle);
-        private void StaticInitializer_14_ObservableCollection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.GameVersion>).TypeHandle);
-        private void StaticInitializer_15_Collection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.GameVersion>).TypeHandle);
-        private void StaticInitializer_16_GameVersion() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.GameVersion).TypeHandle);
-        private void StaticInitializer_19_ObservableCollection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>).TypeHandle);
-        private void StaticInitializer_20_Collection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>).TypeHandle);
-        private void StaticInitializer_21_MinecraftFolder() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.MinecraftFolder).TypeHandle);
-        private void StaticInitializer_22_Page2() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.Page2).TypeHandle);
-        private void StaticInitializer_23_Page3() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.Page3).TypeHandle);
-        private void StaticInitializer_24_Page4() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.Page4).TypeHandle);
-        private void StaticInitializer_25_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
-        private void StaticInitializer_26_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
+        private void StaticInitializer_4_BoolToVisibilityConverter() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.BoolToVisibilityConverter).TypeHandle);
+        private void StaticInitializer_5_ProgressBar() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressBar).TypeHandle);
+        private void StaticInitializer_7_ProgressBarTemplateSettings() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings).TypeHandle);
+        private void StaticInitializer_9_MainWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.MainWindow).TypeHandle);
+        private void StaticInitializer_12_Page1() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.Page1).TypeHandle);
+        private void StaticInitializer_15_ObservableCollection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.GameVersion>).TypeHandle);
+        private void StaticInitializer_16_Collection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.GameVersion>).TypeHandle);
+        private void StaticInitializer_17_GameVersion() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.GameVersion).TypeHandle);
+        private void StaticInitializer_20_ObservableCollection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>).TypeHandle);
+        private void StaticInitializer_21_Collection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>).TypeHandle);
+        private void StaticInitializer_22_MinecraftFolder() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.MinecraftFolder).TypeHandle);
+        private void StaticInitializer_23_ProgressRing() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressRing).TypeHandle);
+        private void StaticInitializer_26_ProgressRingTemplateSettings() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings).TypeHandle);
+        private void StaticInitializer_27_Page2() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.Page2).TypeHandle);
+        private void StaticInitializer_28_Page3() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.Page3).TypeHandle);
+        private void StaticInitializer_29_Page4() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.Page4).TypeHandle);
+        private void StaticInitializer_30_Page5() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.Page5).TypeHandle);
+        private void StaticInitializer_31_ObservableCollection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.LoaderItem>).TypeHandle);
+        private void StaticInitializer_32_Collection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.LoaderItem>).TypeHandle);
+        private void StaticInitializer_33_LoaderItem() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.LoaderItem).TypeHandle);
+        private void StaticInitializer_34_ObservableCollection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.LoaderVersion>).TypeHandle);
+        private void StaticInitializer_35_Collection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.Collection<global::WinUi3_Minecraft_Launcher.LoaderVersion>).TypeHandle);
+        private void StaticInitializer_36_LoaderVersion() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::WinUi3_Minecraft_Launcher.LoaderVersion).TypeHandle);
+        private void StaticInitializer_37_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
+        private void StaticInitializer_38_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
         private void MapAdd_0_XamlControlsResources(object instance, object key, object item)
         {
             var collection = (global::System.Collections.Generic.IDictionary<global::System.Object, global::System.Object>)instance;
@@ -356,31 +399,55 @@ namespace WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo
             var newItem = (global::System.Object)item;
             collection.Add(newKey, newItem);
         }
-        private void VectorAdd_14_ObservableCollection(object instance, object item)
+        private void VectorAdd_15_ObservableCollection(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::WinUi3_Minecraft_Launcher.GameVersion>)instance;
             var newItem = (global::WinUi3_Minecraft_Launcher.GameVersion)item;
             collection.Add(newItem);
         }
-        private void VectorAdd_15_Collection(object instance, object item)
+        private void VectorAdd_16_Collection(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::WinUi3_Minecraft_Launcher.GameVersion>)instance;
             var newItem = (global::WinUi3_Minecraft_Launcher.GameVersion)item;
             collection.Add(newItem);
         }
-        private void VectorAdd_19_ObservableCollection(object instance, object item)
+        private void VectorAdd_20_ObservableCollection(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>)instance;
             var newItem = (global::WinUi3_Minecraft_Launcher.MinecraftFolder)item;
             collection.Add(newItem);
         }
-        private void VectorAdd_20_Collection(object instance, object item)
+        private void VectorAdd_21_Collection(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::WinUi3_Minecraft_Launcher.MinecraftFolder>)instance;
             var newItem = (global::WinUi3_Minecraft_Launcher.MinecraftFolder)item;
             collection.Add(newItem);
         }
-        private void VectorAdd_26_IList(object instance, object item)
+        private void VectorAdd_31_ObservableCollection(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::WinUi3_Minecraft_Launcher.LoaderItem>)instance;
+            var newItem = (global::WinUi3_Minecraft_Launcher.LoaderItem)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_32_Collection(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::WinUi3_Minecraft_Launcher.LoaderItem>)instance;
+            var newItem = (global::WinUi3_Minecraft_Launcher.LoaderItem)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_34_ObservableCollection(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::WinUi3_Minecraft_Launcher.LoaderVersion>)instance;
+            var newItem = (global::WinUi3_Minecraft_Launcher.LoaderVersion)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_35_Collection(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::WinUi3_Minecraft_Launcher.LoaderVersion>)instance;
+            var newItem = (global::WinUi3_Minecraft_Launcher.LoaderVersion)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_38_IList(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.TreeViewNode>)instance;
             var newItem = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)item;
@@ -418,10 +485,18 @@ namespace WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo
                 xamlType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 4:   //  Microsoft.UI.Xaml.Controls.ProgressBar
+            case 4:   //  WinUi3_Minecraft_Launcher.BoolToVisibilityConverter
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.Activator = Activate_4_BoolToVisibilityConverter;
+                userType.StaticInitializer = StaticInitializer_4_BoolToVisibilityConverter;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 5:   //  Microsoft.UI.Xaml.Controls.ProgressBar
                 userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Primitives.RangeBase"));
-                userType.Activator = Activate_4_ProgressBar;
-                userType.StaticInitializer = StaticInitializer_4_ProgressBar;
+                userType.Activator = Activate_5_ProgressBar;
+                userType.StaticInitializer = StaticInitializer_5_ProgressBar;
                 userType.AddMemberName("IsIndeterminate");
                 userType.AddMemberName("ShowError");
                 userType.AddMemberName("ShowPaused");
@@ -429,75 +504,75 @@ namespace WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 5:   //  Microsoft.UI.Xaml.Controls.Primitives.RangeBase
+            case 6:   //  Microsoft.UI.Xaml.Controls.Primitives.RangeBase
                 xamlType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 6:   //  Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings
+            case 7:   //  Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings
                 userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.StaticInitializer = StaticInitializer_6_ProgressBarTemplateSettings;
+                userType.StaticInitializer = StaticInitializer_7_ProgressBarTemplateSettings;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 7:   //  Microsoft.UI.Xaml.DependencyObject
+            case 8:   //  Microsoft.UI.Xaml.DependencyObject
                 xamlType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 8:   //  WinUi3_Minecraft_Launcher.MainWindow
+            case 9:   //  WinUi3_Minecraft_Launcher.MainWindow
                 userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Window"));
-                userType.Activator = Activate_8_MainWindow;
-                userType.StaticInitializer = StaticInitializer_8_MainWindow;
+                userType.Activator = Activate_9_MainWindow;
+                userType.StaticInitializer = StaticInitializer_9_MainWindow;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 9:   //  Microsoft.UI.Xaml.Window
+            case 10:   //  Microsoft.UI.Xaml.Window
                 xamlType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 10:   //  Microsoft.UI.Xaml.Controls.ListViewItem
+            case 11:   //  Microsoft.UI.Xaml.Controls.ListViewItem
                 xamlType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 11:   //  WinUi3_Minecraft_Launcher.Page1
+            case 12:   //  WinUi3_Minecraft_Launcher.Page1
                 userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_11_Page1;
-                userType.StaticInitializer = StaticInitializer_11_Page1;
+                userType.Activator = Activate_12_Page1;
+                userType.StaticInitializer = StaticInitializer_12_Page1;
                 userType.AddMemberName("Versions");
                 userType.AddMemberName("Folders");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 12:   //  Microsoft.UI.Xaml.Controls.Page
+            case 13:   //  Microsoft.UI.Xaml.Controls.Page
                 xamlType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 13:   //  Microsoft.UI.Xaml.Controls.UserControl
+            case 14:   //  Microsoft.UI.Xaml.Controls.UserControl
                 xamlType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 14:   //  System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.GameVersion>
+            case 15:   //  System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.GameVersion>
                 userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.GameVersion>"));
-                userType.StaticInitializer = StaticInitializer_14_ObservableCollection;
-                userType.CollectionAdd = VectorAdd_14_ObservableCollection;
+                userType.StaticInitializer = StaticInitializer_15_ObservableCollection;
+                userType.CollectionAdd = VectorAdd_15_ObservableCollection;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 15:   //  System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.GameVersion>
+            case 16:   //  System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.GameVersion>
                 userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.Activator = Activate_15_Collection;
-                userType.StaticInitializer = StaticInitializer_15_Collection;
-                userType.CollectionAdd = VectorAdd_15_Collection;
+                userType.Activator = Activate_16_Collection;
+                userType.StaticInitializer = StaticInitializer_16_Collection;
+                userType.CollectionAdd = VectorAdd_16_Collection;
                 xamlType = userType;
                 break;
 
-            case 16:   //  WinUi3_Minecraft_Launcher.GameVersion
+            case 17:   //  WinUi3_Minecraft_Launcher.GameVersion
                 userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.Activator = Activate_16_GameVersion;
-                userType.StaticInitializer = StaticInitializer_16_GameVersion;
+                userType.Activator = Activate_17_GameVersion;
+                userType.StaticInitializer = StaticInitializer_17_GameVersion;
                 userType.AddMemberName("Id");
                 userType.AddMemberName("Path");
                 userType.AddMemberName("DisplayName");
@@ -507,34 +582,34 @@ namespace WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 17:   //  String
+            case 18:   //  String
                 xamlType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 18:   //  Microsoft.UI.Xaml.Visibility
+            case 19:   //  Microsoft.UI.Xaml.Visibility
                 xamlType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 19:   //  System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.MinecraftFolder>
+            case 20:   //  System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.MinecraftFolder>
                 userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.MinecraftFolder>"));
-                userType.StaticInitializer = StaticInitializer_19_ObservableCollection;
-                userType.CollectionAdd = VectorAdd_19_ObservableCollection;
+                userType.StaticInitializer = StaticInitializer_20_ObservableCollection;
+                userType.CollectionAdd = VectorAdd_20_ObservableCollection;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 20:   //  System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.MinecraftFolder>
+            case 21:   //  System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.MinecraftFolder>
                 userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.Activator = Activate_20_Collection;
-                userType.StaticInitializer = StaticInitializer_20_Collection;
-                userType.CollectionAdd = VectorAdd_20_Collection;
+                userType.Activator = Activate_21_Collection;
+                userType.StaticInitializer = StaticInitializer_21_Collection;
+                userType.CollectionAdd = VectorAdd_21_Collection;
                 xamlType = userType;
                 break;
 
-            case 21:   //  WinUi3_Minecraft_Launcher.MinecraftFolder
+            case 22:   //  WinUi3_Minecraft_Launcher.MinecraftFolder
                 userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.Activator = Activate_21_MinecraftFolder;
-                userType.StaticInitializer = StaticInitializer_21_MinecraftFolder;
+                userType.Activator = Activate_22_MinecraftFolder;
+                userType.StaticInitializer = StaticInitializer_22_MinecraftFolder;
                 userType.AddMemberName("Path");
                 userType.AddMemberName("DisplayName");
                 userType.AddMemberName("IsActive");
@@ -543,34 +618,133 @@ namespace WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 22:   //  WinUi3_Minecraft_Launcher.Page2
-                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_22_Page2;
-                userType.StaticInitializer = StaticInitializer_22_Page2;
-                userType.SetIsLocalType();
+            case 23:   //  Microsoft.UI.Xaml.Controls.ProgressRing
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Control"));
+                userType.Activator = Activate_23_ProgressRing;
+                userType.StaticInitializer = StaticInitializer_23_ProgressRing;
+                userType.AddMemberName("IsActive");
+                userType.AddMemberName("IsIndeterminate");
+                userType.AddMemberName("Maximum");
+                userType.AddMemberName("Minimum");
+                userType.AddMemberName("TemplateSettings");
+                userType.AddMemberName("Value");
                 xamlType = userType;
                 break;
 
-            case 23:   //  WinUi3_Minecraft_Launcher.Page3
-                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_23_Page3;
-                userType.StaticInitializer = StaticInitializer_23_Page3;
-                userType.SetIsLocalType();
-                xamlType = userType;
+            case 24:   //  Microsoft.UI.Xaml.Controls.Control
+                xamlType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 24:   //  WinUi3_Minecraft_Launcher.Page4
-                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_24_Page4;
-                userType.StaticInitializer = StaticInitializer_24_Page4;
-                userType.SetIsLocalType();
-                xamlType = userType;
+            case 25:   //  Double
+                xamlType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 25:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
+            case 26:   //  Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings
                 userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.Activator = Activate_25_TreeViewNode;
-                userType.StaticInitializer = StaticInitializer_25_TreeViewNode;
+                userType.StaticInitializer = StaticInitializer_26_ProgressRingTemplateSettings;
+                userType.SetIsReturnTypeStub();
+                xamlType = userType;
+                break;
+
+            case 27:   //  WinUi3_Minecraft_Launcher.Page2
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
+                userType.Activator = Activate_27_Page2;
+                userType.StaticInitializer = StaticInitializer_27_Page2;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 28:   //  WinUi3_Minecraft_Launcher.Page3
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
+                userType.Activator = Activate_28_Page3;
+                userType.StaticInitializer = StaticInitializer_28_Page3;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 29:   //  WinUi3_Minecraft_Launcher.Page4
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
+                userType.Activator = Activate_29_Page4;
+                userType.StaticInitializer = StaticInitializer_29_Page4;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 30:   //  WinUi3_Minecraft_Launcher.Page5
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
+                userType.Activator = Activate_30_Page5;
+                userType.StaticInitializer = StaticInitializer_30_Page5;
+                userType.AddMemberName("Categories");
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 31:   //  System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.LoaderItem>
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.LoaderItem>"));
+                userType.StaticInitializer = StaticInitializer_31_ObservableCollection;
+                userType.CollectionAdd = VectorAdd_31_ObservableCollection;
+                userType.SetIsReturnTypeStub();
+                xamlType = userType;
+                break;
+
+            case 32:   //  System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.LoaderItem>
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.Activator = Activate_32_Collection;
+                userType.StaticInitializer = StaticInitializer_32_Collection;
+                userType.CollectionAdd = VectorAdd_32_Collection;
+                xamlType = userType;
+                break;
+
+            case 33:   //  WinUi3_Minecraft_Launcher.LoaderItem
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.Activator = Activate_33_LoaderItem;
+                userType.StaticInitializer = StaticInitializer_33_LoaderItem;
+                userType.AddMemberName("Name");
+                userType.AddMemberName("SelectedVersion");
+                userType.AddMemberName("Versions");
+                userType.AddMemberName("StatusText");
+                userType.AddMemberName("IsCompatible");
+                userType.AddMemberName("IsSelected");
+                userType.AddMemberName("IsExpanded");
+                userType.AddMemberName("ShowRemoveButton");
+                userType.AddMemberName("ShowArrow");
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 34:   //  System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.LoaderVersion>
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.LoaderVersion>"));
+                userType.StaticInitializer = StaticInitializer_34_ObservableCollection;
+                userType.CollectionAdd = VectorAdd_34_ObservableCollection;
+                userType.SetIsReturnTypeStub();
+                xamlType = userType;
+                break;
+
+            case 35:   //  System.Collections.ObjectModel.Collection`1<WinUi3_Minecraft_Launcher.LoaderVersion>
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.Activator = Activate_35_Collection;
+                userType.StaticInitializer = StaticInitializer_35_Collection;
+                userType.CollectionAdd = VectorAdd_35_Collection;
+                xamlType = userType;
+                break;
+
+            case 36:   //  WinUi3_Minecraft_Launcher.LoaderVersion
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.Activator = Activate_36_LoaderVersion;
+                userType.StaticInitializer = StaticInitializer_36_LoaderVersion;
+                userType.AddMemberName("Version");
+                userType.AddMemberName("IsStable");
+                userType.AddMemberName("TypeText");
+                userType.AddMemberName("IsSelected");
+                userType.AddMemberName("SelectedVisibility");
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 37:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
+                userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
+                userType.Activator = Activate_37_TreeViewNode;
+                userType.StaticInitializer = StaticInitializer_37_TreeViewNode;
                 userType.AddMemberName("Children");
                 userType.AddMemberName("Content");
                 userType.AddMemberName("Depth");
@@ -582,15 +756,15 @@ namespace WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 26:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
+            case 38:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
                 userType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.StaticInitializer = StaticInitializer_26_IList;
-                userType.CollectionAdd = VectorAdd_26_IList;
+                userType.StaticInitializer = StaticInitializer_38_IList;
+                userType.CollectionAdd = VectorAdd_38_IList;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 27:   //  Int32
+            case 39:   //  Int32
                 xamlType = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
             }
@@ -797,52 +971,247 @@ namespace WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo
             var that = (global::WinUi3_Minecraft_Launcher.MinecraftFolder)instance;
             return that.ActiveVisibility;
         }
-        private object get_16_TreeViewNode_Children(object instance)
+        private object get_16_ProgressRing_IsActive(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
+            return that.IsActive;
+        }
+        private void set_16_ProgressRing_IsActive(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
+            that.IsActive = (global::System.Boolean)Value;
+        }
+        private object get_17_ProgressRing_IsIndeterminate(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
+            return that.IsIndeterminate;
+        }
+        private void set_17_ProgressRing_IsIndeterminate(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
+            that.IsIndeterminate = (global::System.Boolean)Value;
+        }
+        private object get_18_ProgressRing_Maximum(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
+            return that.Maximum;
+        }
+        private void set_18_ProgressRing_Maximum(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
+            that.Maximum = (global::System.Double)Value;
+        }
+        private object get_19_ProgressRing_Minimum(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
+            return that.Minimum;
+        }
+        private void set_19_ProgressRing_Minimum(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
+            that.Minimum = (global::System.Double)Value;
+        }
+        private object get_20_ProgressRing_TemplateSettings(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
+            return that.TemplateSettings;
+        }
+        private object get_21_ProgressRing_Value(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
+            return that.Value;
+        }
+        private void set_21_ProgressRing_Value(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
+            that.Value = (global::System.Double)Value;
+        }
+        private object get_22_Page5_Categories(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.Page5)instance;
+            return that.Categories;
+        }
+        private void set_22_Page5_Categories(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.Page5)instance;
+            that.Categories = (global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.LoaderItem>)Value;
+        }
+        private object get_23_LoaderItem_Name(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            return that.Name;
+        }
+        private void set_23_LoaderItem_Name(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            that.Name = (global::System.String)Value;
+        }
+        private object get_24_LoaderItem_SelectedVersion(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            return that.SelectedVersion;
+        }
+        private void set_24_LoaderItem_SelectedVersion(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            that.SelectedVersion = (global::System.String)Value;
+        }
+        private object get_25_LoaderItem_Versions(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            return that.Versions;
+        }
+        private void set_25_LoaderItem_Versions(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            that.Versions = (global::System.Collections.ObjectModel.ObservableCollection<global::WinUi3_Minecraft_Launcher.LoaderVersion>)Value;
+        }
+        private object get_26_LoaderVersion_Version(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderVersion)instance;
+            return that.Version;
+        }
+        private void set_26_LoaderVersion_Version(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderVersion)instance;
+            that.Version = (global::System.String)Value;
+        }
+        private object get_27_LoaderVersion_IsStable(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderVersion)instance;
+            return that.IsStable;
+        }
+        private void set_27_LoaderVersion_IsStable(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderVersion)instance;
+            that.IsStable = (global::System.Boolean)Value;
+        }
+        private object get_28_LoaderVersion_TypeText(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderVersion)instance;
+            return that.TypeText;
+        }
+        private object get_29_LoaderVersion_IsSelected(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderVersion)instance;
+            return that.IsSelected;
+        }
+        private void set_29_LoaderVersion_IsSelected(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderVersion)instance;
+            that.IsSelected = (global::System.Boolean)Value;
+        }
+        private object get_30_LoaderVersion_SelectedVisibility(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderVersion)instance;
+            return that.SelectedVisibility;
+        }
+        private object get_31_LoaderItem_StatusText(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            return that.StatusText;
+        }
+        private void set_31_LoaderItem_StatusText(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            that.StatusText = (global::System.String)Value;
+        }
+        private object get_32_LoaderItem_IsCompatible(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            return that.IsCompatible;
+        }
+        private void set_32_LoaderItem_IsCompatible(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            that.IsCompatible = (global::System.Boolean)Value;
+        }
+        private object get_33_LoaderItem_IsSelected(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            return that.IsSelected;
+        }
+        private void set_33_LoaderItem_IsSelected(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            that.IsSelected = (global::System.Boolean)Value;
+        }
+        private object get_34_LoaderItem_IsExpanded(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            return that.IsExpanded;
+        }
+        private void set_34_LoaderItem_IsExpanded(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            that.IsExpanded = (global::System.Boolean)Value;
+        }
+        private object get_35_LoaderItem_ShowRemoveButton(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            return that.ShowRemoveButton;
+        }
+        private void set_35_LoaderItem_ShowRemoveButton(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            that.ShowRemoveButton = (global::Microsoft.UI.Xaml.Visibility)Value;
+        }
+        private object get_36_LoaderItem_ShowArrow(object instance)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            return that.ShowArrow;
+        }
+        private void set_36_LoaderItem_ShowArrow(object instance, object Value)
+        {
+            var that = (global::WinUi3_Minecraft_Launcher.LoaderItem)instance;
+            that.ShowArrow = (global::Microsoft.UI.Xaml.Visibility)Value;
+        }
+        private object get_37_TreeViewNode_Children(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Children;
         }
-        private object get_17_TreeViewNode_Content(object instance)
+        private object get_38_TreeViewNode_Content(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Content;
         }
-        private void set_17_TreeViewNode_Content(object instance, object Value)
+        private void set_38_TreeViewNode_Content(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.Content = (global::System.Object)Value;
         }
-        private object get_18_TreeViewNode_Depth(object instance)
+        private object get_39_TreeViewNode_Depth(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Depth;
         }
-        private object get_19_TreeViewNode_HasChildren(object instance)
+        private object get_40_TreeViewNode_HasChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasChildren;
         }
-        private object get_20_TreeViewNode_HasUnrealizedChildren(object instance)
+        private object get_41_TreeViewNode_HasUnrealizedChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasUnrealizedChildren;
         }
-        private void set_20_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
+        private void set_41_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.HasUnrealizedChildren = (global::System.Boolean)Value;
         }
-        private object get_21_TreeViewNode_IsExpanded(object instance)
+        private object get_42_TreeViewNode_IsExpanded(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.IsExpanded;
         }
-        private void set_21_TreeViewNode_IsExpanded(object instance, object Value)
+        private void set_42_TreeViewNode_IsExpanded(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.IsExpanded = (global::System.Boolean)Value;
         }
-        private object get_22_TreeViewNode_Parent(object instance)
+        private object get_43_TreeViewNode_Parent(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Parent;
@@ -955,50 +1324,181 @@ namespace WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo
                 xamlMember.Getter = get_15_MinecraftFolder_ActiveVisibility;
                 xamlMember.SetIsReadOnly();
                 break;
+            case "Microsoft.UI.Xaml.Controls.ProgressRing.IsActive":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "IsActive", "Boolean");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_16_ProgressRing_IsActive;
+                xamlMember.Setter = set_16_ProgressRing_IsActive;
+                break;
+            case "Microsoft.UI.Xaml.Controls.ProgressRing.IsIndeterminate":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "IsIndeterminate", "Boolean");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_17_ProgressRing_IsIndeterminate;
+                xamlMember.Setter = set_17_ProgressRing_IsIndeterminate;
+                break;
+            case "Microsoft.UI.Xaml.Controls.ProgressRing.Maximum":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "Maximum", "Double");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_18_ProgressRing_Maximum;
+                xamlMember.Setter = set_18_ProgressRing_Maximum;
+                break;
+            case "Microsoft.UI.Xaml.Controls.ProgressRing.Minimum":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "Minimum", "Double");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_19_ProgressRing_Minimum;
+                xamlMember.Setter = set_19_ProgressRing_Minimum;
+                break;
+            case "Microsoft.UI.Xaml.Controls.ProgressRing.TemplateSettings":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "TemplateSettings", "Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings");
+                xamlMember.Getter = get_20_ProgressRing_TemplateSettings;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "Microsoft.UI.Xaml.Controls.ProgressRing.Value":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "Value", "Double");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_21_ProgressRing_Value;
+                xamlMember.Setter = set_21_ProgressRing_Value;
+                break;
+            case "WinUi3_Minecraft_Launcher.Page5.Categories":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.Page5");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "Categories", "System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.LoaderItem>");
+                xamlMember.Getter = get_22_Page5_Categories;
+                xamlMember.Setter = set_22_Page5_Categories;
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderItem.Name":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderItem");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "Name", "String");
+                xamlMember.Getter = get_23_LoaderItem_Name;
+                xamlMember.Setter = set_23_LoaderItem_Name;
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderItem.SelectedVersion":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderItem");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "SelectedVersion", "String");
+                xamlMember.Getter = get_24_LoaderItem_SelectedVersion;
+                xamlMember.Setter = set_24_LoaderItem_SelectedVersion;
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderItem.Versions":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderItem");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "Versions", "System.Collections.ObjectModel.ObservableCollection`1<WinUi3_Minecraft_Launcher.LoaderVersion>");
+                xamlMember.Getter = get_25_LoaderItem_Versions;
+                xamlMember.Setter = set_25_LoaderItem_Versions;
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderVersion.Version":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderVersion");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "Version", "String");
+                xamlMember.Getter = get_26_LoaderVersion_Version;
+                xamlMember.Setter = set_26_LoaderVersion_Version;
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderVersion.IsStable":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderVersion");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "IsStable", "Boolean");
+                xamlMember.Getter = get_27_LoaderVersion_IsStable;
+                xamlMember.Setter = set_27_LoaderVersion_IsStable;
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderVersion.TypeText":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderVersion");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "TypeText", "String");
+                xamlMember.Getter = get_28_LoaderVersion_TypeText;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderVersion.IsSelected":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderVersion");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "IsSelected", "Boolean");
+                xamlMember.Getter = get_29_LoaderVersion_IsSelected;
+                xamlMember.Setter = set_29_LoaderVersion_IsSelected;
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderVersion.SelectedVisibility":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderVersion");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "SelectedVisibility", "Microsoft.UI.Xaml.Visibility");
+                xamlMember.Getter = get_30_LoaderVersion_SelectedVisibility;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderItem.StatusText":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderItem");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "StatusText", "String");
+                xamlMember.Getter = get_31_LoaderItem_StatusText;
+                xamlMember.Setter = set_31_LoaderItem_StatusText;
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderItem.IsCompatible":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderItem");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "IsCompatible", "Boolean");
+                xamlMember.Getter = get_32_LoaderItem_IsCompatible;
+                xamlMember.Setter = set_32_LoaderItem_IsCompatible;
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderItem.IsSelected":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderItem");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "IsSelected", "Boolean");
+                xamlMember.Getter = get_33_LoaderItem_IsSelected;
+                xamlMember.Setter = set_33_LoaderItem_IsSelected;
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderItem.IsExpanded":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderItem");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "IsExpanded", "Boolean");
+                xamlMember.Getter = get_34_LoaderItem_IsExpanded;
+                xamlMember.Setter = set_34_LoaderItem_IsExpanded;
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderItem.ShowRemoveButton":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderItem");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "ShowRemoveButton", "Microsoft.UI.Xaml.Visibility");
+                xamlMember.Getter = get_35_LoaderItem_ShowRemoveButton;
+                xamlMember.Setter = set_35_LoaderItem_ShowRemoveButton;
+                break;
+            case "WinUi3_Minecraft_Launcher.LoaderItem.ShowArrow":
+                userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("WinUi3_Minecraft_Launcher.LoaderItem");
+                xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "ShowArrow", "Microsoft.UI.Xaml.Visibility");
+                xamlMember.Getter = get_36_LoaderItem_ShowArrow;
+                xamlMember.Setter = set_36_LoaderItem_ShowArrow;
+                break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Children":
                 userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "Children", "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>");
-                xamlMember.Getter = get_16_TreeViewNode_Children;
+                xamlMember.Getter = get_37_TreeViewNode_Children;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Content":
                 userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "Content", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_17_TreeViewNode_Content;
-                xamlMember.Setter = set_17_TreeViewNode_Content;
+                xamlMember.Getter = get_38_TreeViewNode_Content;
+                xamlMember.Setter = set_38_TreeViewNode_Content;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Depth":
                 userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "Depth", "Int32");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_18_TreeViewNode_Depth;
+                xamlMember.Getter = get_39_TreeViewNode_Depth;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasChildren":
                 userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "HasChildren", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_19_TreeViewNode_HasChildren;
+                xamlMember.Getter = get_40_TreeViewNode_HasChildren;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasUnrealizedChildren":
                 userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "HasUnrealizedChildren", "Boolean");
-                xamlMember.Getter = get_20_TreeViewNode_HasUnrealizedChildren;
-                xamlMember.Setter = set_20_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Getter = get_41_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Setter = set_41_TreeViewNode_HasUnrealizedChildren;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.IsExpanded":
                 userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "IsExpanded", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_21_TreeViewNode_IsExpanded;
-                xamlMember.Setter = set_21_TreeViewNode_IsExpanded;
+                xamlMember.Getter = get_42_TreeViewNode_IsExpanded;
+                xamlMember.Setter = set_42_TreeViewNode_IsExpanded;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Parent":
                 userType = (global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::WinUi3_Minecraft_Launcher.WinUi3_Minecraft_Launcher_XamlTypeInfo.XamlMember(this, "Parent", "Microsoft.UI.Xaml.Controls.TreeViewNode");
-                xamlMember.Getter = get_22_TreeViewNode_Parent;
+                xamlMember.Getter = get_43_TreeViewNode_Parent;
                 xamlMember.SetIsReadOnly();
                 break;
             }

@@ -17,6 +17,7 @@
     <None Remove="Page2.xaml" />
     <None Remove="Page3.xaml" />
     <None Remove="Page4.xaml" />
+    <None Remove="Page5.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +46,11 @@
     <PackageReference Include="CmlLib.Core" Version="4.0.6" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Page5.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Page4.xaml">
