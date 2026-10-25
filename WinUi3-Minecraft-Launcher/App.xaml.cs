@@ -13,6 +13,9 @@ namespace WinUi3_Minecraft_Launcher
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            // 🚨 启动词典服务（挂载定时器、拉取更新）
+            _ = TranslationService.InitializeAsync();
+
             MainWindow = new MainWindow();
             MainWindow.Activate();
         }

@@ -9,7 +9,7 @@
     Background="Transparent">
 
     <Grid>
-        <TextBlock Text="3" FontSize="120" FontWeight="Bold"
+        <TextBlock Text="此页面正在开发" FontSize="120" FontWeight="Bold"
                    HorizontalAlignment="Center" VerticalAlignment="Center"
                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
     </Grid>

@@ -7,12 +7,19 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
-    <PublishProfile>win-$(Platform).pubxml</PublishProfile>
+    
+    <!-- 🚨 屏蔽找不到 pubxml 的警告 -->
+    <!-- <PublishProfile>win-$(Platform).pubxml</PublishProfile> -->
+    
     <UseWinUI>true</UseWinUI>
     <WinUISDKReferences>false</WinUISDKReferences>
-    <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
+
+    <!-- 🚨 启用未封装模式与自包含运行时（打包必加） -->
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
   </PropertyGroup>
+  
   <ItemGroup>
     <None Remove="Page2.xaml" />
     <None Remove="Page3.xaml" />
@@ -42,11 +49,13 @@
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="CmlLib.Core" Version="4.0.6" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
   </ItemGroup>
+  
   <ItemGroup>
     <Page Update="Page5.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -84,9 +93,8 @@
 
   <!-- Publish Properties -->
   <PropertyGroup>
-    <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
-    <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
-    <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
-    <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+    <!-- 🚨 彻底关闭 R2R 和裁剪，防止底层 DLL 加载失败和 JSON 闪退 -->
+    <PublishReadyToRun>False</PublishReadyToRun>
+    <PublishTrimmed>False</PublishTrimmed>
   </PropertyGroup>
 </Project>

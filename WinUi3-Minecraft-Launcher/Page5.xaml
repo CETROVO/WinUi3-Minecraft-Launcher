@@ -15,43 +15,36 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- 顶部：可编辑版本名 -->
-        <Border Grid.Row="0" Background="#20FFFFFF" CornerRadius="8" 
-                BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
-                Padding="16,16" Margin="0,0,0,20">
+        <!-- 顶部：版本名 -->
+        <Border Grid.Row="0" Background="#20FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}" Padding="16,16" Margin="0,0,0,20">
             <Grid ColumnSpacing="15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-
                 <Button Grid.Column="0" Click="BackButton_Click" Background="Transparent" BorderThickness="0" Padding="8">
                     <FontIcon Glyph="&#xE72B;" FontSize="16" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
                 </Button>
-
                 <Border Grid.Column="1" Width="36" Height="36" CornerRadius="8" Background="#55FF55" VerticalAlignment="Center">
                     <TextBlock Text="MC" FontSize="16" FontWeight="Bold" Foreground="#1A1A1A" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
-
-                <TextBox Grid.Column="2" x:Name="VersionNameTextBox" 
-                         Text="加载中..." FontSize="22" FontWeight="Bold" 
-                         Background="Transparent" BorderThickness="0" Padding="0"
-                         VerticalAlignment="Center" PlaceholderText="输入实例名称" />
+                <TextBox Grid.Column="2" x:Name="VersionNameTextBox" Text="加载中..." FontSize="22" FontWeight="Bold" Background="Transparent" BorderThickness="0" Padding="0" VerticalAlignment="Center" PlaceholderText="输入实例名称" />
             </Grid>
         </Border>
 
         <!-- 主体：左右分栏 -->
         <Grid Grid.Row="1" ColumnSpacing="20" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="260" MinWidth="200" />
+                <ColumnDefinition Width="180" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <ListView x:Name="CategoryListView" Grid.Column="0" 
+            <!-- 左侧：加载器列表 -->
+            <ListView x:Name="LoaderListView" Grid.Column="0" 
                       Background="#10FFFFFF" CornerRadius="8"
                       BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
-                      SelectionMode="Single" SelectionChanged="CategoryListView_SelectionChanged">
+                      SelectionMode="Single" SelectionChanged="LoaderListView_SelectionChanged">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -61,99 +54,80 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:LoaderItem">
-                        <Grid MinHeight="50" Padding="16,10" ColumnSpacing="10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{x:Bind Name}" FontSize="15" FontWeight="SemiBold" 
-                                       TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
-                                       Foreground="{ThemeResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="1" Text="{x:Bind SelectedVersion, Mode=OneWay}" FontSize="12"
-                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" />
+                        <Grid MinHeight="44" Padding="12,8">
+                            <TextBlock Text="{x:Bind Name}" FontSize="14" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
-            <!-- 右侧面板区 -->
-            <Grid Grid.Column="1" HorizontalAlignment="Stretch">
+            <!-- 右侧：配置面板 -->
+            <Grid Grid.Column="1">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock x:Name="DefaultHintText" Text="纯净原版不需要额外配置。" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,50,0,0" FontSize="15" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
-                <TextBlock x:Name="DefaultHintText" Text="纯净原版不需要额外配置，直接点击下方按钮下载。" 
-                           HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-
-                <StackPanel x:Name="FabricPanel" Spacing="15" Visibility="Collapsed">
-                    <Border Background="#10FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}" Padding="20">
-                        <StackPanel Spacing="12">
-                            <TextBlock Text="选择 Fabric Loader 版本" FontSize="16" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
-                            <ComboBox x:Name="FabricVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" PlaceholderText="正在获取版本..." SelectionChanged="FabricVersionCombo_SelectionChanged" />
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-
-                <StackPanel x:Name="FabricApiPanel" Spacing="15" Visibility="Collapsed">
-                    <Border Background="#10FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}" Padding="20">
-                        <StackPanel Spacing="16">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Spacing="4">
-                                    <TextBlock Text="Fabric API (前置模组)" FontSize="16" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
-                                    <TextBlock Text="强烈建议安装。" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <StackPanel x:Name="FabricPanel" Spacing="15" Visibility="Collapsed">
+                            <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
+                                <StackPanel Spacing="12">
+                                    <TextBlock Text="选择 Fabric Loader 版本" FontSize="16" FontWeight="SemiBold" />
+                                    <ComboBox x:Name="FabricVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectionChanged="FabricVersionCombo_SelectionChanged" />
                                 </StackPanel>
-                                <ToggleSwitch Grid.Column="1" x:Name="FabricApiToggle" IsOn="True" VerticalAlignment="Center" Toggled="FabricApiToggle_Toggled" />
-                            </Grid>
-                            <ComboBox x:Name="FabricApiVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" PlaceholderText="正在获取 API 版本..." SelectionChanged="FabricApiVersionCombo_SelectionChanged" />
+                            </Border>
                         </StackPanel>
-                    </Border>
-                </StackPanel>
 
-                <StackPanel x:Name="QuiltPanel" Spacing="15" Visibility="Collapsed">
-                    <Border Background="#10FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}" Padding="20">
-                        <StackPanel Spacing="12">
-                            <TextBlock Text="选择 Quilt Loader 版本" FontSize="16" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
-                            <ComboBox x:Name="QuiltVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" PlaceholderText="正在获取版本..." SelectionChanged="QuiltVersionCombo_SelectionChanged" />
+                        <StackPanel x:Name="FabricApiPanel" Spacing="15" Visibility="Collapsed">
+                            <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
+                                <StackPanel Spacing="16">
+                                    <TextBlock Text="Fabric API (前置)" FontSize="16" FontWeight="SemiBold" />
+                                    <ComboBox x:Name="FabricApiVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectionChanged="FabricApiVersionCombo_SelectionChanged" />
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
-                    </Border>
-                </StackPanel>
 
-                <StackPanel x:Name="ForgePanel" Spacing="15" Visibility="Collapsed">
-                    <Border Background="#10FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}" Padding="20">
-                        <StackPanel Spacing="12">
-                            <TextBlock Text="选择 Forge 版本" FontSize="16" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
-                            <ComboBox x:Name="ForgeVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" PlaceholderText="正在获取版本..." SelectionChanged="ForgeVersionCombo_SelectionChanged" />
+                        <StackPanel x:Name="QuiltPanel" Spacing="15" Visibility="Collapsed">
+                            <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
+                                <StackPanel Spacing="12">
+                                    <TextBlock Text="选择 Quilt Loader 版本" FontSize="16" FontWeight="SemiBold" />
+                                    <ComboBox x:Name="QuiltVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectionChanged="QuiltVersionCombo_SelectionChanged" />
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
-                    </Border>
-                </StackPanel>
 
-                <!-- 🚨 NeoForge 面板 -->
-                <StackPanel x:Name="NeoForgePanel" Spacing="15" Visibility="Collapsed">
-                    <Border Background="#10FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}" Padding="20">
-                        <StackPanel Spacing="12">
-                            <TextBlock Text="选择 NeoForge 版本" FontSize="16" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
-                            <ComboBox x:Name="NeoForgeVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" PlaceholderText="正在获取版本..." SelectionChanged="NeoForgeVersionCombo_SelectionChanged" />
+                        <StackPanel x:Name="ForgePanel" Spacing="15" Visibility="Collapsed">
+                            <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
+                                <StackPanel Spacing="12">
+                                    <TextBlock Text="选择 Forge 版本" FontSize="16" FontWeight="SemiBold" />
+                                    <ComboBox x:Name="ForgeVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectionChanged="ForgeVersionCombo_SelectionChanged" />
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
-                    </Border>
-                </StackPanel>
 
-                <!-- 🚨 OptiFine 面板 -->
-                <StackPanel x:Name="OptiFinePanel" Spacing="15" Visibility="Collapsed">
-                    <Border Background="#10FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}" Padding="20">
-                        <StackPanel Spacing="12">
-                            <TextBlock Text="选择 OptiFine 版本" FontSize="16" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
-                            <ComboBox x:Name="OptiFineVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" PlaceholderText="正在获取版本..." SelectionChanged="OptiFineVersionCombo_SelectionChanged" />
-                            <TextBlock Text="⚠️ OptiFine 官方限制无法完全静默安装，下载后需在弹出的安装器界面手动点击 Install。" FontSize="12" Foreground="Orange" TextWrapping="Wrap" />
+                        <StackPanel x:Name="NeoForgePanel" Spacing="15" Visibility="Collapsed">
+                            <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
+                                <StackPanel Spacing="12">
+                                    <TextBlock Text="选择 NeoForge 版本" FontSize="16" FontWeight="SemiBold" />
+                                    <ComboBox x:Name="NeoForgeVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectionChanged="NeoForgeVersionCombo_SelectionChanged" />
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
-                    </Border>
-                </StackPanel>
 
+                        <StackPanel x:Name="OptiFinePanel" Spacing="15" Visibility="Collapsed">
+                            <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
+                                <StackPanel Spacing="12">
+                                    <TextBlock Text="选择 OptiFine 版本" FontSize="16" FontWeight="SemiBold" />
+                                    <ComboBox x:Name="OptiFineVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectionChanged="OptiFineVersionCombo_SelectionChanged" />
+                                    <TextBlock Text="⚠️ 需在弹出的界面手动点击 Install。" FontSize="12" Foreground="Orange" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
         </Grid>
 
-        <Button Grid.Row="2" x:Name="StartDownloadButton" HorizontalAlignment="Center" Height="48" Padding="60,0" CornerRadius="24"
-                Background="#0078D4" Foreground="White" FontWeight="Bold" FontSize="16" Margin="0,20,0,0" Click="StartDownloadButton_Click">
+        <!-- 底部按钮 -->
+        <Button x:Name="StartDownloadButton" Grid.Row="2" HorizontalAlignment="Center" Height="48" Padding="60,0" CornerRadius="24" Background="#0078D4" Foreground="White" FontWeight="Bold" FontSize="16" Margin="0,20,0,0" Click="StartDownloadButton_Click">
             <Button.Content>
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <FontIcon Glyph="&#xE896;" FontSize="16" />
