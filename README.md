@@ -1,8 +1,9 @@
 # WML 启动器 (WinUi3-Minecraft-Launcher)
 
 > 本启动器 100% 由 AI 编写，无人工痕迹。  
-> 如果遇到 Bug，那是 AI 的锅，与我（学生，主修原神）无关。  
-> 如果你想要人写的启动器，请出门左转 [HMCL](https://github.com/HMCL-dev/HMCL) [PCL](https://github.com/Meloong-Git/PCL) [PCL CE](https://github.com/PCL-community/PCL-CE)。
+> 如果遇到 Bug，那是 AI 的锅，与我（学生，主修原神）无关。
+> 如果你想要人写的启动器，请出门左转 [HMCL](https://github.com/HMCL-dev/HMCL) [PCL 2](https://github.com/Meloong-Git/PCL) [PCL CE](https://github.com/PCL-community/PCL-CE)。
+> 本启动器仓库不会实时更新，只会在每个版本发布时同步更新一次仓库。
 
 一个基于 **WinUI 3 + C# + .NET 10** 的 Minecraft 启动器，底层使用 [CmlLib.Core](https://github.com/CmlLib/CmlLib.Core)。  
 目标是做一个界面现代化、功能完整、使用 EasyTier 制作的私有化联机模块的新一代启动器。
