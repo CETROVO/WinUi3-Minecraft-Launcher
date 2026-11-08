@@ -8,9 +8,329 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-    <Grid>
-        <TextBlock Text="此页面正在开发" FontSize="120" FontWeight="Bold"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
+    <Grid Padding="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- 左侧导航 -->
+        <ListView x:Name="SettingsNavList" Grid.Column="0" Background="Transparent" SelectionChanged="SettingsNavList_SelectionChanged" Margin="0,0,20,0">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0,0,0,4"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="x:String">
+                    <Grid MinHeight="44" Padding="16,10" CornerRadius="6">
+                        <TextBlock Text="{x:Bind}" FontSize="15" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- 右侧内容 -->
+        <Grid Grid.Column="1">
+
+            <!-- 面板 1：启动 -->
+            <ScrollViewer x:Name="StartupPanel" VerticalScrollBarVisibility="Auto">
+                <StackPanel Spacing="20" MaxWidth="1000">
+                    <!-- 启动选项 -->
+                    <Expander HorizontalAlignment="Stretch" IsExpanded="True" Background="#10FFFFFF">
+                        <Expander.Header>
+                            <TextBlock Text="启动选项" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" Margin="0,10,0,10"/>
+                        </Expander.Header>
+                        <Grid RowSpacing="12" ColumnSpacing="16" Margin="0,10,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="默认版本隔离" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="0" Grid.Column="1" x:Name="IsolationComboBox" HorizontalAlignment="Stretch" SelectionChanged="IsolationComboBox_SelectionChanged">
+                                <ComboBoxItem Content="隔离所有版本" />
+                                <ComboBoxItem Content="智能版本隔离" />
+                                <ComboBoxItem Content="关闭隔离" />
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="启动器可见性" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="1" Grid.Column="1" x:Name="LauncherVisibilityComboBox" HorizontalAlignment="Stretch" SelectionChanged="LauncherVisibilityComboBox_SelectionChanged">
+                                <ComboBoxItem Content="游戏启动后仍保持不变" />
+                                <ComboBoxItem Content="游戏启动后最小化" />
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="进程优先级" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="2" Grid.Column="1" x:Name="ProcessPriorityComboBox" HorizontalAlignment="Stretch" SelectionChanged="ProcessPriorityComboBox_SelectionChanged">
+                                <ComboBoxItem Content="低" />
+                                <ComboBoxItem Content="中（平衡）" />
+                                <ComboBoxItem Content="高" />
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="窗口大小" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="3" Grid.Column="1" x:Name="WindowSizeComboBox" HorizontalAlignment="Stretch" SelectionChanged="WindowSizeComboBox_SelectionChanged">
+                                <ComboBoxItem Content="默认" />
+                                <ComboBoxItem Content="最大化" />
+                            </ComboBox>
+                        </Grid>
+                    </Expander>
+
+                    <!-- 内存分配 -->
+                    <Expander HorizontalAlignment="Stretch" IsExpanded="True" Background="#10FFFFFF">
+                        <Expander.Header>
+                            <TextBlock Text="内存分配" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" Margin="0,10,0,10"/>
+                        </Expander.Header>
+                        <StackPanel Spacing="15" Margin="0,10,0,20">
+                            <RadioButton x:Name="AutoMemoryRadio" Content="自动配置" GroupName="MemoryMode" Checked="MemoryMode_Checked"/>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <RadioButton x:Name="CustomMemoryRadio" Content="自定义" GroupName="MemoryMode" Checked="MemoryMode_Checked"/>
+                                <Slider x:Name="MemorySlider" Width="400" Minimum="1024" Maximum="32768" StepFrequency="512" Value="4096" ValueChanged="MemorySlider_ValueChanged"/>
+                                <TextBlock x:Name="MemorySliderText" VerticalAlignment="Center" Text="4096 MB"/>
+                            </StackPanel>
+
+                            <Grid RowSpacing="5" Margin="0,15,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="已使用内存" FontSize="12" Foreground="Gray"/>
+                                    <TextBlock Grid.Column="1" Text="游戏分配" FontSize="12" Foreground="Gray" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Grid.Row="1" Height="8" Margin="0,5,0,5">
+                                    <Border Background="#220078D4" CornerRadius="4" />
+                                    <Border x:Name="UsedMemoryBar" Background="#0078D4" HorizontalAlignment="Left" CornerRadius="4" Width="300" />
+                                    <Border x:Name="AllocatedMemoryBar" Background="#880078D4" HorizontalAlignment="Left" CornerRadius="0,4,4,0" Width="100" Margin="300,0,0,0"/>
+                                </Grid>
+                                <Grid Grid.Row="2" ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="UsedMemoryText" FontSize="16" Text="8.9 GB / 15.7 GB"/>
+                                    <TextBlock Grid.Column="1" x:Name="AllocatedMemoryText" FontSize="16" Text="4.5 GB" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </Grid>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- 高级选项 -->
+                    <Expander HorizontalAlignment="Stretch" IsExpanded="True" Background="#10FFFFFF">
+                        <Expander.Header>
+                            <TextBlock Text="高级选项" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" Margin="0,10,0,10"/>
+                        </Expander.Header>
+
+                        <StackPanel Margin="0,10,0,20">
+                            <Grid RowSpacing="12" ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Java 虚拟机参数" VerticalAlignment="Center" />
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="JvmArgsTextBox" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="80" TextChanged="JvmArgsTextBox_TextChanged"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="游戏参数" VerticalAlignment="Center" />
+                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="GameArgsTextBox" TextChanged="GameArgsTextBox_TextChanged"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="启动前执行命令" VerticalAlignment="Center" />
+                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="PreLaunchCommandTextBox" TextChanged="PreLaunchCommandTextBox_TextChanged"/>
+
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Java 列表" VerticalAlignment="Center" />
+                                <Grid Grid.Row="3" Grid.Column="1" ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ComboBox x:Name="JavaListComboBox" HorizontalAlignment="Stretch" SelectionChanged="JavaListComboBox_SelectionChanged"/>
+                                    <Button Grid.Column="1" Content="刷新" Click="RefreshJavaList_Click" Height="32" CornerRadius="4"/>
+                                </Grid>
+
+                                <TextBlock Grid.Row="4" Grid.Column="0" Text="内存管理" VerticalAlignment="Center" />
+                                <ComboBox Grid.Row="4" Grid.Column="1" x:Name="MemoryAlgorithmComboBox" HorizontalAlignment="Stretch" SelectionChanged="MemoryAlgorithmComboBox_SelectionChanged">
+                                    <ComboBoxItem Content="默认" />
+                                    <ComboBoxItem Content="调优 G1GC" />
+                                </ComboBox>
+                            </Grid>
+
+                            <StackPanel Spacing="10" Margin="136,15,0,0">
+                                <CheckBox x:Name="DisableLaunchWrapperCheckBox" Content="禁用 Java Launch Wrapper" Checked="DisableLaunchWrapperCheckBox_Changed" Unchecked="DisableLaunchWrapperCheckBox_Changed"/>
+                                <CheckBox x:Name="DisableUnsafeAgentCheckBox" Content="禁用 LWJGL Unsafe Agent" Checked="DisableUnsafeAgentCheckBox_Changed" Unchecked="DisableUnsafeAgentCheckBox_Changed"/>
+                                <CheckBox x:Name="UseHighPerformanceGpuCheckBox" Content="使用高性能显卡" Checked="UseHighPerformanceGpuCheckBox_Changed" Unchecked="UseHighPerformanceGpuCheckBox_Changed"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 面板 2：其他 -->
+            <ScrollViewer x:Name="OtherPanel" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                <StackPanel Spacing="20" MaxWidth="1000">
+
+                    <!-- 下载 -->
+                    <Expander HorizontalAlignment="Stretch" IsExpanded="True" Background="#10FFFFFF">
+                        <Expander.Header>
+                            <TextBlock Text="下载" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" Margin="0,10,0,10"/>
+                        </Expander.Header>
+                        <Grid RowSpacing="12" ColumnSpacing="16" Margin="0,10,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="文件下载源" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="0" Grid.Column="1" x:Name="FileSourceComboBox" HorizontalAlignment="Stretch" SelectionChanged="FileSourceComboBox_SelectionChanged">
+                                <ComboBoxItem Content="优先使用官方源，加载慢时换用镜像源" />
+                                <ComboBoxItem Content="优先使用镜像源，加载慢时换用官方源" />
+                                <ComboBoxItem Content="仅使用官方源" />
+                                <ComboBoxItem Content="仅使用镜像源" />
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="版本列表源" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="1" Grid.Column="1" x:Name="VersionListSourceComboBox" HorizontalAlignment="Stretch" SelectionChanged="VersionListSourceComboBox_SelectionChanged">
+                                <ComboBoxItem Content="优先使用官方源，加载慢时换用镜像源" />
+                                <ComboBoxItem Content="优先使用镜像源，加载慢时换用官方源" />
+                                <ComboBoxItem Content="仅使用官方源" />
+                                <ComboBoxItem Content="仅使用镜像源" />
+                            </ComboBox>
+                        </Grid>
+                    </Expander>
+
+                    <!-- 社区资源 -->
+                    <Expander HorizontalAlignment="Stretch" IsExpanded="True" Background="#10FFFFFF">
+                        <Expander.Header>
+                            <TextBlock Text="社区资源" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" Margin="0,10,0,10"/>
+                        </Expander.Header>
+                        <Grid RowSpacing="12" ColumnSpacing="16" Margin="0,10,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="来源" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="0" Grid.Column="1" x:Name="CommunitySourceComboBox" HorizontalAlignment="Stretch" SelectionChanged="CommunitySourceComboBox_SelectionChanged">
+                                <ComboBoxItem Content="尽量使用官方源" />
+                                <ComboBoxItem Content="尽量使用镜像源" />
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="文件名格式" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="1" Grid.Column="1" x:Name="FileNameFormatComboBox" HorizontalAlignment="Stretch" SelectionChanged="FileNameFormatComboBox_SelectionChanged">
+                                <ComboBoxItem Content="[译名] 文件名 (例: [机械动力] create-1.21.1-6.0.4)" />
+                                <ComboBoxItem Content="仅保留原始文件名 (例: create-1.21.1-6.0.4)" />
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Mod 管理样式" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="2" Grid.Column="1" x:Name="ModManageStyleComboBox" HorizontalAlignment="Stretch" SelectionChanged="ModManageStyleComboBox_SelectionChanged">
+                                <ComboBoxItem Content="标题显示译名，详情显示文件名" />
+                                <ComboBoxItem Content="标题和详情均显示文件名" />
+                            </ComboBox>
+                        </Grid>
+                    </Expander>
+
+                    <!-- 辅助功能 -->
+                    <Expander HorizontalAlignment="Stretch" IsExpanded="True" Background="#10FFFFFF">
+                        <Expander.Header>
+                            <TextBlock Text="辅助功能" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" Margin="0,10,0,10"/>
+                        </Expander.Header>
+                        <!-- 🚨 修复：用一个外层 StackPanel 把 Grid 和 CheckBox 包起来 -->
+                        <StackPanel Margin="0,10,0,20">
+                            <Grid RowSpacing="12" ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="游戏更新提示" VerticalAlignment="Center" />
+                                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Spacing="20">
+                                    <CheckBox x:Name="ShowReleaseUpdateCheckBox" Content="正式版更新提示" Checked="ShowReleaseUpdateCheckBox_Changed" Unchecked="ShowReleaseUpdateCheckBox_Changed"/>
+                                    <CheckBox x:Name="ShowSnapshotUpdateCheckBox" Content="测试版更新提示" Checked="ShowSnapshotUpdateCheckBox_Changed" Unchecked="ShowSnapshotUpdateCheckBox_Changed"/>
+                                </StackPanel>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="游戏语言" VerticalAlignment="Center" />
+                                <CheckBox Grid.Row="1" Grid.Column="1" x:Name="AutoSetChineseCheckBox" Content="自动设置为中文" Checked="AutoSetChineseCheckBox_Changed" Unchecked="AutoSetChineseCheckBox_Changed"/>
+                            </Grid>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- 启动器 -->
+                    <Expander HorizontalAlignment="Stretch" IsExpanded="True" Background="#10FFFFFF">
+                        <Expander.Header>
+                            <TextBlock Text="启动器" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" Margin="0,10,0,10"/>
+                        </Expander.Header>
+                        <!-- 🚨 修复：用一个外层 StackPanel 把 Grid 和 按钮组包起来 -->
+                        <StackPanel Margin="0,10,0,20">
+                            <Grid RowSpacing="12" ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="启动器更新" VerticalAlignment="Center" />
+                                <ComboBox Grid.Row="0" Grid.Column="1" x:Name="LauncherUpdateComboBox" HorizontalAlignment="Stretch" SelectionChanged="LauncherUpdateComboBox_SelectionChanged">
+                                    <ComboBoxItem Content="关闭更新提示" />
+                                    <ComboBoxItem Content="开启更新提示" />
+                                </ComboBox>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="启动器公告" VerticalAlignment="Center" />
+                                <ComboBox Grid.Row="1" Grid.Column="1" x:Name="LauncherAnnouncementComboBox" HorizontalAlignment="Stretch" SelectionChanged="LauncherAnnouncementComboBox_SelectionChanged">
+                                    <ComboBoxItem Content="关闭所有公告" />
+                                    <ComboBoxItem Content="开启所有公告" />
+                                </ComboBox>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="缓存文件夹" VerticalAlignment="Center" />
+                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="CacheFolderTextBox" PlaceholderText="默认" TextChanged="CacheFolderTextBox_TextChanged"/>
+
+                                <CheckBox Grid.Row="3" Grid.Column="1" x:Name="AllowAnonDataCheckBox" Content="匿名数据收集" Checked="AllowAnonDataCheckBox_Changed" Unchecked="AllowAnonDataCheckBox_Changed" Margin="0,10,0,10"/>
+                            </Grid>
+
+                            <StackPanel Orientation="Horizontal" Spacing="10" Margin="136,15,0,0">
+                                <Button Content="检查更新" Width="120" Height="32" CornerRadius="4" Click="CheckUpdate_Click"/>
+                                <Button Content="导出设置" Width="120" Height="32" CornerRadius="4" Click="ExportSettings_Click"/>
+                                <Button Content="导入设置" Width="120" Height="32" CornerRadius="4" Click="ImportSettings_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Expander>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Page>

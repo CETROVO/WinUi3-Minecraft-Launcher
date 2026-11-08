@@ -1,11 +1,13 @@
+using CmlLib.Core;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using CmlLib.Core;           // 🚨 必须有
 using Windows.Storage.Pickers;
 
 namespace WinUi3_Minecraft_Launcher
@@ -203,14 +205,59 @@ namespace WinUi3_Minecraft_Launcher
                     return;
                 }
 
-                string? activeName = restoreActiveVersion;
-                if (string.IsNullOrEmpty(activeName) || !validVersions.Any(v => v.Name == activeName))
+                // 🚨 智能过滤：找出所有被用作“底包依赖”的原版版本
+                var parentVersionsUsed = new HashSet<string>();
+                foreach (var v in validVersions)
                 {
-                    activeName = validVersions.First().Name;
+                    try
+                    {
+                        var jsonFile = Path.Combine(versionsDir, v.Name, v.Name + ".json");
+                        if (File.Exists(jsonFile))
+                        {
+                            var json = JsonDocument.Parse(File.ReadAllText(jsonFile));
+                            if (json.RootElement.TryGetProperty("inheritsFrom", out var inherit))
+                            {
+                                var parentName = inherit.GetString();
+                                if (!string.IsNullOrEmpty(parentName)) parentVersionsUsed.Add(parentName);
+                            }
+                        }
+                    }
+                    catch { }
+                }
+
+                // 🚨 执行过滤
+                var displayVersions = validVersions.Where(v =>
+                {
+                    // 如果它是某个版本的底包
+                    if (parentVersionsUsed.Contains(v.Name))
+                    {
+                        var vDir = Path.Combine(versionsDir, v.Name);
+                        bool hasMods = Directory.Exists(Path.Combine(vDir, "mods")) && Directory.GetFiles(Path.Combine(vDir, "mods"), "*.*", SearchOption.TopDirectoryOnly).Length > 0;
+                        bool hasSaves = Directory.Exists(Path.Combine(vDir, "saves")) && Directory.GetDirectories(Path.Combine(vDir, "saves")).Length > 0;
+
+                        // 如果没 mods、没存档，也不是当前正在使用的激活版本，就把它隐藏掉
+                        if (!hasMods && !hasSaves && v.Name != restoreActiveVersion && v.Name != LauncherState.CurrentVersionName)
+                        {
+                            return false; // 隐藏纯底包
+                        }
+                    }
+                    return true;
+                }).ToList();
+
+                if (!displayVersions.Any())
+                {
+                    ShowVersionEmptyHint("📭 没有找到任何完整的已安装版本");
+                    return;
+                }
+
+                string? activeName = restoreActiveVersion;
+                if (string.IsNullOrEmpty(activeName) || !displayVersions.Any(v => v.Name == activeName))
+                {
+                    activeName = displayVersions.First().Name;
                 }
 
                 HideVersionEmptyHint();
-                foreach (var v in validVersions)
+                foreach (var v in displayVersions)
                 {
                     bool active = (v.Name == activeName);
                     Versions.Add(new GameVersion

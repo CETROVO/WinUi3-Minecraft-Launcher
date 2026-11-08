@@ -51,22 +51,16 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
                         <RadioButton x:Name="ReleaseRadio" Content="正式版" GroupName="VersionType" Checked="VersionType_Checked" />
                         <RadioButton x:Name="SnapshotRadio" Content="预览版" GroupName="VersionType" Checked="VersionType_Checked" />
                         <RadioButton x:Name="AprilFoolsRadio" Content="愚人节版本" GroupName="VersionType" Checked="VersionType_Checked" />
                     </StackPanel>
 
-                    <ComboBox Grid.Column="2" x:Name="SourceComboBox" Width="130" Height="32" VerticalAlignment="Center" Margin="0,0,10,0" SelectionChanged="SourceComboBox_SelectionChanged">
-                        <ComboBoxItem Content="自动 (推荐)" />
-                        <ComboBoxItem Content="官方源" />
-                        <ComboBoxItem Content="镜像源" />
-                    </ComboBox>
-
-                    <Button Grid.Column="3" Click="RefreshButton_Click" Height="32" Padding="10,0" CornerRadius="4">
+                    <!-- 🚨 已经删除了 SourceComboBox，刷新按钮移到了 Grid.Column="2" -->
+                    <Button Grid.Column="2" Click="RefreshButton_Click" Height="32" Padding="10,0" CornerRadius="4">
                         <StackPanel Orientation="Horizontal" Spacing="6">
                             <FontIcon Glyph="&#xE72C;" FontSize="13" />
                             <TextBlock Text="刷新" FontSize="13" />
@@ -79,7 +73,6 @@
                         <ProgressRing IsActive="True" Width="40" Height="40" />
                         <TextBlock Text="正在获取版本列表..." Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                     </StackPanel>
-
                     <ListView x:Name="VersionListView" Background="#20FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}" SelectionMode="Single" IsItemClickEnabled="True" ItemClick="VersionListView_ItemClick" Visibility="Collapsed">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="local:RemoteVersion">
@@ -107,36 +100,36 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <!-- 搜索框 -->
                 <Grid Grid.Row="0" Margin="0,0,0,10" ColumnSpacing="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="SearchBox" PlaceholderText="输入关键字搜索 (按回车搜索)..." Height="38" KeyDown="SearchBox_KeyDown" />
+                    <TextBox x:Name="SearchBox" PlaceholderText="使用英文从 Modrinth 搜索..." Height="38" KeyDown="SearchBox_KeyDown" />
                     <Button Grid.Column="1" Content="搜索" Click="SearchButton_Click" Background="#0078D4" Foreground="White" Height="38" Padding="20,0" CornerRadius="4" />
                 </Grid>
 
-                <!-- 目标实例选择 -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10" Margin="0,0,0,15">
+                <StackPanel x:Name="InstanceSelectionPanel" Grid.Row="1" Orientation="Horizontal" Spacing="10" Margin="0,0,0,15">
                     <FontIcon Glyph="&#xE8B7;" FontSize="16" VerticalAlignment="Center" Foreground="#0078D4"/>
                     <TextBlock Text="安装至：" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
                     <ComboBox x:Name="TargetInstanceComboBox" MinWidth="300" Height="32" SelectionChanged="TargetInstanceComboBox_SelectionChanged" PlaceholderText="请选择目标版本..."/>
                 </StackPanel>
 
-                <!-- 搜索结果列表 & 状态栏 -->
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" x:Name="SearchLoadingPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10" Visibility="Collapsed">
+                    <TextBlock x:Name="ListTitleText" Grid.Row="0" Text="" FontSize="16" FontWeight="Bold" Margin="5,0,0,10" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Visibility="Collapsed" />
+
+                    <StackPanel Grid.Row="1" x:Name="SearchLoadingPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10" Visibility="Collapsed">
                         <ProgressRing IsActive="True" Width="40" Height="40" />
-                        <TextBlock Text="正在搜索..." Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <TextBlock Text="正在加载..." Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                     </StackPanel>
 
-                    <ListView Grid.Row="0" x:Name="SearchResultList" Background="#10FFFFFF" CornerRadius="8" SelectionMode="None" Visibility="Collapsed">
+                    <ListView Grid.Row="1" x:Name="SearchResultList" Background="#10FFFFFF" CornerRadius="8" SelectionMode="None" Visibility="Collapsed">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -152,31 +145,73 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-
                                     <Border Grid.Column="0" Width="50" Height="50" CornerRadius="8" Background="{ThemeResource ControlFillColorDefaultBrush}" VerticalAlignment="Center">
                                         <Image Source="{x:Bind ImageSource, Mode=OneWay}" Stretch="UniformToFill" />
                                     </Border>
-
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
                                         <TextBlock Text="{x:Bind Title}" FontSize="16" FontWeight="Bold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
                                         <TextBlock Text="{x:Bind Description}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
                                         <TextBlock Text="{x:Bind Downloads}" FontSize="12" Foreground="Gray" />
                                     </StackPanel>
-
                                     <Button Grid.Column="2" Content="获取下载" Tag="{x:Bind}" Click="DownloadResource_Click" Height="32" CornerRadius="4" Background="#55FF55" Foreground="Black" VerticalAlignment="Center" />
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <!-- 🚨 新增：底部重试状态栏 -->
-                    <Border Grid.Row="1" x:Name="DownloadStatusBorder" Background="#20FFFFFF" CornerRadius="6" Padding="12,8" Margin="0,8,0,0" Visibility="Collapsed">
-                        <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
-                            <ProgressRing IsActive="True" Width="16" Height="16" Foreground="Orange"/>
-                            <TextBlock x:Name="DownloadStatusText" Text="正在请求下载..." FontSize="13" Foreground="Orange" VerticalAlignment="Center" FontWeight="SemiBold"/>
-                        </StackPanel>
+                    <Border Grid.Row="2" x:Name="DownloadStatusBorder" Background="#20FFFFFF" CornerRadius="6" Padding="12,8" Margin="0,8,0,0" Visibility="Collapsed">
+                        <Grid RowSpacing="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock x:Name="DownloadStatusText" Grid.Row="0" Text="正在请求下载..." FontSize="13" Foreground="Orange" FontWeight="SemiBold"/>
+                            <Grid Grid.Row="1" ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ProgressBar x:Name="DownloadProgressBar" Grid.Column="0" Height="8" Minimum="0" Maximum="100" Value="0" CornerRadius="4" Foreground="#0078D4" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="DownloadProgressText" Grid.Column="1" Text="0%" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            </Grid>
+                        </Grid>
                     </Border>
                 </Grid>
+            </Grid>
+
+            <!-- 3. Java 面板 -->
+            <Grid x:Name="JavaPanel" Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" Spacing="15">
+                    <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="Java 运行环境下载" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" />
+                            <TextBlock Text="Minecraft 需要 Java 才能运行。如果您没有安装，或者游戏启动报错，请在此处选择对应版本进行下载安装。" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,0,5"/>
+
+                            <StackPanel Orientation="Horizontal" Spacing="20" Margin="0,0,0,10">
+                                <RadioButton x:Name="JreRadio" Content="JRE (仅运行游戏)" GroupName="JavaType" IsChecked="True" ToolTipService.ToolTip="体积较小，适合只玩游戏的玩家"/>
+                                <RadioButton x:Name="JdkRadio" Content="JDK (运行 + 开发/开发模组)" GroupName="JavaType" ToolTipService.ToolTip="包含 JRE 及开发工具，适合模组开发者"/>
+                            </StackPanel>
+
+                            <ComboBox x:Name="JavaVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" PlaceholderText="正在获取可用版本..." />
+
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <Button x:Name="DownloadJavaButton" Content="下载并安装 Java" HorizontalAlignment="Stretch" Height="40" Background="#0078D4" Foreground="White" CornerRadius="4" Click="DownloadJavaButton_Click"/>
+                                <Button x:Name="CancelJavaButton" Content="取消下载" HorizontalAlignment="Stretch" Height="40" Background="#E81123" Foreground="White" CornerRadius="4" Click="CancelJavaButton_Click" Visibility="Collapsed"/>
+                            </StackPanel>
+
+                            <Grid ColumnSpacing="10" Margin="0,10,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ProgressBar x:Name="JavaDownloadProgress" Grid.Column="0" Height="6" Minimum="0" Maximum="100" Value="0" Visibility="Collapsed" CornerRadius="3" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="JavaDownloadSpeedText" Grid.Column="1" Text="0 KB/s" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Visibility="Collapsed" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            </Grid>
+
+                            <TextBlock x:Name="JavaStatusText" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Visibility="Collapsed" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
             </Grid>
 
         </Grid>

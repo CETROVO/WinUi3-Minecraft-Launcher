@@ -57,17 +57,65 @@ namespace WinUi3_Minecraft_Launcher
         public List<FolderEntry> Folders { get; set; } = new();
         public string? ActiveFolderPath { get; set; }
         public string? ActiveVersionName { get; set; }
-        public string? JavaPath { get; set; }
-        public int MaxRamMb { get; set; } = 0;
-        public bool AutoMemory { get; set; } = true;
+
+        // 启动选项
         public bool VersionIsolation { get; set; } = true;
         public bool AutoIsolation { get; set; } = true;
+        public int IsolationMode { get; set; } = 0;
+        public int LauncherVisibility { get; set; } = 0;
+        public int ProcessPriority { get; set; } = 1;
+        public int WindowSize { get; set; } = 0;
 
+        // 内存分配
+        public bool AutoMemory { get; set; } = true;
+        public int MaxRamMb { get; set; } = 4096;
+
+        // 高级选项
+        public string JvmArgs { get; set; } = "-XX:-OmitStackTraceInFastThrow -Djdk.lang.Process.allowAmbiguousCommands=True -Dfml.ignoreInvalidMinecraftCertificates=True";
+        public string GameArgs { get; set; } = "";
+        public string PreLaunchCommand { get; set; } = "";
+        public string? JavaPath { get; set; }
+        public int MemoryAlgorithm { get; set; } = 0;
+        public bool DisableJavaLaunchWrapper { get; set; } = false;
+        public bool DisableLWJGLUnsafeAgent { get; set; } = false;
+        public bool UseHighPerformanceGpu { get; set; } = true;
+
+        // 下载设置
+        public int FileDownloadSource { get; set; } = 0;
+        public int VersionListSource { get; set; } = 0;
+
+        // 社区资源设置
+        public int CommunitySource { get; set; } = 0;
+        public int FileNameFormat { get; set; } = 0;
+        public int ModManageStyle { get; set; } = 0;
+
+        // 辅助功能
+        public bool ShowReleaseUpdate { get; set; } = false;
+        public bool ShowSnapshotUpdate { get; set; } = false;
+        public bool AutoSetChinese { get; set; } = true;
+
+        // 启动器设置
+        public int LauncherSystemUpdate { get; set; } = 2;
+        public int LauncherSystemPosts { get; set; } = 2;
+        public string CacheFolder { get; set; } = "";
+        public bool AllowAnonData { get; set; } = true;
+
+        // 账户
         public AccountType AccountType { get; set; } = AccountType.Offline;
         public string AccountUsername { get; set; } = "Steve";
         public string AccountUuid { get; set; } = "";
         public string AccountAccessToken { get; set; } = "";
         public string AccountAuthServerUrl { get; set; } = "";
+    }
+
+    // 🚨 新增：专门用来存 JSON 的持久化状态类
+    public class AppState
+    {
+        public int WindowWidth { get; set; } = 1450;
+        public int WindowHeight { get; set; } = 850;
+        public int WindowX { get; set; } = 100;
+        public int WindowY { get; set; } = 100;
+        public int LastSelectedPageIndex { get; set; } = 0;
     }
 
     public class LoaderVersion : INotifyPropertyChanged
@@ -118,17 +166,14 @@ namespace WinUi3_Minecraft_Launcher
         private string _updateStatus = "";
         private Visibility _updateBtnVisibility = Visibility.Collapsed;
         private string _latestVersion = "";
-
         public string FilePath { get; set; } = "";
         public string ModId { get; set; } = "";
         public string Name { get; set; } = "";
         public string CurrentVersion { get; set; } = "";
         public Microsoft.UI.Xaml.Media.ImageSource? ImageSource { get; set; }
-
         public string LatestVersion { get => _latestVersion; set { _latestVersion = value; OnPropertyChanged(); } }
         public string UpdateStatus { get => _updateStatus; set { _updateStatus = value; OnPropertyChanged(); } }
         public Visibility UpdateBtnVisibility { get => _updateBtnVisibility; set { _updateBtnVisibility = value; OnPropertyChanged(); } }
-
         public string LatestDownloadUrl { get; set; } = "";
         public string LatestFileName { get; set; } = "";
 
@@ -136,27 +181,18 @@ namespace WinUi3_Minecraft_Launcher
         protected void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 
-    // 🚨 修改为了 INotifyPropertyChanged，修复图标不显示问题
     public class ModrinthProject : INotifyPropertyChanged
     {
         public string ProjectId { get; set; } = "";
-        public string Slug { get; set; } = "";
         public string Title { get; set; } = "";
         public string Description { get; set; } = "";
         public string IconUrl { get; set; } = "";
         public int Downloads { get; set; }
         public string ProjectType { get; set; } = "";
-
         private Microsoft.UI.Xaml.Media.ImageSource? _imageSource;
-        public Microsoft.UI.Xaml.Media.ImageSource? ImageSource
-        {
-            get => _imageSource;
-            set { _imageSource = value; OnPropertyChanged(); }
-        }
-
+        public Microsoft.UI.Xaml.Media.ImageSource? ImageSource { get => _imageSource; set { _imageSource = value; OnPropertyChanged(); } }
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string? name = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        protected void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 
     public class BoolToVisibilityConverter : Microsoft.UI.Xaml.Data.IValueConverter

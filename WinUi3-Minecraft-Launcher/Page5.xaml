@@ -29,18 +29,18 @@
                 <Border Grid.Column="1" Width="36" Height="36" CornerRadius="8" Background="#55FF55" VerticalAlignment="Center">
                     <TextBlock Text="MC" FontSize="16" FontWeight="Bold" Foreground="#1A1A1A" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
-                <TextBox Grid.Column="2" x:Name="VersionNameTextBox" Text="加载中..." FontSize="22" FontWeight="Bold" Background="Transparent" BorderThickness="0" Padding="0" VerticalAlignment="Center" PlaceholderText="输入实例名称" />
+                <TextBox Grid.Column="2" x:Name="VersionNameTextBox" Text="加载中..." FontSize="22" FontWeight="Bold" Background="Transparent" BorderThickness="0" Padding="0" VerticalAlignment="Center" PlaceholderText="输入实例名称" TextChanged="VersionNameTextBox_TextChanged" />
             </Grid>
         </Border>
 
-        <!-- 主体：左右分栏 -->
+        <!-- 主体：左侧加载器列表 + 右侧面板 -->
         <Grid Grid.Row="1" ColumnSpacing="20" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="180" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- 左侧：加载器列表 -->
+            <!-- 左侧加载器列表 -->
             <ListView x:Name="LoaderListView" Grid.Column="0" 
                       Background="#10FFFFFF" CornerRadius="8"
                       BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
@@ -61,22 +61,21 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <!-- 右侧：配置面板 -->
+            <!-- 右侧配置面板 -->
             <Grid Grid.Column="1">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <TextBlock x:Name="DefaultHintText" Text="纯净原版不需要额外配置。" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,50,0,0" FontSize="15" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <TextBlock x:Name="DefaultHintText" Text="纯净原版不需要额外配置，直接点击下方按钮下载即可。" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,50,0,0" FontSize="15" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
+                        <!-- Fabric -->
                         <StackPanel x:Name="FabricPanel" Spacing="15" Visibility="Collapsed">
                             <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
                                 <StackPanel Spacing="12">
+                                    <ToggleSwitch x:Name="FabricToggle" Header="使用该模组加载器" IsOn="False" OnContent="已启用" OffContent="未启用" Toggled="FabricToggle_Toggled"/>
                                     <TextBlock Text="选择 Fabric Loader 版本" FontSize="16" FontWeight="SemiBold" />
                                     <ComboBox x:Name="FabricVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectionChanged="FabricVersionCombo_SelectionChanged" />
                                 </StackPanel>
                             </Border>
-                        </StackPanel>
-
-                        <StackPanel x:Name="FabricApiPanel" Spacing="15" Visibility="Collapsed">
                             <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
                                 <StackPanel Spacing="16">
                                     <TextBlock Text="Fabric API (前置)" FontSize="16" FontWeight="SemiBold" />
@@ -85,42 +84,57 @@
                             </Border>
                         </StackPanel>
 
+                        <!-- Quilt -->
                         <StackPanel x:Name="QuiltPanel" Spacing="15" Visibility="Collapsed">
                             <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
                                 <StackPanel Spacing="12">
+                                    <ToggleSwitch x:Name="QuiltToggle" Header="使用该模组加载器" IsOn="False" OnContent="已启用" OffContent="未启用" Toggled="QuiltToggle_Toggled"/>
                                     <TextBlock Text="选择 Quilt Loader 版本" FontSize="16" FontWeight="SemiBold" />
                                     <ComboBox x:Name="QuiltVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectionChanged="QuiltVersionCombo_SelectionChanged" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
 
+                        <!-- Forge -->
                         <StackPanel x:Name="ForgePanel" Spacing="15" Visibility="Collapsed">
                             <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
                                 <StackPanel Spacing="12">
+                                    <ToggleSwitch x:Name="ForgeToggle" Header="使用该模组加载器" IsOn="False" OnContent="已启用" OffContent="未启用" Toggled="ForgeToggle_Toggled"/>
                                     <TextBlock Text="选择 Forge 版本" FontSize="16" FontWeight="SemiBold" />
                                     <ComboBox x:Name="ForgeVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectionChanged="ForgeVersionCombo_SelectionChanged" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
 
+                        <!-- NeoForge -->
                         <StackPanel x:Name="NeoForgePanel" Spacing="15" Visibility="Collapsed">
                             <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
                                 <StackPanel Spacing="12">
+                                    <ToggleSwitch x:Name="NeoForgeToggle" Header="使用该模组加载器" IsOn="False" OnContent="已启用" OffContent="未启用" Toggled="NeoForgeToggle_Toggled"/>
                                     <TextBlock Text="选择 NeoForge 版本" FontSize="16" FontWeight="SemiBold" />
                                     <ComboBox x:Name="NeoForgeVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectionChanged="NeoForgeVersionCombo_SelectionChanged" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
 
-                        <StackPanel x:Name="OptiFinePanel" Spacing="15" Visibility="Collapsed">
+                        <!-- Java 面板 -->
+                        <StackPanel x:Name="JavaPanel" Spacing="15" Visibility="Collapsed">
                             <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
                                 <StackPanel Spacing="12">
-                                    <TextBlock Text="选择 OptiFine 版本" FontSize="16" FontWeight="SemiBold" />
-                                    <ComboBox x:Name="OptiFineVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectionChanged="OptiFineVersionCombo_SelectionChanged" />
-                                    <TextBlock Text="⚠️ 需在弹出的界面手动点击 Install。" FontSize="12" Foreground="Orange" />
+                                    <TextBlock Text="Java 运行环境" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" />
+                                    <TextBlock Text="Minecraft 运行需要 Java。如果您遇到启动报错，可以在这里重新安装。" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                    <ComboBox x:Name="JavaVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectedIndex="0">
+                                        <ComboBoxItem Content="Java 21 (推荐，适用 1.20.5+)" Tag="21"/>
+                                        <ComboBoxItem Content="Java 17 (适用 1.18 - 1.20.4)" Tag="17"/>
+                                        <ComboBoxItem Content="Java 8 (适用 1.16.5 及以下)" Tag="8"/>
+                                    </ComboBox>
+                                    <Button x:Name="DownloadJavaButton" Content="下载并安装到本地" HorizontalAlignment="Stretch" Height="40" Background="#0078D4" Foreground="White" CornerRadius="4" Click="DownloadJavaButton_Click"/>
+                                    <ProgressBar x:Name="JavaDownloadProgress" Height="6" Minimum="0" Maximum="100" Value="0" Visibility="Collapsed" CornerRadius="3"/>
+                                    <TextBlock x:Name="JavaStatusText" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Visibility="Collapsed" TextWrapping="Wrap"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
+
                     </StackPanel>
                 </ScrollViewer>
             </Grid>

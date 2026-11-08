@@ -7,8 +7,12 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI;
@@ -21,7 +25,7 @@ namespace WinUi3_Minecraft_Launcher
         private AppWindow? _appWindow;
         private bool _isClosed = false;
         private CancellationTokenSource? _launchCts;
-        private static readonly HttpClient Http = new HttpClient();
+        private static readonly HttpClient Http = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };
 
         public MainWindow()
         {
@@ -42,27 +46,59 @@ namespace WinUi3_Minecraft_Launcher
                 _appWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
                 _appWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
-                // 🚨 窗口居中魔法（把尺寸从 1000x700 改大）
+                // 🚨 核心修复：智能居中与状态恢复
                 var displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary);
                 if (displayArea != null)
                 {
                     var workArea = displayArea.WorkArea;
-                    int width = 1450;  // 改大
-                    int height = 850;  // 改大
-                    int x = (workArea.Width - width) / 2;
-                    int y = (workArea.Height - height) / 2;
+                    var state = ConfigService.LoadState();
+
+                    int width = state.WindowWidth > 0 ? state.WindowWidth : (int)(workArea.Width * 0.75);
+                    int height = state.WindowHeight > 0 ? state.WindowHeight : (int)(workArea.Height * 0.75);
+                    width = Math.Clamp(width, 1024, workArea.Width);
+                    height = Math.Clamp(height, 680, workArea.Height);
+
+                    // 默认居中坐标
+                    int x = workArea.X + (workArea.Width - width) / 2;
+                    int y = workArea.Y + (workArea.Height - height) / 2;
+
+                    // 如果 state 有有效的坐标记录，且没有被甩到屏幕外，才恢复坐标
+                    if (state.WindowX != 0 && state.WindowY != 0)
+                    {
+                        if (state.WindowX >= workArea.X && state.WindowX + width <= workArea.X + workArea.Width &&
+                            state.WindowY >= workArea.Y && state.WindowY + height <= workArea.Y + workArea.Height)
+                        {
+                            x = state.WindowX;
+                            y = state.WindowY;
+                        }
+                    }
+
                     _appWindow.Resize(new Windows.Graphics.SizeInt32(width, height));
                     _appWindow.Move(new Windows.Graphics.PointInt32(x, y));
                 }
             }
 
-                if (this.Content is FrameworkElement rootElement)
+            if (this.Content is FrameworkElement rootElement)
                 rootElement.ActualThemeChanged += (s, e) => UpdateTitleBarTheme();
 
             this.Activated += (s, e) => UpdateTitleBarTheme();
+
             this.Closed += (s, e) =>
             {
                 _isClosed = true;
+
+                if (_appWindow != null)
+                {
+                    var state = new AppState
+                    {
+                        WindowWidth = _appWindow.Size.Width,
+                        WindowHeight = _appWindow.Size.Height,
+                        WindowX = _appWindow.Position.X,
+                        WindowY = _appWindow.Position.Y
+                    };
+                    ConfigService.SaveState(state);
+                }
+
                 _appWindow = null;
                 _launchCts?.Cancel();
                 _launchCts?.Dispose();
@@ -297,16 +333,84 @@ namespace WinUi3_Minecraft_Launcher
             }
         }
 
-        private async void LaunchButton_Click(object sender, RoutedEventArgs e)
+        private int GetRequiredJavaMajorVersion(string minecraftPath, string versionName)
         {
-            if (string.IsNullOrEmpty(LauncherState.CurrentMinecraftPath) || string.IsNullOrEmpty(LauncherState.CurrentVersionName)) { await ShowMessageAsync("提示", "请先选择版本！"); return; }
-            ProgressOverlay.Visibility = Visibility.Visible; LaunchProgressBar.Value = 0; CancelLaunchButton.IsEnabled = true; LaunchButton.IsEnabled = false;
-            _launchCts = new CancellationTokenSource(); var token = _launchCts.Token;
-            var progress = new Progress<LaunchProgress>(p => { ProgressTitleText.Text = p.Title; ProgressDetailText.Text = p.Detail; LaunchProgressBar.IsIndeterminate = p.IsIndeterminate; if (!p.IsIndeterminate) LaunchProgressBar.Value = p.Percentage; });
+            int requiredMajor = 8;
             try
             {
-                var process = await GameLauncher.LaunchAsync(LauncherState.CurrentMinecraftPath!, LauncherState.CurrentVersionName!, LauncherState.MaxRamMb, msg => { }, progress, token);
+                var jsonPath = Path.Combine(minecraftPath, "versions", versionName, versionName + ".json");
+                if (File.Exists(jsonPath))
+                {
+                    var json = JsonDocument.Parse(File.ReadAllText(jsonPath));
+                    if (json.RootElement.TryGetProperty("javaVersion", out var jv) && jv.TryGetProperty("majorVersion", out var mv))
+                    {
+                        return mv.GetInt32();
+                    }
+                }
+
+                var match = Regex.Match(versionName, @"1\.(\d+)");
+                if (match.Success)
+                {
+                    int minor = int.Parse(match.Groups[1].Value);
+                    if (minor >= 21) requiredMajor = 21;
+                    else if (minor >= 18) requiredMajor = 17;
+                    else if (minor >= 17) requiredMajor = 16;
+                }
+            }
+            catch { }
+            return requiredMajor;
+        }
+
+        private async void LaunchButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(LauncherState.CurrentMinecraftPath) || string.IsNullOrEmpty(LauncherState.CurrentVersionName))
+            {
+                await ShowMessageAsync("提示", "请先选择版本！");
+                return;
+            }
+
+            int requiredJava = GetRequiredJavaMajorVersion(LauncherState.CurrentMinecraftPath, LauncherState.CurrentVersionName);
+            var javaPath = JavaFinder.FindJavaByMajorVersion(requiredJava);
+
+            if (string.IsNullOrEmpty(javaPath))
+            {
+                var dialog = new ContentDialog
+                {
+                    Title = "缺少 Java 运行环境",
+                    Content = new TextBlock { Text = $"检测到当前版本 (需要 Java {requiredJava}) 的 Java 运行环境缺失或版本不匹配。\n\n这意味着您将无法正常游玩 Minecraft Java Edition。\n\n是否前往下载页安装？", TextWrapping = TextWrapping.Wrap },
+                    PrimaryButtonText = "前往安装",
+                    CloseButtonText = "取消",
+                    XamlRoot = (this.Content as FrameworkElement)?.XamlRoot
+                };
+
+                if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                {
+                    ContentFrame.Navigate(typeof(Page2), "Java_Force");
+                }
+                return;
+            }
+
+            ProgressOverlay.Visibility = Visibility.Visible;
+            LaunchProgressBar.Value = 0;
+            CancelLaunchButton.IsEnabled = true;
+            LaunchButton.IsEnabled = false;
+            _launchCts = new CancellationTokenSource();
+            var token = _launchCts.Token;
+            var progress = new Progress<LaunchProgress>(p => { ProgressTitleText.Text = p.Title; ProgressDetailText.Text = p.Detail; LaunchProgressBar.IsIndeterminate = p.IsIndeterminate; if (!p.IsIndeterminate) LaunchProgressBar.Value = p.Percentage; });
+
+            try
+            {
+                LauncherState.JavaPath = javaPath;
+
+                var config = ConfigService.Load();
+
+                var process = await GameLauncher.LaunchAsync(LauncherState.CurrentMinecraftPath!, LauncherState.CurrentVersionName!, LauncherState.MaxRamMb, config, msg => { }, progress, token);
                 ProgressOverlay.Visibility = Visibility.Collapsed;
+
+                if (config.LauncherVisibility == 1)
+                {
+                    _appWindow?.Hide();
+                }
             }
             catch (OperationCanceledException) { ProgressOverlay.Visibility = Visibility.Collapsed; await ShowMessageAsync("已取消", "启动已取消。"); }
             catch (Exception ex) { ProgressOverlay.Visibility = Visibility.Collapsed; await ShowMessageAsync("启动失败", $"{ex.Message}"); }
@@ -315,33 +419,9 @@ namespace WinUi3_Minecraft_Launcher
 
         private void CancelLaunch_Click(object sender, RoutedEventArgs e) { CancelLaunchButton.IsEnabled = false; ProgressTitleText.Text = "正在取消..."; _launchCts?.Cancel(); }
 
-        private async void SettingsButton_Click(object sender, RoutedEventArgs e)
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            var javaBox = new TextBox { Header = "Java 路径", Text = LauncherState.JavaPath ?? "" };
-            var ramBox = new NumberBox { Header = "最大内存 (MB)", Value = LauncherState.MaxRamMb, Minimum = 0, Maximum = 32768 };
-            var autoIsolationToggle = new ToggleSwitch { Header = "智能版本隔离", IsOn = LauncherState.AutoIsolation };
-            var manualIsolationToggle = new ToggleSwitch { Header = "版本隔离模式", IsOn = LauncherState.VersionIsolation, IsEnabled = !LauncherState.AutoIsolation };
-            autoIsolationToggle.Toggled += (s, ee) => { manualIsolationToggle.IsEnabled = !autoIsolationToggle.IsOn; };
-
-            var pickBtn = new Button { Content = "浏览..." };
-            pickBtn.Click += async (s, ee) =>
-            {
-                var picker = new Windows.Storage.Pickers.FileOpenPicker(); picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.ComputerFolder; picker.FileTypeFilter.Add(".exe");
-                var hwnd = WindowNative.GetWindowHandle(this); InitializeWithWindow.Initialize(picker, hwnd);
-                var file = await picker.PickSingleFileAsync(); if (file != null) javaBox.Text = file.Path;
-            };
-
-            var panel = new StackPanel { Spacing = 12, MinWidth = 480 };
-            panel.Children.Add(javaBox); panel.Children.Add(pickBtn); panel.Children.Add(ramBox); panel.Children.Add(autoIsolationToggle); panel.Children.Add(manualIsolationToggle);
-
-            var dialog = new ContentDialog { Title = "设置", Content = panel, PrimaryButtonText = "保存", CloseButtonText = "取消", XamlRoot = (this.Content as FrameworkElement)?.XamlRoot };
-            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
-            {
-                LauncherState.JavaPath = string.IsNullOrWhiteSpace(javaBox.Text) ? null : javaBox.Text.Trim();
-                LauncherState.MaxRamMb = (int)ramBox.Value; LauncherState.AutoMemory = LauncherState.MaxRamMb <= 0;
-                LauncherState.AutoIsolation = autoIsolationToggle.IsOn; LauncherState.VersionIsolation = manualIsolationToggle.IsOn;
-                var cfg = ConfigService.Load(); cfg.JavaPath = LauncherState.JavaPath; cfg.MaxRamMb = LauncherState.MaxRamMb; cfg.AutoMemory = LauncherState.AutoMemory; cfg.AutoIsolation = LauncherState.AutoIsolation; cfg.VersionIsolation = LauncherState.VersionIsolation; ConfigService.Save(cfg);
-            }
+            ContentFrame.Navigate(typeof(Page3));
         }
 
         private async Task ShowMessageAsync(string title, string message)

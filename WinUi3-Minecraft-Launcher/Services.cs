@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using CmlLib.Core;
@@ -18,21 +17,20 @@ using Microsoft.UI.Xaml.Data;
 
 namespace WinUi3_Minecraft_Launcher
 {
-    public class UserAccount : INotifyPropertyChanged
+    public class UserAccount : System.ComponentModel.INotifyPropertyChanged
     {
         private string _username = "Steve";
         private string _uuid = "";
         private string _accessToken = "";
         private AccountType _type = AccountType.Offline;
         private string _authServerUrl = "";
-
         public string Username { get => _username; set { _username = value; OnPropertyChanged(); } }
         public string Uuid { get => _uuid; set { _uuid = value; OnPropertyChanged(); } }
         public string AccessToken { get => _accessToken; set { _accessToken = value; OnPropertyChanged(); } }
         public AccountType Type { get => _type; set { _type = value; OnPropertyChanged(); } }
         public string AuthServerUrl { get => _authServerUrl; set { _authServerUrl = value; OnPropertyChanged(); } }
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(name));
     }
 
     public static class AccountService
@@ -74,8 +72,6 @@ namespace WinUi3_Minecraft_Launcher
         public static bool AutoMemory { get; set; } = true;
         public static bool VersionIsolation { get; set; } = true;
         public static bool AutoIsolation { get; set; } = true;
-
-        // 🚨 终于加上了！
         public static DownloadSource CurrentSource { get; set; } = DownloadSource.Auto;
     }
 
@@ -85,14 +81,47 @@ namespace WinUi3_Minecraft_Launcher
 
         public static List<string> FindAllJavas()
         {
-            var result = new List<string>(); var roots = SearchRoots.ToList(); var javaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
+            var result = new List<string>();
+            var roots = SearchRoots.ToList();
+            var javaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
+            string wmlJavaDir = @"C:\WML\Java";
+            if (Directory.Exists(wmlJavaDir)) roots.Add(wmlJavaDir);
             if (!string.IsNullOrEmpty(javaHome) && Directory.Exists(javaHome)) roots.Add(javaHome);
+
             foreach (var root in roots)
             {
                 if (string.IsNullOrEmpty(root) || !Directory.Exists(root)) continue;
                 try { var files = Directory.GetFiles(root, "java.exe", SearchOption.AllDirectories); foreach (var f in files) if (!result.Contains(f)) result.Add(f); } catch { }
             }
             return result;
+        }
+
+        public static int GetRequiredJavaMajorVersion(string minecraftPath, string versionName)
+        {
+            int requiredMajor = 8;
+            try
+            {
+                var jsonPath = Path.Combine(minecraftPath, "versions", versionName, versionName + ".json");
+                if (File.Exists(jsonPath))
+                {
+                    var json = JsonDocument.Parse(File.ReadAllText(jsonPath));
+                    if (json.RootElement.TryGetProperty("javaVersion", out var jv) && jv.TryGetProperty("majorVersion", out var mv))
+                    {
+                        return mv.GetInt32();
+                    }
+                }
+
+                var match = Regex.Match(versionName, @"1\.(\d+)");
+                if (match.Success)
+                {
+                    int minor = int.Parse(match.Groups[1].Value);
+                    if (minor >= 21) requiredMajor = 21;
+                    else if (minor >= 18) requiredMajor = 17;
+                    else if (minor >= 17) requiredMajor = 16;
+                }
+            }
+            catch { }
+            return requiredMajor;
         }
 
         public static string? FindJava()
@@ -170,11 +199,9 @@ namespace WinUi3_Minecraft_Launcher
             public MEMORYSTATUSEX() { this.dwLength = (uint)Marshal.SizeOf(typeof(MEMORYSTATUSEX)); }
         }
         [DllImport("kernel32.dll", SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] private static extern bool GlobalMemoryStatusEx([In, Out] MEMORYSTATUSEX lpBuffer);
-        public static double GetAvailablePhysicalMemoryGB()
-        {
-            try { var m = new MEMORYSTATUSEX(); if (GlobalMemoryStatusEx(m)) return m.ullAvailPhys / 1024.0 / 1024.0 / 1024.0; } catch { }
-            return 4.0;
-        }
+        public static double GetTotalPhysicalMemoryGB() { try { var m = new MEMORYSTATUSEX(); if (GlobalMemoryStatusEx(m)) return m.ullTotalPhys / 1024.0 / 1024.0 / 1024.0; } catch { } return 16.0; }
+        public static double GetAvailablePhysicalMemoryGB() { try { var m = new MEMORYSTATUSEX(); if (GlobalMemoryStatusEx(m)) return m.ullAvailPhys / 1024.0 / 1024.0 / 1024.0; } catch { } return 4.0; }
+
         public static int CalculateAutoMemoryMb(string versionDir, bool is64BitJava)
         {
             if (!is64BitJava) return 1024;
@@ -190,6 +217,7 @@ namespace WinUi3_Minecraft_Launcher
             if (remaining > 0 && allocated < ramTarget3) { double p3 = Math.Min(remaining * 0.4, ramTarget3 - allocated); allocated += p3; remaining -= p3; }
             if (remaining > 0) allocated += remaining * 0.15;
             allocated = Math.Max(allocated, ramMinimum); allocated = Math.Min(allocated, avail * 0.8);
+            if (allocated > 8.0) allocated = 8.0;
             int resultMb = (int)(allocated * 1024); resultMb = (resultMb / 32) * 32; return resultMb;
         }
     }
@@ -230,62 +258,131 @@ namespace WinUi3_Minecraft_Launcher
             return false;
         }
 
-        public static async Task<Process> LaunchAsync(string minecraftPath, string versionName, int maxRamMb, Action<string> log, IProgress<LaunchProgress>? progress, CancellationToken cancellationToken)
+        public static async Task<Process> LaunchAsync(string minecraftPath, string versionName, int maxRamMb, AppConfig config, Action<string> log, IProgress<LaunchProgress>? progress, CancellationToken cancellationToken)
         {
             void Report(string title, string detail, double pct, bool indeterminate = false) => progress?.Report(new LaunchProgress { Title = title, Detail = detail, Percentage = pct, IsIndeterminate = indeterminate });
             cancellationToken.ThrowIfCancellationRequested(); Report("正在启动游戏...", "初始化中", 0);
-            log("========== 启动流程开始 =========="); log($"游戏路径: {minecraftPath}"); log($"目标版本: {versionName}");
 
-            string? javaPath = JavaFinder.FindJava();
-            if (javaPath == null) throw new Exception("找不到可用的 Java，请在设置里手动指定路径。");
-            log($"最终使用 Java: {javaPath}");
+            // 🚨 核心修改：智能匹配 Java
+            string? javaPath = null;
+            if (string.IsNullOrEmpty(config.JavaPath))
+            {
+                // 自动模式
+                int requiredMajor = JavaFinder.GetRequiredJavaMajorVersion(minecraftPath, versionName);
+                javaPath = JavaFinder.FindJavaByMajorVersion(requiredMajor);
+                log($"[Java] 自动选择模式，根据版本需求推荐 Java {requiredMajor}");
+            }
+            else
+            {
+                // 手动模式
+                javaPath = config.JavaPath;
+                if (!File.Exists(javaPath))
+                {
+                    log($"[Java] 手动指定的 Java 路径无效，尝试自动回退。");
+                    int requiredMajor = JavaFinder.GetRequiredJavaMajorVersion(minecraftPath, versionName);
+                    javaPath = JavaFinder.FindJavaByMajorVersion(requiredMajor);
+                }
+            }
+
+            if (javaPath == null) throw new Exception("找不到可用的 Java，请在设置里手动指定路径或前往下载。");
 
             var versionDir = Path.Combine(minecraftPath, "versions", versionName);
             string gameDir = (LauncherState.AutoIsolation && ShouldIsolate(minecraftPath, versionName)) || LauncherState.VersionIsolation ? versionDir : minecraftPath;
-            log($"📂 游戏目录 (gameDir): {gameDir}");
 
             var session = AccountService.GetSession();
-            log($"账户: {session.Username} ({AccountService.GetTypeDisplayName()})");
-
             bool is64Bit = JavaFinder.Is64BitJava(javaPath);
             int finalRam = !is64Bit ? 1024 : (maxRamMb <= 0 || LauncherState.AutoMemory ? MemoryAllocator.CalculateAutoMemoryMb(versionDir, is64Bit) : maxRamMb);
-            log($"内存分配: {finalRam}MB");
 
             var extraJvmArgs = new List<MArgument>();
+
+            // Authlib
             if (AccountService.Current.Type == AccountType.ThirdParty && !string.IsNullOrEmpty(AccountService.Current.AuthServerUrl))
             {
                 try
                 {
-                    Report("正在启动游戏...", "准备第三方登录认证", 25);
                     var jarPath = await AuthlibInjectorService.EnsureJarAsync(log);
-                    var agentArg = $"-javaagent:{jarPath}={AccountService.Current.AuthServerUrl}";
-                    extraJvmArgs.Add(new MArgument(agentArg)); log($"[Authlib] 注入参数: {agentArg}");
+                    extraJvmArgs.Add(new MArgument($"-javaagent:{jarPath}={AccountService.Current.AuthServerUrl}"));
                 }
-                catch (Exception ex) { log($"[Authlib] ⚠️ 注入失败: {ex.Message}"); }
+                catch { }
+            }
+
+            // 🚨 核心：应用面板上的高级选项
+            if (config.DisableLWJGLUnsafeAgent)
+            {
+                extraJvmArgs.Add(new MArgument("-Dorg.lwjgl.system.allocator=system"));
+                log("[JVM] 已注入禁用 Unsafe Agent 参数");
+            }
+            if (config.DisableJavaLaunchWrapper)
+            {
+                extraJvmArgs.Add(new MArgument("-Dfml.ignorePatchDiscrepancies=true"));
+                log("[JVM] 已注入禁用 Launch Wrapper 参数");
+            }
+
+            // 自定义 JVM Args
+            if (!string.IsNullOrWhiteSpace(config.JvmArgs))
+            {
+                foreach (var arg in config.JvmArgs.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+                    extraJvmArgs.Add(new MArgument(arg));
             }
 
             var extraGameArgs = new List<MArgument> { new MArgument("--gameDir"), new MArgument(gameDir) };
-            var option = new MLaunchOption { Session = session, MaximumRamMb = finalRam, JavaPath = javaPath, JvmArgumentOverrides = extraJvmArgs.ToArray(), ExtraGameArguments = extraGameArgs.ToArray() };
 
-            Report("正在准备游戏资源...", "检查游戏文件完整性", 50, indeterminate: true);
+            if (config.WindowSize == 1)
+            {
+                extraGameArgs.Add(new MArgument("--fullscreen"));
+            }
+            if (!string.IsNullOrWhiteSpace(config.GameArgs))
+            {
+                foreach (var arg in config.GameArgs.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+                    extraGameArgs.Add(new MArgument(arg));
+            }
+
+            var option = new MLaunchOption
+            {
+                Session = session,
+                MaximumRamMb = finalRam,
+                JavaPath = javaPath,
+                JvmArgumentOverrides = extraJvmArgs.ToArray(),
+                ExtraGameArguments = extraGameArgs.ToArray()
+            };
+
             var launcher = new MinecraftLauncher(new MinecraftPath(minecraftPath));
             var process = await launcher.BuildProcessAsync(versionName, option);
 
             if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException(cancellationToken);
-            Report("正在启动 JVM...", "启动游戏进程", 90);
 
             var stderrBuilder = new StringBuilder(); var stdoutBuilder = new StringBuilder();
-            process.StartInfo.RedirectStandardOutput = true; process.StartInfo.RedirectStandardError = true; process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
 
-            process.OutputDataReceived += (s, e) => { if (e.Data != null) { log($"[MC] {e.Data}"); stdoutBuilder.AppendLine(e.Data); if (stdoutBuilder.Length > 50000) stdoutBuilder.Remove(0, 25000); } };
-            process.ErrorDataReceived += (s, e) => { if (e.Data != null) { log($"[MC-ERR] {e.Data}"); stderrBuilder.AppendLine(e.Data); } };
+            // 🚨 核心：应用使用高性能显卡
+            if (config.UseHighPerformanceGpu)
+            {
+                process.StartInfo.EnvironmentVariables["NvOptimusEnablement"] = "1";
+                process.StartInfo.EnvironmentVariables["AmdPowerXpressRequestHighPerformance"] = "1";
+                log("[GPU] 已注入强制独立显卡环境变量");
+            }
 
-            process.Start(); process.BeginOutputReadLine(); process.BeginErrorReadLine();
-            log($"✅ 游戏进程已启动，PID: {process.Id}");
+            process.OutputDataReceived += (s, e) => { if (e.Data != null) log($"[MC] {e.Data}"); };
+            process.ErrorDataReceived += (s, e) => { if (e.Data != null) log($"[MC-ERR] {e.Data}"); };
+
+            process.Start();
+
+            try
+            {
+                if (config.ProcessPriority == 0) process.PriorityClass = ProcessPriorityClass.Idle;
+                else if (config.ProcessPriority == 2) process.PriorityClass = ProcessPriorityClass.High;
+                else process.PriorityClass = ProcessPriorityClass.Normal;
+            }
+            catch { }
+
+            process.BeginOutputReadLine(); process.BeginErrorReadLine();
 
             Report("正在等待游戏窗口...", "游戏正在加载，请稍候", 95, indeterminate: true);
             try { await WaitForGameWindowAsync(process, cancellationToken, log, stderrBuilder, stdoutBuilder); }
-            catch (OperationCanceledException) { try { if (!process.HasExited) { process.Kill(true); log("🛑 用户取消，已终止游戏进程"); } } catch { } throw; }
+            catch (OperationCanceledException) { try { if (!process.HasExited) process.Kill(true); } catch { } throw; }
 
             Report("✅ 游戏已启动", $"PID: {process.Id}", 100); return process;
         }
@@ -300,20 +397,17 @@ namespace WinUi3_Minecraft_Launcher
                 {
                     if (process.HasExited)
                     {
-                        var errorOutput = stderrBuilder.ToString(); var standardOutput = stdoutBuilder.ToString();
-                        var fullLog = $"[STDERR]\n{errorOutput}\n\n[STDOUT]\n{standardOutput}";
-                        if (string.IsNullOrWhiteSpace(errorOutput) && string.IsNullOrWhiteSpace(standardOutput)) fullLog = "Java 没有输出任何信息就死了。";
-                        try { Directory.CreateDirectory(@"C:\MinecraftTemp"); var crashFile = Path.Combine(@"C:\MinecraftTemp", "last_crash.log"); await File.WriteAllTextAsync(crashFile, fullLog); log($"[Crash] 崩溃日志已保存至: {crashFile}"); } catch (Exception ex) { log($"[Crash] 写入崩溃日志失败: {ex.Message}"); }
+                        var fullLog = $"[STDERR]\n{stderrBuilder}\n\n[STDOUT]\n{stdoutBuilder}";
+                        try { Directory.CreateDirectory(@"C:\MinecraftTemp"); await File.WriteAllTextAsync(Path.Combine(@"C:\MinecraftTemp", "last_crash.log"), fullLog); } catch { }
                         var lines = fullLog.Split('\n', StringSplitOptions.RemoveEmptyEntries); var tail = string.Join("\n", lines.TakeLast(20));
                         throw new Exception($"游戏进程已退出 (ExitCode: {process.ExitCode})\n\n【崩溃信息摘要】:\n{tail}");
                     }
                     process.Refresh();
-                    if (process.MainWindowHandle != IntPtr.Zero) { log($"✅ 检测到游戏窗口 (Handle: {process.MainWindowHandle})"); return; }
+                    if (process.MainWindowHandle != IntPtr.Zero) return;
                 }
                 catch (InvalidOperationException) { throw new Exception("游戏进程异常退出。"); }
                 await Task.Delay(400, ct);
             }
-            log("⚠️ 等待游戏窗口超时，但进程仍在运行");
         }
     }
 }

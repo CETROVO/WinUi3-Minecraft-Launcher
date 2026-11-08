@@ -15,30 +15,41 @@ namespace WinUi3_Minecraft_Launcher
 
             string json = "";
 
-            if (LauncherState.CurrentSource == DownloadSource.Mirror)
+            // 🚨 核心：实时读取 Page3 设置里的 "版本列表源" (0,1,2,3)
+            int source = ConfigService.Load().VersionListSource;
+
+            if (source == 3) // 仅镜像
             {
-                System.Diagnostics.Debug.WriteLine("[源] 强制使用镜像源");
                 using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
                 json = await client.GetStringAsync(mirrorUrl);
             }
-            else if (LauncherState.CurrentSource == DownloadSource.Official)
+            else if (source == 2) // 仅官方
             {
-                System.Diagnostics.Debug.WriteLine("[源] 强制使用官方源");
                 using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
                 json = await client.GetStringAsync(officialUrl);
             }
-            else // Auto
+            else if (source == 1) // 优先镜像，慢换官方
             {
-                // 🚨 自动模式：优先官方源，5秒超时切镜像
+                try
+                {
+                    using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
+                    json = await client.GetStringAsync(mirrorUrl);
+                }
+                catch
+                {
+                    using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+                    json = await client.GetStringAsync(officialUrl);
+                }
+            }
+            else // 0: 优先官方，慢换镜像 (默认)
+            {
                 try
                 {
                     using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
                     json = await client.GetStringAsync(officialUrl);
-                    System.Diagnostics.Debug.WriteLine("[源] 自动模式 - 官方源连接成功");
                 }
                 catch
                 {
-                    System.Diagnostics.Debug.WriteLine("[源] 自动模式 - 官方源超时，切换至 BMCLAPI 镜像");
                     using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
                     json = await client.GetStringAsync(mirrorUrl);
                 }
