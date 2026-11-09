@@ -46,7 +46,6 @@ namespace WinUi3_Minecraft_Launcher
                 _appWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
                 _appWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
-                // 🚨 核心修复：智能居中与状态恢复
                 var displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary);
                 if (displayArea != null)
                 {
@@ -58,11 +57,9 @@ namespace WinUi3_Minecraft_Launcher
                     width = Math.Clamp(width, 1024, workArea.Width);
                     height = Math.Clamp(height, 680, workArea.Height);
 
-                    // 默认居中坐标
                     int x = workArea.X + (workArea.Width - width) / 2;
                     int y = workArea.Y + (workArea.Height - height) / 2;
 
-                    // 如果 state 有有效的坐标记录，且没有被甩到屏幕外，才恢复坐标
                     if (state.WindowX != 0 && state.WindowY != 0)
                     {
                         if (state.WindowX >= workArea.X && state.WindowX + width <= workArea.X + workArea.Width &&
@@ -86,7 +83,6 @@ namespace WinUi3_Minecraft_Launcher
             this.Closed += (s, e) =>
             {
                 _isClosed = true;
-
                 if (_appWindow != null)
                 {
                     var state = new AppState
@@ -98,7 +94,6 @@ namespace WinUi3_Minecraft_Launcher
                     };
                     ConfigService.SaveState(state);
                 }
-
                 _appWindow = null;
                 _launchCts?.Cancel();
                 _launchCts?.Dispose();
@@ -135,6 +130,9 @@ namespace WinUi3_Minecraft_Launcher
                 LauncherState.AutoIsolation = cfg.AutoIsolation;
                 LauncherState.CurrentVersionName = cfg.ActiveVersionName;
                 LauncherState.CurrentMinecraftPath = cfg.ActiveFolderPath;
+
+                LauncherState.FileDownloadSource = cfg.FileDownloadSource;
+                LauncherState.VersionListSource = cfg.VersionListSource;
 
                 AccountService.Current.Type = cfg.AccountType;
                 AccountService.Current.Username = string.IsNullOrEmpty(cfg.AccountUsername) ? "Steve" : cfg.AccountUsername;
@@ -401,7 +399,6 @@ namespace WinUi3_Minecraft_Launcher
             try
             {
                 LauncherState.JavaPath = javaPath;
-
                 var config = ConfigService.Load();
 
                 var process = await GameLauncher.LaunchAsync(LauncherState.CurrentMinecraftPath!, LauncherState.CurrentVersionName!, LauncherState.MaxRamMb, config, msg => { }, progress, token);
@@ -412,9 +409,43 @@ namespace WinUi3_Minecraft_Launcher
                     _appWindow?.Hide();
                 }
             }
-            catch (OperationCanceledException) { ProgressOverlay.Visibility = Visibility.Collapsed; await ShowMessageAsync("已取消", "启动已取消。"); }
-            catch (Exception ex) { ProgressOverlay.Visibility = Visibility.Collapsed; await ShowMessageAsync("启动失败", $"{ex.Message}"); }
-            finally { LaunchButton.IsEnabled = true; _launchCts?.Dispose(); _launchCts = null; }
+            catch (OperationCanceledException)
+            {
+                ProgressOverlay.Visibility = Visibility.Collapsed;
+                await ShowMessageAsync("已取消", "启动已取消。");
+            }
+            catch (Exception ex)
+            {
+                ProgressOverlay.Visibility = Visibility.Collapsed;
+
+                // 🚨 智能识别 Invalid session
+                if (ex.Message.Contains("Invalid session") || ex.Message.Contains("Invalid token") || ex.Message.Contains("AuthenticationException") || ex.Message.Contains("AccessToken 为空"))
+                {
+                    var authDialog = new ContentDialog
+                    {
+                        Title = "登录已失效",
+                        Content = new TextBlock { Text = "您的账户登录状态已过期或无效（Invalid session）。\n\n这通常是因为长时间未登录或 Token 被刷新导致。请点击下方按钮重新登录账户。", TextWrapping = TextWrapping.Wrap },
+                        PrimaryButtonText = "重新登录",
+                        CloseButtonText = "取消",
+                        XamlRoot = (this.Content as FrameworkElement)?.XamlRoot
+                    };
+
+                    if (await authDialog.ShowAsync() == ContentDialogResult.Primary)
+                    {
+                        AccountButton_Click(null, null);
+                    }
+                }
+                else
+                {
+                    await ShowMessageAsync("启动失败", $"{ex.Message}");
+                }
+            }
+            finally
+            {
+                LaunchButton.IsEnabled = true;
+                _launchCts?.Dispose();
+                _launchCts = null;
+            }
         }
 
         private void CancelLaunch_Click(object sender, RoutedEventArgs e) { CancelLaunchButton.IsEnabled = false; ProgressTitleText.Text = "正在取消..."; _launchCts?.Cancel(); }
@@ -459,6 +490,7 @@ namespace WinUi3_Minecraft_Launcher
                     case "Page1": ContentFrame.Navigate(typeof(Page1)); break;
                     case "Page2": ContentFrame.Navigate(typeof(Page2)); break;
                     case "Page3": ContentFrame.Navigate(typeof(Page3)); break;
+                    case "Page6": ContentFrame.Navigate(typeof(Page6)); break; // 🚨 完美导航到更多页
                 }
             }
         }

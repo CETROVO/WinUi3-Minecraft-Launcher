@@ -46,54 +46,72 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Margin="0,0,0,15">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
-                        <RadioButton x:Name="ReleaseRadio" Content="正式版" GroupName="VersionType" Checked="VersionType_Checked" />
-                        <RadioButton x:Name="SnapshotRadio" Content="预览版" GroupName="VersionType" Checked="VersionType_Checked" />
-                        <RadioButton x:Name="AprilFoolsRadio" Content="愚人节版本" GroupName="VersionType" Checked="VersionType_Checked" />
+                <!-- 🚨 合规提示文字（默认隐藏） -->
+                <Border x:Name="GameBanWarning" Grid.Row="0" Background="#20E81123" BorderBrush="#E81123" BorderThickness="1" CornerRadius="6" Padding="16,12" Margin="0,0,0,15" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xE7BA;" FontSize="18" Foreground="#E81123" VerticalAlignment="Center"/>
+                        <TextBlock Text="为遵守相关法律法规，WML 暂时不再为中国大陆地区提供 MC 游戏下载功能。" Foreground="#E81123" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Center"/>
                     </StackPanel>
+                </Border>
 
-                    <!-- 🚨 已经删除了 SourceComboBox，刷新按钮移到了 Grid.Column="2" -->
-                    <Button Grid.Column="2" Click="RefreshButton_Click" Height="32" Padding="10,0" CornerRadius="4">
-                        <StackPanel Orientation="Horizontal" Spacing="6">
-                            <FontIcon Glyph="&#xE72C;" FontSize="13" />
-                            <TextBlock Text="刷新" FontSize="13" />
-                        </StackPanel>
-                    </Button>
-                </Grid>
+                <!-- 🚨 被锁定的下载控制区 -->
+                <ContentControl x:Name="GameDownloadContent" Grid.Row="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                <Grid Grid.Row="1">
-                    <StackPanel x:Name="LoadingPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
-                        <ProgressRing IsActive="True" Width="40" Height="40" />
-                        <TextBlock Text="正在获取版本列表..." Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                    </StackPanel>
-                    <ListView x:Name="VersionListView" Background="#20FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}" SelectionMode="Single" IsItemClickEnabled="True" ItemClick="VersionListView_ItemClick" Visibility="Collapsed">
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="local:RemoteVersion">
-                                <Grid Margin="0,4" Padding="8" ColumnSpacing="12">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Border Grid.Column="0" Width="8" Height="8" CornerRadius="4" VerticalAlignment="Center" Background="{x:Bind DotColor}" />
-                                    <TextBlock Grid.Column="1" Text="{x:Bind Id}" FontSize="15" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="2" Text="{x:Bind ReleaseTime}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" />
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
+                        <Grid Grid.Row="0" Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+                                <RadioButton x:Name="ReleaseRadio" Content="正式版" GroupName="VersionType" Checked="VersionType_Checked" />
+                                <RadioButton x:Name="SnapshotRadio" Content="预览版" GroupName="VersionType" Checked="VersionType_Checked" />
+                                <RadioButton x:Name="AprilFoolsRadio" Content="愚人节版本" GroupName="VersionType" Checked="VersionType_Checked" />
+                            </StackPanel>
+
+                            <Button Grid.Column="2" Click="RefreshButton_Click" Height="32" Padding="10,0" CornerRadius="4">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <FontIcon Glyph="&#xE72C;" FontSize="13" />
+                                    <TextBlock Text="刷新" FontSize="13" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <StackPanel x:Name="LoadingPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
+                                <ProgressRing IsActive="True" Width="40" Height="40" />
+                                <TextBlock Text="正在获取版本列表..." Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                            <ListView x:Name="VersionListView" Background="#20FFFFFF" CornerRadius="8" BorderThickness="1" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}" SelectionMode="Single" IsItemClickEnabled="True" ItemClick="VersionListView_ItemClick" Visibility="Collapsed">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="local:RemoteVersion">
+                                        <Grid Margin="0,4" Padding="8" ColumnSpacing="12">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" Width="8" Height="8" CornerRadius="4" VerticalAlignment="Center" Background="{x:Bind DotColor}" />
+                                            <TextBlock Grid.Column="1" Text="{x:Bind Id}" FontSize="15" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="2" Text="{x:Bind ReleaseTime}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                    </Grid>
+                </ContentControl>
             </Grid>
 
-            <!-- 2. 社区资源搜索面板 -->
+            <!-- 2. 社区资源搜索面板 (保持原样) -->
             <Grid x:Name="SearchPanel" Visibility="Collapsed">
+                <!-- ... 你的 SearchPanel 原有代码完全不变 ... -->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -179,8 +197,9 @@
                 </Grid>
             </Grid>
 
-            <!-- 3. Java 面板 -->
+            <!-- 3. Java 面板 (保持原样) -->
             <Grid x:Name="JavaPanel" Visibility="Collapsed">
+                <!-- ... 你的 JavaPanel 原有代码完全不变 ... -->
                 <StackPanel VerticalAlignment="Center" Spacing="15">
                     <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
                         <StackPanel Spacing="12">

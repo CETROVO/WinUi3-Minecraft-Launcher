@@ -36,11 +36,18 @@ namespace WinUi3_Minecraft_Launcher
     public static class AccountService
     {
         public static UserAccount Current { get; } = new UserAccount();
+
         public static MSession GetSession()
         {
-            if (Current.Type == AccountType.Offline) return MSession.CreateOfflineSession(Current.Username);
+            if (Current.Type == AccountType.Offline)
+                return MSession.CreateOfflineSession(Current.Username);
+
+            if (string.IsNullOrEmpty(Current.AccessToken))
+                throw new Exception("账户凭证已失效（AccessToken 为空），请重新登录！");
+
             return new MSession(Current.Username, Current.AccessToken, Current.Uuid);
         }
+
         public static string GetTypeDisplayName() => Current.Type switch
         {
             AccountType.Offline => "离线账户",
@@ -73,6 +80,8 @@ namespace WinUi3_Minecraft_Launcher
         public static bool VersionIsolation { get; set; } = true;
         public static bool AutoIsolation { get; set; } = true;
         public static DownloadSource CurrentSource { get; set; } = DownloadSource.Auto;
+        public static int FileDownloadSource { get; set; } = 0;
+        public static int VersionListSource { get; set; } = 0;
     }
 
     public static class JavaFinder
@@ -263,18 +272,15 @@ namespace WinUi3_Minecraft_Launcher
             void Report(string title, string detail, double pct, bool indeterminate = false) => progress?.Report(new LaunchProgress { Title = title, Detail = detail, Percentage = pct, IsIndeterminate = indeterminate });
             cancellationToken.ThrowIfCancellationRequested(); Report("正在启动游戏...", "初始化中", 0);
 
-            // 🚨 核心修改：智能匹配 Java
             string? javaPath = null;
             if (string.IsNullOrEmpty(config.JavaPath))
             {
-                // 自动模式
                 int requiredMajor = JavaFinder.GetRequiredJavaMajorVersion(minecraftPath, versionName);
                 javaPath = JavaFinder.FindJavaByMajorVersion(requiredMajor);
                 log($"[Java] 自动选择模式，根据版本需求推荐 Java {requiredMajor}");
             }
             else
             {
-                // 手动模式
                 javaPath = config.JavaPath;
                 if (!File.Exists(javaPath))
                 {
@@ -289,13 +295,38 @@ namespace WinUi3_Minecraft_Launcher
             var versionDir = Path.Combine(minecraftPath, "versions", versionName);
             string gameDir = (LauncherState.AutoIsolation && ShouldIsolate(minecraftPath, versionName)) || LauncherState.VersionIsolation ? versionDir : minecraftPath;
 
+            // 启动前执行命令
+            if (!string.IsNullOrWhiteSpace(config.PreLaunchCommand))
+            {
+                try
+                {
+                    Report("正在执行启动前命令...", config.PreLaunchCommand, 2);
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = "cmd.exe",
+                        Arguments = $"/c {config.PreLaunchCommand}",
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    };
+                    using var preProcess = Process.Start(psi);
+                    if (preProcess != null)
+                    {
+                        await preProcess.WaitForExitAsync(cancellationToken);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log($"[PreLaunch] 执行失败: {ex.Message}");
+                }
+            }
+
             var session = AccountService.GetSession();
             bool is64Bit = JavaFinder.Is64BitJava(javaPath);
             int finalRam = !is64Bit ? 1024 : (maxRamMb <= 0 || LauncherState.AutoMemory ? MemoryAllocator.CalculateAutoMemoryMb(versionDir, is64Bit) : maxRamMb);
 
             var extraJvmArgs = new List<MArgument>();
 
-            // Authlib
+            // Authlib 注入
             if (AccountService.Current.Type == AccountType.ThirdParty && !string.IsNullOrEmpty(AccountService.Current.AuthServerUrl))
             {
                 try
@@ -306,23 +337,33 @@ namespace WinUi3_Minecraft_Launcher
                 catch { }
             }
 
-            // 🚨 核心：应用面板上的高级选项
             if (config.DisableLWJGLUnsafeAgent)
             {
                 extraJvmArgs.Add(new MArgument("-Dorg.lwjgl.system.allocator=system"));
-                log("[JVM] 已注入禁用 Unsafe Agent 参数");
             }
             if (config.DisableJavaLaunchWrapper)
             {
                 extraJvmArgs.Add(new MArgument("-Dfml.ignorePatchDiscrepancies=true"));
-                log("[JVM] 已注入禁用 Launch Wrapper 参数");
             }
 
-            // 自定义 JVM Args
+            // 多行 JVM 参数安全切分
             if (!string.IsNullOrWhiteSpace(config.JvmArgs))
             {
-                foreach (var arg in config.JvmArgs.Split(' ', StringSplitOptions.RemoveEmptyEntries))
-                    extraJvmArgs.Add(new MArgument(arg));
+                var args = config.JvmArgs.Split(new[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var arg in args)
+                    extraJvmArgs.Add(new MArgument(arg.Trim()));
+            }
+
+            // G1GC 内存管理算法
+            if (config.MemoryAlgorithm == 1)
+            {
+                extraJvmArgs.Add(new MArgument("-XX:+UseG1GC"));
+                extraJvmArgs.Add(new MArgument("-XX:+ParallelRefProcEnabled"));
+                extraJvmArgs.Add(new MArgument("-XX:MaxGCPauseMillis=200"));
+                extraJvmArgs.Add(new MArgument("-XX:+UnlockExperimentalVMOptions"));
+                extraJvmArgs.Add(new MArgument("-XX:+DisableExplicitGC"));
+                extraJvmArgs.Add(new MArgument("-XX:G1NewSizePercent=20"));
+                extraJvmArgs.Add(new MArgument("-XX:G1ReservePercent=20"));
             }
 
             var extraGameArgs = new List<MArgument> { new MArgument("--gameDir"), new MArgument(gameDir) };
@@ -331,10 +372,13 @@ namespace WinUi3_Minecraft_Launcher
             {
                 extraGameArgs.Add(new MArgument("--fullscreen"));
             }
+
+            // 多行游戏参数安全切分
             if (!string.IsNullOrWhiteSpace(config.GameArgs))
             {
-                foreach (var arg in config.GameArgs.Split(' ', StringSplitOptions.RemoveEmptyEntries))
-                    extraGameArgs.Add(new MArgument(arg));
+                var gArgs = config.GameArgs.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var arg in gArgs)
+                    extraGameArgs.Add(new MArgument(arg.Trim()));
             }
 
             var option = new MLaunchOption
@@ -357,12 +401,10 @@ namespace WinUi3_Minecraft_Launcher
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
 
-            // 🚨 核心：应用使用高性能显卡
             if (config.UseHighPerformanceGpu)
             {
                 process.StartInfo.EnvironmentVariables["NvOptimusEnablement"] = "1";
                 process.StartInfo.EnvironmentVariables["AmdPowerXpressRequestHighPerformance"] = "1";
-                log("[GPU] 已注入强制独立显卡环境变量");
             }
 
             process.OutputDataReceived += (s, e) => { if (e.Data != null) log($"[MC] {e.Data}"); };

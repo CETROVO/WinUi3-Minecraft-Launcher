@@ -26,6 +26,7 @@
                            Foreground="{ThemeResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"/>
             </StackPanel>
 
+            <!-- 🚨 顶部导航栏 (修复了 Tag 串台问题) -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
                 <Button Content="启动" Tag="Page1" Click="NavButton_Click"
                         Background="Transparent" BorderThickness="0" FontWeight="SemiBold" CornerRadius="6" Height="32" Padding="20,0"
@@ -36,7 +37,7 @@
                 <Button Content="管理" Tag="Page3" Click="NavButton_Click"
                         Background="Transparent" BorderThickness="0" FontWeight="SemiBold" CornerRadius="6" Height="32" Padding="20,0"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
-                <Button Content="更多" Tag="Page3" Click="NavButton_Click"
+                <Button Content="更多" Tag="Page6" Click="NavButton_Click"
                         Background="Transparent" BorderThickness="0" FontWeight="SemiBold" CornerRadius="6" Height="32" Padding="20,0"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
             </StackPanel>

@@ -35,6 +35,9 @@ namespace WinUi3_Minecraft_Launcher
         private bool _isJavaListLoaded = false;
         private string _currentProjectType = "mod";
 
+        // 🚨 核心锁区标记
+        private bool _isRegionRestricted = false;
+
         private InstalledVersionItem? _targetInstance = null;
         private readonly HttpClient Http = new HttpClient();
         private CancellationTokenSource? _javaDownloadCts;
@@ -56,6 +59,7 @@ namespace WinUi3_Minecraft_Launcher
                 if (!_isDataLoaded)
                 {
                     DownloadCategoryList.ItemsSource = new List<string> { "游戏", "Java", "模组", "资源包", "整合包", "光影包" };
+                    await CheckLegalRestrictionsAsync();
                     await LoadVersionsAsync();
                 }
 
@@ -70,7 +74,60 @@ namespace WinUi3_Minecraft_Launcher
             {
                 DownloadCategoryList.ItemsSource = new List<string> { "游戏", "Java", "模组", "资源包", "整合包", "光影包" };
                 DownloadCategoryList.SelectedIndex = 0;
+
+                // 🚨 加载时校验，命中则直接全灰
+                await CheckLegalRestrictionsAsync();
+
+                // 正常拉取版本列表（数据依然加载，但 UI 会变灰）
                 await LoadVersionsAsync();
+            }
+        }
+
+        // 🚨 核心校验逻辑：命中直接全灰封死
+        private async Task CheckLegalRestrictionsAsync()
+        {
+            bool isRestricted = false;
+
+            // 1. 检测系统区域
+            try
+            {
+                var region = Windows.System.UserProfile.GlobalizationPreferences.HomeGeographicRegion;
+                if (region == "CN" || System.Globalization.CultureInfo.CurrentCulture.Name == "zh-CN")
+                {
+                    isRestricted = true;
+                }
+            }
+            catch { }
+
+            // 2. 检测出口 IP
+            if (!isRestricted)
+            {
+                try
+                {
+                    using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
+                    var json = await client.GetStringAsync("http://ip-api.com/json/?fields=countryCode");
+                    using var doc = JsonDocument.Parse(json);
+                    if (doc.RootElement.TryGetProperty("countryCode", out var cc) && cc.GetString() == "CN")
+                    {
+                        isRestricted = true;
+                    }
+                }
+                catch { }
+            }
+
+            // 3. 如果命中，直接封死并全灰
+            if (isRestricted)
+            {
+                _isRegionRestricted = true;
+                DispatcherQueue.TryEnqueue(() =>
+                {
+                    // 显示顶部的红字警告
+                    GameBanWarning.Visibility = Visibility.Visible;
+
+                    // 🚨 核心：让整个内容区变灰，并且禁用一切点击（单选、刷新、列表统统点不了）
+                    GameDownloadContent.IsEnabled = false;
+                    GameDownloadContent.Opacity = 0.5;
+                });
             }
         }
 
@@ -124,6 +181,7 @@ namespace WinUi3_Minecraft_Launcher
             }
         }
 
+        // ================= Java 下载逻辑（不受影响） =================
         private async Task LoadJavaVersionsAsync()
         {
             try
@@ -219,7 +277,6 @@ namespace WinUi3_Minecraft_Launcher
             try
             {
                 string extractDir = $@"C:\WML\Java\{javaVer}-{imageType}";
-
                 Directory.CreateDirectory(Path.GetDirectoryName(extractDir)!);
                 Directory.CreateDirectory(extractDir);
 
@@ -336,6 +393,7 @@ namespace WinUi3_Minecraft_Launcher
             }
         }
 
+        // ================= 社区资源搜索与下载 =================
         private void LoadTargetInstances()
         {
             TargetInstanceComboBox.Items.Clear();
@@ -405,16 +463,12 @@ namespace WinUi3_Minecraft_Launcher
             {
                 bool useMirror = false;
                 var cfg = ConfigService.Load();
+                int commSrc = cfg.CommunitySource;
+                int fileSrc = cfg.FileDownloadSource;
 
-                int commSrc = cfg.CommunitySource; // 0: 尽量官方, 1: 尽量镜像
-                int fileSrc = cfg.FileDownloadSource; // 0: 优官, 1: 优镜, 2: 仅官, 3: 仅镜
-
-                if (fileSrc == 3 || commSrc == 1)
-                    useMirror = true;
-                else if (fileSrc == 2 || commSrc == 0)
-                    useMirror = false;
-                else
-                    useMirror = forceStartMirror ? (i % 2 == 0) : (i % 2 != 0);
+                if (fileSrc == 3 || commSrc == 1) useMirror = true;
+                else if (fileSrc == 2 || commSrc == 0) useMirror = false;
+                else useMirror = forceStartMirror ? (i % 2 == 0) : (i % 2 != 0);
 
                 try
                 {
@@ -680,7 +734,6 @@ namespace WinUi3_Minecraft_Launcher
                 return;
             }
 
-            // 优先寻找正式版 (release)，如果实在没有才用最新的 (通常是 beta)
             var releaseVersion = compatibleVersions.FirstOrDefault(v => v.GetProperty("version_type").GetString() == "release");
             var targetVerObj = releaseVersion.ValueKind != JsonValueKind.Undefined ? releaseVersion : compatibleVersions[0];
 
@@ -827,6 +880,7 @@ namespace WinUi3_Minecraft_Launcher
             await ShowDialogAsync("下载成功", $"文件已保存至：\n{savePath}", true);
         }
 
+        // ================= 原版版本列表过滤 =================
         private void VersionType_Checked(object sender, RoutedEventArgs e) { if (!_isDataLoaded || VersionListView == null) return; FilterAndDisplay(); }
 
         private void FilterAndDisplay()
@@ -873,8 +927,11 @@ namespace WinUi3_Minecraft_Launcher
             catch (Exception ex) { LoadingPanel.Visibility = Visibility.Collapsed; await ShowDialogAsync("网络错误", $"获取版本列表失败：\n{ex.Message}"); }
         }
 
-        private void VersionListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void VersionListView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            // 🚨 物理锁区：如果被限制，绝对不响应点击
+            if (_isRegionRestricted) return;
+
             if (e.ClickedItem is RemoteVersion selectedVersion)
                 this.Frame.Navigate(typeof(Page5), selectedVersion.Id);
         }
@@ -882,13 +939,9 @@ namespace WinUi3_Minecraft_Launcher
         private async Task<ContentDialogResult> ShowDialogAsync(string title, string message, bool askToOpen = false)
         {
             if (this.XamlRoot == null) return ContentDialogResult.None;
-
-            // 🚨 修复：TextWrapping.Wrap
             var dialog = new ContentDialog { Title = title, Content = new ScrollViewer { Content = new TextBlock { Text = message, TextWrapping = TextWrapping.Wrap }, MaxHeight = 400 }, XamlRoot = this.XamlRoot };
-
             if (askToOpen) { dialog.PrimaryButtonText = "打开文件夹"; dialog.CloseButtonText = "关闭"; }
             else dialog.CloseButtonText = "确定";
-
             try { return await dialog.ShowAsync(); } catch { return ContentDialogResult.None; }
         }
     }
