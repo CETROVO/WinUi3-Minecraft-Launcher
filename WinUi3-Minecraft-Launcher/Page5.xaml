@@ -117,20 +117,13 @@
                             </Border>
                         </StackPanel>
 
-                        <!-- Java 面板 -->
-                        <StackPanel x:Name="JavaPanel" Spacing="15" Visibility="Collapsed">
+                        <!-- OptiFine -->
+                        <StackPanel x:Name="OptiFinePanel" Spacing="15" Visibility="Collapsed">
                             <Border Background="#10FFFFFF" CornerRadius="8" Padding="20">
                                 <StackPanel Spacing="12">
-                                    <TextBlock Text="Java 运行环境" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" />
-                                    <TextBlock Text="Minecraft 运行需要 Java。如果您遇到启动报错，可以在这里重新安装。" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,0,10"/>
-                                    <ComboBox x:Name="JavaVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectedIndex="0">
-                                        <ComboBoxItem Content="Java 21 (推荐，适用 1.20.5+)" Tag="21"/>
-                                        <ComboBoxItem Content="Java 17 (适用 1.18 - 1.20.4)" Tag="17"/>
-                                        <ComboBoxItem Content="Java 8 (适用 1.16.5 及以下)" Tag="8"/>
-                                    </ComboBox>
-                                    <Button x:Name="DownloadJavaButton" Content="下载并安装到本地" HorizontalAlignment="Stretch" Height="40" Background="#0078D4" Foreground="White" CornerRadius="4" Click="DownloadJavaButton_Click"/>
-                                    <ProgressBar x:Name="JavaDownloadProgress" Height="6" Minimum="0" Maximum="100" Value="0" Visibility="Collapsed" CornerRadius="3"/>
-                                    <TextBlock x:Name="JavaStatusText" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Visibility="Collapsed" TextWrapping="Wrap"/>
+                                    <ToggleSwitch x:Name="OptiFineToggle" Header="使用 OptiFine 高清修复" IsOn="False" OnContent="已启用" OffContent="未启用" Toggled="OptiFineToggle_Toggled"/>
+                                    <TextBlock Text="选择 OptiFine 版本" FontSize="16" FontWeight="SemiBold" />
+                                    <ComboBox x:Name="OptiFineVersionCombo" HorizontalAlignment="Stretch" MinHeight="44" SelectionChanged="OptiFineVersionCombo_SelectionChanged" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
