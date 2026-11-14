@@ -33,8 +33,9 @@ namespace WinUi3_Minecraft_Launcher
 
                     switch (key)
                     {
-                        case "LauncherSystemUpdate": config.LauncherSystemUpdate = string.IsNullOrEmpty(val) ? 2 : (val == ":1" ? 1 : 2); break;
+                        case "LauncherSystemUpdate": config.LauncherSystemUpdate = string.IsNullOrEmpty(val) ? 1 : (val == ":1" ? 1 : 2); break;
                         case "LauncherSystemPosts": config.LauncherSystemPosts = string.IsNullOrEmpty(val) ? 2 : (val == ":1" ? 1 : 2); break;
+                        case "UpdateChannel": config.UpdateChannel = int.Parse(val); break;
 
                         case "Folders": config.Folders = JsonSerializer.Deserialize<List<FolderEntry>>(val) ?? new(); break;
                         case "ActiveFolderPath": config.ActiveFolderPath = val; break;
@@ -87,6 +88,7 @@ namespace WinUi3_Minecraft_Launcher
                     "[Launcher]",
                     $"LauncherSystemUpdate={(config.LauncherSystemUpdate == 1 ? ":1" : ":2")}",
                     $"LauncherSystemPosts={(config.LauncherSystemPosts == 1 ? ":1" : ":2")}",
+                    $"UpdateChannel={config.UpdateChannel}",
                     "",
                     "[Settings]",
                     $"Folders={JsonSerializer.Serialize(config.Folders)}",
@@ -130,7 +132,6 @@ namespace WinUi3_Minecraft_Launcher
             catch { }
         }
 
-        // 🚨 读取 JSON 状态（窗口大小、位置等）
         public static AppState LoadState()
         {
             try
@@ -139,7 +140,7 @@ namespace WinUi3_Minecraft_Launcher
                 var json = File.ReadAllText(StatePath);
                 var state = JsonSerializer.Deserialize<AppState>(json, JsonOpts) ?? new AppState();
 
-                // 🚨 窗口位置不再恢复，强制归零，MainWindow 会走默认居中逻辑
+                // 🚨 窗口位置不再恢复，强制归零
                 state.WindowX = 0;
                 state.WindowY = 0;
 
@@ -151,14 +152,13 @@ namespace WinUi3_Minecraft_Launcher
             }
         }
 
-        // 🚨 保存 JSON 状态
         public static void SaveState(AppState state)
         {
             try
             {
                 Directory.CreateDirectory(ConfigDir);
 
-                // 🚨 窗口位置不再持久化，始终写 0
+                // 🚨 窗口位置不再持久化
                 state.WindowX = 0;
                 state.WindowY = 0;
 

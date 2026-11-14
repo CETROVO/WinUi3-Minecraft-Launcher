@@ -100,6 +100,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid Grid.Row="0" ColumnSpacing="10">
                                     <Grid.ColumnDefinitions>
@@ -182,7 +183,45 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <!-- 面板 2：其他 -->
+            <!-- 面板 2：更新 -->
+            <ScrollViewer x:Name="UpdatePanel" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                <StackPanel Spacing="20" MaxWidth="1000">
+                    <Expander HorizontalAlignment="Stretch" IsExpanded="True" Background="#10FFFFFF">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,10,0,10">
+                                <TextBlock Text="启动器更新" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" VerticalAlignment="Center"/>
+                                <TextBlock Text="（更新服务器在国外，超时属于正常现象）" FontSize="12" Foreground="Gray" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Expander.Header>
+                        <StackPanel Spacing="15" Margin="0,10,0,20">
+                            <ToggleSwitch x:Name="EnableAutoUpdateToggle" Header="启动时自动检查更新" IsOn="True" Toggled="EnableAutoUpdateToggle_Toggled"/>
+
+                            <TextBlock Text="更新通道" Margin="0,10,0,0" FontWeight="SemiBold"/>
+                            <ComboBox x:Name="UpdateChannelComboBox" HorizontalAlignment="Stretch" SelectionChanged="UpdateChannelComboBox_SelectionChanged">
+                                <ComboBoxItem Content="获取正式版更新 (Release)" />
+                                <ComboBoxItem Content="获取 Beta 版更新 (Pre-release, 不推荐)" />
+                            </ComboBox>
+
+                            <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,15,0,0">
+                                <Button x:Name="CheckUpdateButton" Content="立即检查更新" Width="150" Height="36" CornerRadius="4" Background="#0078D4" Foreground="White" Click="CheckUpdate_Click"/>
+                            </StackPanel>
+
+                            <!-- 更新状态与日志展示区 -->
+                            <Border x:Name="UpdateStatusBorder" Background="#10FFFFFF" CornerRadius="8" Padding="16" Margin="0,15,0,0" Visibility="Visible">
+                                <StackPanel Spacing="10">
+                                    <TextBlock x:Name="UpdateStatusText" Text="WML 正在初始化..." FontSize="15" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                                    <ScrollViewer x:Name="ReleaseNotesScrollViewer" MaxHeight="200" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                                        <TextBlock x:Name="ReleaseNotesText" Text="" FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+                                    </ScrollViewer>
+                                </StackPanel>
+                            </Border>
+
+                        </StackPanel>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 面板 3：其他 -->
             <ScrollViewer x:Name="OtherPanel" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
                 <StackPanel Spacing="20" MaxWidth="1000">
 
@@ -260,7 +299,6 @@
                         <Expander.Header>
                             <TextBlock Text="辅助功能" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" Margin="0,10,0,10"/>
                         </Expander.Header>
-                        <!-- 🚨 修复：用一个外层 StackPanel 把 Grid 和 CheckBox 包起来 -->
                         <StackPanel Margin="0,10,0,20">
                             <Grid RowSpacing="12" ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
@@ -284,12 +322,11 @@
                         </StackPanel>
                     </Expander>
 
-                    <!-- 启动器 -->
+                    <!-- 启动器设置 (去掉了重复的更新) -->
                     <Expander HorizontalAlignment="Stretch" IsExpanded="True" Background="#10FFFFFF">
                         <Expander.Header>
                             <TextBlock Text="启动器" FontSize="16" FontWeight="SemiBold" Foreground="#0078D4" Margin="0,10,0,10"/>
                         </Expander.Header>
-                        <!-- 🚨 修复：用一个外层 StackPanel 把 Grid 和 按钮组包起来 -->
                         <StackPanel Margin="0,10,0,20">
                             <Grid RowSpacing="12" ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
@@ -300,29 +337,21 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="启动器更新" VerticalAlignment="Center" />
-                                <ComboBox Grid.Row="0" Grid.Column="1" x:Name="LauncherUpdateComboBox" HorizontalAlignment="Stretch" SelectionChanged="LauncherUpdateComboBox_SelectionChanged">
-                                    <ComboBoxItem Content="关闭更新提示" />
-                                    <ComboBoxItem Content="开启更新提示" />
-                                </ComboBox>
-
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="启动器公告" VerticalAlignment="Center" />
-                                <ComboBox Grid.Row="1" Grid.Column="1" x:Name="LauncherAnnouncementComboBox" HorizontalAlignment="Stretch" SelectionChanged="LauncherAnnouncementComboBox_SelectionChanged">
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="启动器公告" VerticalAlignment="Center" />
+                                <ComboBox Grid.Row="0" Grid.Column="1" x:Name="LauncherAnnouncementComboBox" HorizontalAlignment="Stretch" SelectionChanged="LauncherAnnouncementComboBox_SelectionChanged">
                                     <ComboBoxItem Content="关闭所有公告" />
                                     <ComboBoxItem Content="开启所有公告" />
                                 </ComboBox>
 
-                                <TextBlock Grid.Row="2" Grid.Column="0" Text="缓存文件夹" VerticalAlignment="Center" />
-                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="CacheFolderTextBox" PlaceholderText="默认" TextChanged="CacheFolderTextBox_TextChanged"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="缓存文件夹" VerticalAlignment="Center" />
+                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="CacheFolderTextBox" PlaceholderText="默认" TextChanged="CacheFolderTextBox_TextChanged"/>
 
-                                <CheckBox Grid.Row="3" Grid.Column="1" x:Name="AllowAnonDataCheckBox" Content="匿名数据收集" Checked="AllowAnonDataCheckBox_Changed" Unchecked="AllowAnonDataCheckBox_Changed" Margin="0,10,0,10"/>
+                                <CheckBox Grid.Row="2" Grid.Column="1" x:Name="AllowAnonDataCheckBox" Content="匿名数据收集" Checked="AllowAnonDataCheckBox_Changed" Unchecked="AllowAnonDataCheckBox_Changed" Margin="0,10,0,10"/>
                             </Grid>
 
                             <StackPanel Orientation="Horizontal" Spacing="10" Margin="136,15,0,0">
-                                <Button Content="检查更新" Width="120" Height="32" CornerRadius="4" Click="CheckUpdate_Click"/>
                                 <Button Content="导出设置" Width="120" Height="32" CornerRadius="4" Click="ExportSettings_Click"/>
                                 <Button Content="导入设置" Width="120" Height="32" CornerRadius="4" Click="ImportSettings_Click"/>
                             </StackPanel>

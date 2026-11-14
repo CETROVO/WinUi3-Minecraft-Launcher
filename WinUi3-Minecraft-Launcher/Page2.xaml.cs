@@ -35,7 +35,6 @@ namespace WinUi3_Minecraft_Launcher
         private bool _isJavaListLoaded = false;
         private string _currentProjectType = "mod";
 
-        // 🚨 核心锁区标记
         private bool _isRegionRestricted = false;
 
         private InstalledVersionItem? _targetInstance = null;
@@ -75,31 +74,44 @@ namespace WinUi3_Minecraft_Launcher
                 DownloadCategoryList.ItemsSource = new List<string> { "游戏", "Java", "模组", "资源包", "整合包", "光影包" };
                 DownloadCategoryList.SelectedIndex = 0;
 
-                // 🚨 加载时校验，命中则直接全灰
                 await CheckLegalRestrictionsAsync();
-
-                // 正常拉取版本列表（数据依然加载，但 UI 会变灰）
                 await LoadVersionsAsync();
             }
         }
 
-        // 🚨 核心校验逻辑：命中直接全灰封死
+        // 🚨 防挂梯子终极检测逻辑
         private async Task CheckLegalRestrictionsAsync()
         {
             bool isRestricted = false;
 
-            // 1. 检测系统区域
+            // 1. 检测系统时区 (最强防绕过，挂梯子改不了系统时区)
             try
             {
-                var region = Windows.System.UserProfile.GlobalizationPreferences.HomeGeographicRegion;
-                if (region == "CN" || System.Globalization.CultureInfo.CurrentCulture.Name == "zh-CN")
+                var timeZone = TimeZoneInfo.Local;
+                // Windows 系统时区 ID "China Standard Time" 或者 UTC+8
+                if (timeZone.Id == "China Standard Time" || timeZone.Id == "Asia/Shanghai" || timeZone.BaseUtcOffset.TotalHours == 8)
                 {
                     isRestricted = true;
                 }
             }
             catch { }
 
-            // 2. 检测出口 IP
+            // 2. 检测系统语言/区域 (即使挂了梯子，只要系统语言是中文，一样封死)
+            if (!isRestricted)
+            {
+                try
+                {
+                    var region = Windows.System.UserProfile.GlobalizationPreferences.HomeGeographicRegion;
+                    var lang = System.Globalization.CultureInfo.CurrentCulture.Name;
+                    if (region == "CN" || lang == "zh-CN" || lang == "zh-Hans-CN")
+                    {
+                        isRestricted = true;
+                    }
+                }
+                catch { }
+            }
+
+            // 3. 检测出口 IP (只在前两步没拦住的情况下兜底)
             if (!isRestricted)
             {
                 try
@@ -115,16 +127,12 @@ namespace WinUi3_Minecraft_Launcher
                 catch { }
             }
 
-            // 3. 如果命中，直接封死并全灰
             if (isRestricted)
             {
                 _isRegionRestricted = true;
                 DispatcherQueue.TryEnqueue(() =>
                 {
-                    // 显示顶部的红字警告
                     GameBanWarning.Visibility = Visibility.Visible;
-
-                    // 🚨 核心：让整个内容区变灰，并且禁用一切点击（单选、刷新、列表统统点不了）
                     GameDownloadContent.IsEnabled = false;
                     GameDownloadContent.Opacity = 0.5;
                 });
@@ -138,6 +146,11 @@ namespace WinUi3_Minecraft_Launcher
             GamePanel.Visibility = Visibility.Collapsed;
             SearchPanel.Visibility = Visibility.Collapsed;
             JavaPanel.Visibility = Visibility.Collapsed;
+
+            // 默认隐藏整合包警告
+            ModpackBanWarning.Visibility = Visibility.Collapsed;
+            SearchBox.IsEnabled = true;
+            SearchButton.IsEnabled = true;
 
             if (category == "游戏")
             {
@@ -170,6 +183,17 @@ namespace WinUi3_Minecraft_Launcher
                 {
                     InstanceSelectionPanel.Visibility = Visibility.Collapsed;
                     _targetInstance = null;
+
+                    // 🚨 整合包合规拦截
+                    if (_isRegionRestricted)
+                    {
+                        ModpackBanWarning.Visibility = Visibility.Visible;
+                        SearchBox.IsEnabled = false;
+                        SearchButton.IsEnabled = false;
+                        SearchResultList.Visibility = Visibility.Collapsed;
+                        SearchLoadingPanel.Visibility = Visibility.Collapsed;
+                        return;
+                    }
                 }
                 else
                 {
@@ -181,7 +205,6 @@ namespace WinUi3_Minecraft_Launcher
             }
         }
 
-        // ================= Java 下载逻辑（不受影响） =================
         private async Task LoadJavaVersionsAsync()
         {
             try
@@ -393,7 +416,6 @@ namespace WinUi3_Minecraft_Launcher
             }
         }
 
-        // ================= 社区资源搜索与下载 =================
         private void LoadTargetInstances()
         {
             TargetInstanceComboBox.Items.Clear();
@@ -509,6 +531,7 @@ namespace WinUi3_Minecraft_Launcher
 
         private async Task LoadRecommendedModsAsync()
         {
+            if (_isRegionRestricted && _currentProjectType == "modpack") return;
             if (_currentProjectType == "modpack" && _targetInstance == null) { }
             else if (_currentProjectType != "modpack" && _targetInstance == null) return;
 
@@ -568,6 +591,7 @@ namespace WinUi3_Minecraft_Launcher
             string originalQuery = SearchBox.Text.Trim();
             if (string.IsNullOrEmpty(originalQuery)) { await LoadRecommendedModsAsync(); return; }
             if (_currentProjectType != "modpack" && _targetInstance == null) { await ShowDialogAsync("提示", "请先在上方选择要安装到的版本实例！"); return; }
+            if (_isRegionRestricted && _currentProjectType == "modpack") return;
 
             SearchLoadingPanel.Visibility = Visibility.Visible;
             SearchResultList.Visibility = Visibility.Collapsed;
@@ -653,6 +677,13 @@ namespace WinUi3_Minecraft_Launcher
         private async void DownloadResource_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not Button btn || btn.Tag is not ModrinthProject project) return;
+
+            if (_isRegionRestricted && _currentProjectType == "modpack")
+            {
+                await ShowDialogAsync("合规提示", "根据相关法律法规，WML 暂时不提供整合包下载功能。");
+                return;
+            }
+
             if (_currentProjectType != "modpack" && _targetInstance == null) { await ShowDialogAsync("提示", "请先选择目标实例！"); return; }
 
             btn.IsEnabled = false;
@@ -880,7 +911,6 @@ namespace WinUi3_Minecraft_Launcher
             await ShowDialogAsync("下载成功", $"文件已保存至：\n{savePath}", true);
         }
 
-        // ================= 原版版本列表过滤 =================
         private void VersionType_Checked(object sender, RoutedEventArgs e) { if (!_isDataLoaded || VersionListView == null) return; FilterAndDisplay(); }
 
         private void FilterAndDisplay()
@@ -929,7 +959,6 @@ namespace WinUi3_Minecraft_Launcher
 
         private async void VersionListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            // 🚨 物理锁区：如果被限制，绝对不响应点击
             if (_isRegionRestricted) return;
 
             if (e.ClickedItem is RemoteVersion selectedVersion)

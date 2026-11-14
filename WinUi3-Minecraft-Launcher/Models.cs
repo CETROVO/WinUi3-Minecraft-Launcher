@@ -95,7 +95,8 @@ namespace WinUi3_Minecraft_Launcher
         public bool AutoSetChinese { get; set; } = true;
 
         // 启动器设置
-        public int LauncherSystemUpdate { get; set; } = 2;
+        public int LauncherSystemUpdate { get; set; } = 1; // 1=开启, 2=关闭
+        public int UpdateChannel { get; set; } = 0; // 🚨 新增：0=正式版, 1=Beta版
         public int LauncherSystemPosts { get; set; } = 2;
         public string CacheFolder { get; set; } = "";
         public bool AllowAnonData { get; set; } = true;
@@ -108,7 +109,6 @@ namespace WinUi3_Minecraft_Launcher
         public string AccountAuthServerUrl { get; set; } = "";
     }
 
-    // 🚨 新增：专门用来存 JSON 的持久化状态类
     public class AppState
     {
         public int WindowWidth { get; set; } = 1450;
