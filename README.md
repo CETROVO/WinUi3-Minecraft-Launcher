@@ -7,7 +7,7 @@
 > 本启动器仓库**不会实时更新**，只会在每个版本发布时同步更新一次仓库。
 
 一个基于 **WinUI 3 + C# + .NET 10** 的 Minecraft 启动器，底层使用 [CmlLib.Core](https://github.com/CmlLib/CmlLib.Core)。  
-目标是做一个界面现代化、功能完整、并且未来会使用 EasyTier 制作私有化联机模块的新一代启动器。
+目标是做一个界面现代化、功能完整、并且未来会使用 陶瓦联机 制作联机模块的新一代启动器。
 
 ---
 
@@ -45,12 +45,6 @@
 
 ---
 
-## 🚧 开发状态 / Status
-
-目前处于 **v0.2.0-beta** 测试阶段。核心启动引擎、加载器安装、资源下载已全面可用。正在收集社区反馈，并着手准备 EasyTier 联机模块的接入。
-
----
-
 ## 🐛 已知问题 / Known Issues
 
 - Java 版本自动匹配在部分极其特殊的环境下仍会挑错版本，此时建议手动在设置里指定 `javaw.exe`。
@@ -61,14 +55,13 @@
 
 ## 📜 License
 
-本项目采用 [GPL-3.0](LICENSE) 协议开源，禁止任何闭源商业封装。
+本项目采用 [AGPL-3.0](LICENSE) 协议开源，禁止任何闭源商业封装。
 
 ### 第三方组件致谢
 - [CmlLib.Core](https://github.com/CmlLib/CmlLib.Core) - MIT
 - [Windows App SDK](https://github.com/microsoft/WindowsAppSDK) - MIT
 - [Modrinth API](https://docs.modrinth.com/) - 开源生态基石
 - [BMCLAPI](https://bmclapidoc.bangbang93.com/) - 国内极速镜像
-- [EasyTier](https://github.com/EasyTier/EasyTier) - LGPL-3.0（计划中）
 
 ---
 

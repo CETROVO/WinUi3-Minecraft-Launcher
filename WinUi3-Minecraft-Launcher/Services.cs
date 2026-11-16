@@ -82,6 +82,9 @@ namespace WinUi3_Minecraft_Launcher
         public static DownloadSource CurrentSource { get; set; } = DownloadSource.Auto;
         public static int FileDownloadSource { get; set; } = 0;
         public static int VersionListSource { get; set; } = 0;
+
+        // 🚨 记录下载好的更新包路径
+        public static string? PendingUpdatePath { get; set; }
     }
 
     public static class JavaFinder
@@ -295,29 +298,16 @@ namespace WinUi3_Minecraft_Launcher
             var versionDir = Path.Combine(minecraftPath, "versions", versionName);
             string gameDir = (LauncherState.AutoIsolation && ShouldIsolate(minecraftPath, versionName)) || LauncherState.VersionIsolation ? versionDir : minecraftPath;
 
-            // 启动前执行命令
             if (!string.IsNullOrWhiteSpace(config.PreLaunchCommand))
             {
                 try
                 {
                     Report("正在执行启动前命令...", config.PreLaunchCommand, 2);
-                    var psi = new ProcessStartInfo
-                    {
-                        FileName = "cmd.exe",
-                        Arguments = $"/c {config.PreLaunchCommand}",
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    };
+                    var psi = new ProcessStartInfo { FileName = "cmd.exe", Arguments = $"/c {config.PreLaunchCommand}", UseShellExecute = false, CreateNoWindow = true };
                     using var preProcess = Process.Start(psi);
-                    if (preProcess != null)
-                    {
-                        await preProcess.WaitForExitAsync(cancellationToken);
-                    }
+                    if (preProcess != null) await preProcess.WaitForExitAsync(cancellationToken);
                 }
-                catch (Exception ex)
-                {
-                    log($"[PreLaunch] 执行失败: {ex.Message}");
-                }
+                catch (Exception ex) { log($"[PreLaunch] 执行失败: {ex.Message}"); }
             }
 
             var session = AccountService.GetSession();
@@ -325,8 +315,6 @@ namespace WinUi3_Minecraft_Launcher
             int finalRam = !is64Bit ? 1024 : (maxRamMb <= 0 || LauncherState.AutoMemory ? MemoryAllocator.CalculateAutoMemoryMb(versionDir, is64Bit) : maxRamMb);
 
             var extraJvmArgs = new List<MArgument>();
-
-            // Authlib 注入
             if (AccountService.Current.Type == AccountType.ThirdParty && !string.IsNullOrEmpty(AccountService.Current.AuthServerUrl))
             {
                 try
@@ -337,24 +325,15 @@ namespace WinUi3_Minecraft_Launcher
                 catch { }
             }
 
-            if (config.DisableLWJGLUnsafeAgent)
-            {
-                extraJvmArgs.Add(new MArgument("-Dorg.lwjgl.system.allocator=system"));
-            }
-            if (config.DisableJavaLaunchWrapper)
-            {
-                extraJvmArgs.Add(new MArgument("-Dfml.ignorePatchDiscrepancies=true"));
-            }
+            if (config.DisableLWJGLUnsafeAgent) extraJvmArgs.Add(new MArgument("-Dorg.lwjgl.system.allocator=system"));
+            if (config.DisableJavaLaunchWrapper) extraJvmArgs.Add(new MArgument("-Dfml.ignorePatchDiscrepancies=true"));
 
-            // 多行 JVM 参数安全切分
             if (!string.IsNullOrWhiteSpace(config.JvmArgs))
             {
                 var args = config.JvmArgs.Split(new[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var arg in args)
-                    extraJvmArgs.Add(new MArgument(arg.Trim()));
+                foreach (var arg in args) extraJvmArgs.Add(new MArgument(arg.Trim()));
             }
 
-            // G1GC 内存管理算法
             if (config.MemoryAlgorithm == 1)
             {
                 extraJvmArgs.Add(new MArgument("-XX:+UseG1GC"));
@@ -367,18 +346,12 @@ namespace WinUi3_Minecraft_Launcher
             }
 
             var extraGameArgs = new List<MArgument> { new MArgument("--gameDir"), new MArgument(gameDir) };
+            if (config.WindowSize == 1) extraGameArgs.Add(new MArgument("--fullscreen"));
 
-            if (config.WindowSize == 1)
-            {
-                extraGameArgs.Add(new MArgument("--fullscreen"));
-            }
-
-            // 多行游戏参数安全切分
             if (!string.IsNullOrWhiteSpace(config.GameArgs))
             {
                 var gArgs = config.GameArgs.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var arg in gArgs)
-                    extraGameArgs.Add(new MArgument(arg.Trim()));
+                foreach (var arg in gArgs) extraGameArgs.Add(new MArgument(arg.Trim()));
             }
 
             var option = new MLaunchOption
@@ -411,7 +384,6 @@ namespace WinUi3_Minecraft_Launcher
             process.ErrorDataReceived += (s, e) => { if (e.Data != null) log($"[MC-ERR] {e.Data}"); };
 
             process.Start();
-
             try
             {
                 if (config.ProcessPriority == 0) process.PriorityClass = ProcessPriorityClass.Idle;
@@ -421,7 +393,6 @@ namespace WinUi3_Minecraft_Launcher
             catch { }
 
             process.BeginOutputReadLine(); process.BeginErrorReadLine();
-
             Report("正在等待游戏窗口...", "游戏正在加载，请稍候", 95, indeterminate: true);
             try { await WaitForGameWindowAsync(process, cancellationToken, log, stderrBuilder, stdoutBuilder); }
             catch (OperationCanceledException) { try { if (!process.HasExited) process.Kill(true); } catch { } throw; }

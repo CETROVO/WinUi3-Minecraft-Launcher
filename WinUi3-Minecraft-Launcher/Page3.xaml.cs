@@ -45,15 +45,9 @@ namespace WinUi3_Minecraft_Launcher
 
             _memoryTimer.Start();
 
-            // 进入页面瞬间，先显示初始化文案
-            UpdateStatusText.Text = "正在检查更新...";
+            // 初始化时显示当前状态
+            UpdateStatusText.Text = "WML 正在初始化...";
             UpdateStatusText.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.LightGray);
-
-            // 如果开启了自动检查，切到更新页时自动触发一次
-            if (_config.LauncherSystemUpdate == 1)
-            {
-                _ = CheckUpdateInternalAsync(false);
-            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -215,8 +209,6 @@ namespace WinUi3_Minecraft_Launcher
 
             _config.UpdateChannel = newIndex;
             SaveConfig();
-
-            // 通道改变后自动重新检查
             _ = CheckUpdateInternalAsync(false);
         }
 
@@ -232,7 +224,6 @@ namespace WinUi3_Minecraft_Launcher
             await CheckUpdateInternalAsync(true);
         }
 
-        // 🚨 核心：更新检查逻辑
         private async Task CheckUpdateInternalAsync(bool isManual)
         {
             CheckUpdateButton.IsEnabled = false;
@@ -245,12 +236,10 @@ namespace WinUi3_Minecraft_Launcher
 
             try
             {
-                // 利用 csproj 的 Version 标签获取当前版本（不会变成 1.0.0）
                 string currentVersion = Assembly.GetExecutingAssembly()
                     .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
                     .InformationalVersion ?? "0.2.0";
 
-                // 如果带有 commit hash 后缀，截断它
                 if (currentVersion.Contains("+")) currentVersion = currentVersion.Split('+')[0];
 
                 bool isBeta = _config.UpdateChannel == 1;
@@ -301,49 +290,53 @@ namespace WinUi3_Minecraft_Launcher
                     }
                 }
 
-                // 🚨 终极判断：不显示本地版本，只展示结果
-                string cleanLatestTag = latestTag.Replace("v", "");
-                if (cleanLatestTag != currentVersion && cleanLatestTag != $"{currentVersion}.0" && !latestTag.Contains(currentVersion))
+                // 🚨 核心：版本降级拦截
+                if (IsNewerVersion(latestTag, currentVersion))
                 {
-                    // 有更新
                     UpdateStatusText.Text = $"有可用的更新：WML {latestTag}";
                     UpdateStatusText.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Orange);
                     ReleaseNotesText.Text = releaseBody;
                     ReleaseNotesScrollViewer.Visibility = Visibility.Visible;
 
-                    // 如果是手动点击的，弹窗询问；如果是自动检查的，就不弹窗打扰（玩家自己点更新按钮）
-                    if (isManual)
+                    if (!string.IsNullOrEmpty(downloadUrl))
                     {
-                        var dialog = new ContentDialog
+                        if (!isManual)
                         {
-                            Title = "发现新版本",
-                            Content = new TextBlock { Text = $"最新版本：{latestTag}\n\n是否立即下载并更新？", TextWrapping = TextWrapping.Wrap },
-                            PrimaryButtonText = "立即更新",
-                            CloseButtonText = "稍后",
-                            XamlRoot = this.XamlRoot
-                        };
-
-                        if (await dialog.ShowAsync() == ContentDialogResult.Primary)
-                        {
-                            if (string.IsNullOrEmpty(downloadUrl))
-                            {
-                                await ShowMsg("更新失败", "未找到安装包直链，请前往 GitHub Releases 手动下载。");
-                                return;
-                            }
-                            await DownloadAndInstallUpdateAsync(downloadUrl, latestTag);
+                            UpdateStatusText.Text = $"发现新版本 {latestTag}，正在后台自动下载...";
+                            await AutoDownloadUpdateAsync(downloadUrl, latestTag);
                         }
+                        else
+                        {
+                            var dialog = new ContentDialog
+                            {
+                                Title = "发现新版本",
+                                Content = new TextBlock { Text = $"最新版本：{latestTag}\n当前版本：v{currentVersion}\n\n是否立即下载？下载完成后将在您关闭启动器时自动安装。", TextWrapping = TextWrapping.Wrap },
+                                PrimaryButtonText = "立即下载",
+                                CloseButtonText = "稍后",
+                                XamlRoot = this.XamlRoot
+                            };
+
+                            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                            {
+                                await AutoDownloadUpdateAsync(downloadUrl, latestTag);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        UpdateStatusText.Text = "发现新版本，但未找到下载直链";
+                        UpdateStatusText.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Red);
                     }
                 }
                 else
                 {
-                    // 无更新
                     UpdateStatusText.Text = "您当前使用的是最新版本";
                     UpdateStatusText.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.LightGreen);
                 }
             }
             catch (Exception ex)
             {
-                UpdateStatusText.Text = "检查更新失败，请检查网络连接";
+                UpdateStatusText.Text = "检查更新失败，请检查网络连接或加速器状态";
                 UpdateStatusText.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Red);
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
@@ -353,32 +346,44 @@ namespace WinUi3_Minecraft_Launcher
             }
         }
 
-        private async Task DownloadAndInstallUpdateAsync(string url, string version)
+        private bool IsNewerVersion(string latestTag, string currentVersion)
         {
-            var progressDialog = new ContentDialog
-            {
-                Title = $"正在下载更新 ({version})",
-                Content = new ProgressBar { IsIndeterminate = true, Width = 300 },
-                XamlRoot = this.XamlRoot
-            };
-
-            _ = progressDialog.ShowAsync();
-
             try
             {
-                string tempPath = Path.Combine(Path.GetTempPath(), $"WML_Setup_{version}.exe");
+                string cleanLatest = System.Text.RegularExpressions.Regex.Match(latestTag, @"\d+(\.\d+)*").Value;
+                string cleanCurrent = System.Text.RegularExpressions.Regex.Match(currentVersion, @"\d+(\.\d+)*").Value;
+
+                if (Version.TryParse(cleanLatest, out var latestVer) && Version.TryParse(cleanCurrent, out var currentVer))
+                {
+                    return latestVer > currentVer;
+                }
+            }
+            catch { }
+            return latestTag.Replace("v", "") != currentVersion;
+        }
+
+        private async Task AutoDownloadUpdateAsync(string url, string version)
+        {
+            try
+            {
+                string updateDir = Path.Combine(Path.GetTempPath(), "WML-Update");
+                Directory.CreateDirectory(updateDir);
+
+                string fileName = $"WML_Setup_{version}.exe";
+                string savePath = Path.Combine(updateDir, fileName);
+
                 var bytes = await Http.GetByteArrayAsync(url);
-                await File.WriteAllBytesAsync(tempPath, bytes);
+                await File.WriteAllBytesAsync(savePath, bytes);
 
-                progressDialog.Hide();
+                LauncherState.PendingUpdatePath = savePath;
 
-                Process.Start(new ProcessStartInfo { FileName = tempPath, UseShellExecute = true });
-                Application.Current.Exit();
+                UpdateStatusText.Text = $"新版本 {version} 已就绪，关闭启动器后将自动安装";
+                UpdateStatusText.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.LightGreen);
             }
             catch (Exception ex)
             {
-                progressDialog.Hide();
-                await ShowMsg("下载失败", $"下载更新包失败：{ex.Message}");
+                UpdateStatusText.Text = $"自动下载更新失败: {ex.Message}";
+                UpdateStatusText.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Red);
             }
         }
 
